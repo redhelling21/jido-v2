@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.8.34330.188
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "jido-v2", "jido-v2.csproj", "{90ACB7FE-5C8D-4605-A443-1D8D33015EBB}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "jido-v2", "jido-v2.csproj", "{315CB42D-EC66-432B-88FD-7B78AE569D5B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -11,15 +11,15 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{90ACB7FE-5C8D-4605-A443-1D8D33015EBB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{90ACB7FE-5C8D-4605-A443-1D8D33015EBB}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{90ACB7FE-5C8D-4605-A443-1D8D33015EBB}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{90ACB7FE-5C8D-4605-A443-1D8D33015EBB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{315CB42D-EC66-432B-88FD-7B78AE569D5B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{315CB42D-EC66-432B-88FD-7B78AE569D5B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{315CB42D-EC66-432B-88FD-7B78AE569D5B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{315CB42D-EC66-432B-88FD-7B78AE569D5B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {25E3874D-88CB-4064-9599-D941D2F6B089}
+		SolutionGuid = {B4D473FD-1BE2-4BB4-9854-74E2BDC43548}
 	EndGlobalSection
 EndGlobal
