@@ -29,9 +29,8 @@
 				</Border>
 				<Border Grid.Row="2">
 					<StackPanel>
-						<Button Content="Button 1" />
-						<Button Content="Button 2" />
-						<Button Content="Button 3" />
+						<Button Content="Home" Command="{Binding GoToHomePageCommand}" />
+						<Button Content="Autoloot" Command="{Binding GoToAutolootPageCommand}" />
 					</StackPanel>
 				</Border>
 			</Grid>
