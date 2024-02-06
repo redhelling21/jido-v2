@@ -1,13 +1,13 @@
 <Window xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:vm="using:jido_v2.ViewModels"
+        xmlns:vm="using:Jido.Components"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d" d:DesignWidth="1080" d:DesignHeight="640" Width="1080" Height="640"
-        x:Class="jido_v2.Views.MainWindow"
+        x:Class="Jido.Components.MainWindow"
         x:DataType="vm:MainWindowViewModel"
         Icon="/Assets/avalonia-logo.ico"
-        Title="jido_v2">
+        Title="Jido">
 
 	<Design.DataContext>
 		<!-- This only sets the DataContext for the previewer in an IDE,
@@ -36,7 +36,7 @@
 				</Border>
 			</Grid>
 			<Border Grid.Column="1">
-				<Label>Content</Label>
+				<ContentControl Content="{Binding Content}"></ContentControl>
 			</Border>
 		</Grid>
 		<Grid Grid.Row="2" ColumnDefinitions="Auto, *, Auto" Background="{DynamicResource Highlight200}">

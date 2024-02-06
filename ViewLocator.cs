@@ -1,9 +1,9 @@
 using Avalonia.Controls;
 using Avalonia.Controls.Templates;
-using jido_v2.ViewModels;
+using Jido.Components;
 using System;
 
-namespace jido_v2
+namespace Jido
 {
     public class ViewLocator : IDataTemplate
     {
