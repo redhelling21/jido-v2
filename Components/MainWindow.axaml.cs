@@ -1,6 +1,6 @@
 using Avalonia.Controls;
 
-namespace jido_v2.Views
+namespace Jido.Components
 {
     public partial class MainWindow : Window
     {

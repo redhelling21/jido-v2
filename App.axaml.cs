@@ -3,10 +3,14 @@ using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Data.Core;
 using Avalonia.Data.Core.Plugins;
 using Avalonia.Markup.Xaml;
-using jido_v2.ViewModels;
-using jido_v2.Views;
+using Jido.Components;
+using Jido.Components.Pages.Autoloot;
+using Jido.Components.Pages.Home;
+using Jido.Utils;
+using Microsoft.Extensions.DependencyInjection;
+using System;
 
-namespace jido_v2
+namespace Jido
 {
     public partial class App : Application
     {
@@ -17,18 +21,30 @@ namespace jido_v2
 
         public override void OnFrameworkInitializationCompleted()
         {
+            IServiceProvider services = ConfigureServices();
+            var router = services.GetRequiredService<Router<ViewModelBase>>();
             if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
             {
-                // Line below is needed to remove Avalonia data validation.
-                // Without this line you will get duplicate validations from both Avalonia and CT
+                // Line below is needed to remove Avalonia data validation. Without this line you
+                // will get duplicate validations from both Avalonia and CT
                 BindingPlugins.DataValidators.RemoveAt(0);
                 desktop.MainWindow = new MainWindow
                 {
-                    DataContext = new MainWindowViewModel(),
+                    DataContext = new MainWindowViewModel(router),
                 };
             }
 
             base.OnFrameworkInitializationCompleted();
+        }
+
+        private static ServiceProvider ConfigureServices()
+        {
+            var services = new ServiceCollection();
+            // Add the HistoryRouter as a service
+            services.AddSingleton<Router<ViewModelBase>>(s => new Router<ViewModelBase>(t => (ViewModelBase)s.GetRequiredService(t)));
+            services.AddTransient<HomePageViewModel>();
+            services.AddTransient<AutolootPageViewModel>();
+            return services.BuildServiceProvider();
         }
     }
 }

@@ -1,6 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 
-namespace jido_v2.ViewModels
+namespace Jido.Components
 {
     public class ViewModelBase : ObservableObject
     {

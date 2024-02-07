@@ -1,7 +1,7 @@
 ﻿using Avalonia;
 using System;
 
-namespace jido_v2
+namespace Jido
 {
     internal sealed class Program
     {
