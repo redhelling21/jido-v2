@@ -13,6 +13,7 @@
         <StyleInclude Source="Styles/Common.axaml" />
         <StyleInclude Source="Styles/Sidebar.axaml" />
         <StyleInclude Source="Components/Common/Sidebar/SidebarMenuItem.axaml" />
+        <StyleInclude Source="Components/Common/PageWithHeader.axaml" />
     </Application.Styles>
 
     <Application.Resources>
@@ -27,5 +28,9 @@
         <SolidColorBrush x:Key="Highlight800">#325158</SolidColorBrush>
         <SolidColorBrush x:Key="Highlight900">#2d464c</SolidColorBrush>
         <SolidColorBrush x:Key="Highlight950">#1a2c32</SolidColorBrush>
+
+        <FontFamily x:Key="Nunito">avares://Jido/Assets/Fonts#Nunito</FontFamily>
+        <FontFamily x:Key="Inter">avares://Jido/Assets/Fonts#Inter</FontFamily>
+        <FontFamily x:Key="Montserrat">avares://Jido/Assets/Fonts#Montserrat</FontFamily>
     </Application.Resources>
 </Application>
