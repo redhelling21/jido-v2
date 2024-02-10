@@ -1,15 +1,19 @@
 ﻿using Jido.Components;
+using Jido.Components.Pages.Autoloot;
+using Jido.Components.Pages.Home;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Jido.Utils
+namespace Jido.Routing
 {
     public class Router<TViewModelBase> where TViewModelBase : ViewModelBase
     {
         private TViewModelBase _currentViewModel = default!;
+        private readonly Dictionary<string, Type> _routes;
         protected readonly Func<Type, TViewModelBase> CreateViewModel;
 
         public event Action<TViewModelBase>? CurrentViewModelChanged;
@@ -17,6 +21,10 @@ namespace Jido.Utils
         public Router(Func<Type, TViewModelBase> createViewModel)
         {
             CreateViewModel = createViewModel;
+            _routes = new Dictionary<string, System.Type> {
+                { "Home", typeof(HomePageViewModel) },
+                { "Autoloot", typeof(AutolootPageViewModel) }
+            };
         }
 
         protected TViewModelBase CurrentViewModel
@@ -39,6 +47,21 @@ namespace Jido.Utils
             var viewModel = InstantiateViewModel<T>();
             CurrentViewModel = viewModel;
             return viewModel;
+        }
+
+        public virtual TViewModelBase GoTo(string path)
+        {
+            if (_routes.ContainsKey(path))
+            {
+                MethodInfo goToMethod = GetType().GetMethods().Where(m => m.Name == "GoTo" && m.IsGenericMethod).FirstOrDefault().MakeGenericMethod(_routes[path]);
+                var model = goToMethod.Invoke(this, null);
+                return (TViewModelBase)model;
+            }
+            else
+            {
+                // Handle unknown page key
+                throw new ArgumentException($"No view model found for page key '{path}'.");
+            }
         }
 
         protected T InstantiateViewModel<T>() where T : TViewModelBase

@@ -1,0 +1,24 @@
+<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+		xmlns:i="https://github.com/projektanker/icons.avalonia"
+		xmlns:sidebar="using:Jido.Components.Common.Sidebar">
+	<Design.PreviewWith>
+		<Grid Classes="sidebar" Width="260" Height="600" Grid.Column="0" RowDefinitions="Auto, Auto, Auto, *" Background="{DynamicResource Highlight500}">
+			<Border Grid.Row="0">
+				<Image Margin="30"
+					Source="/Assets/logo.png" />
+			</Border>
+			<Border Grid.Row="1" Height="1" Background="White" Margin="30, 0, 30, 30">
+			</Border>
+			<Border Grid.Row="2" Classes="menuitems">
+				<StackPanel>
+					<sidebar:SidebarMenuItem Classes="active" MenuName="Home" MenuIcon="fa fa-house" />
+					<sidebar:SidebarMenuItem MenuName="Autoloot" MenuIcon="fa fa-eye" />
+				</StackPanel>
+			</Border>
+		</Grid>
+	</Design.PreviewWith>
+	<Style Selector=".sidebar Border.menuitems">
+		<Setter Property="Padding" Value="30, 0, 30, 0" />
+	</Style>
+</Styles>

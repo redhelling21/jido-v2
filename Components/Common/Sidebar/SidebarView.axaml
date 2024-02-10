@@ -1,0 +1,24 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+			 xmlns:vm="using:Jido.Components.Common.Sidebar"
+			 x:DataType="vm:SidebarViewModel"
+             mc:Ignorable="d" d:DesignWidth="260" d:DesignHeight="600"
+			 x:Class="Jido.Components.Common.Sidebar.SidebarView"
+			 xmlns:sidebar="using:Jido.Components.Common.Sidebar">
+	<Grid RowDefinitions="Auto, Auto, Auto, *" Background="{DynamicResource Highlight500}">
+		<Border Grid.Row="0">
+			<Image Margin="30"
+				Source="/Assets/logo.png" />
+		</Border>
+		<Border Grid.Row="1" Height="1" Background="White" Margin="30, 0, 30, 30">
+		</Border>
+		<Border Grid.Row="2" Classes="menuitems" Padding="20">
+			<StackPanel>
+				<sidebar:SidebarMenuItem Path="Home" MenuName="Home" MenuIcon="fa fa-house" Command="{Binding NavigateTo}" CommandParameter="{Binding $self}" />
+				<sidebar:SidebarMenuItem Path="Autoloot" MenuName="Autoloot" MenuIcon="fa fa-eye" Command="{Binding NavigateTo}" CommandParameter="{Binding $self}" />
+			</StackPanel>
+		</Border>
+	</Grid>
+</UserControl>

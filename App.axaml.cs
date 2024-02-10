@@ -4,9 +4,10 @@ using Avalonia.Data.Core;
 using Avalonia.Data.Core.Plugins;
 using Avalonia.Markup.Xaml;
 using Jido.Components;
+using Jido.Components.Common.Sidebar;
 using Jido.Components.Pages.Autoloot;
 using Jido.Components.Pages.Home;
-using Jido.Utils;
+using Jido.Routing;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 
@@ -40,10 +41,11 @@ namespace Jido
         private static ServiceProvider ConfigureServices()
         {
             var services = new ServiceCollection();
-            // Add the HistoryRouter as a service
+            // Routing
             services.AddSingleton<Router<ViewModelBase>>(s => new Router<ViewModelBase>(t => (ViewModelBase)s.GetRequiredService(t)));
             services.AddTransient<HomePageViewModel>();
             services.AddTransient<AutolootPageViewModel>();
+
             return services.BuildServiceProvider();
         }
     }

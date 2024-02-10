@@ -1,23 +1,28 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using Jido.Components.Common.Sidebar;
 using Jido.Components.Pages.Autoloot;
 using Jido.Components.Pages.Home;
-using Jido.Utils;
+using Jido.Routing;
+using System;
+using System.Collections.Generic;
+using System.Reflection;
 
 namespace Jido.Components
 {
     public partial class MainWindowViewModel : ViewModelBase
     {
+        #region Observable properties
+
         [ObservableProperty]
         private ViewModelBase _content = default!;
 
-        private Router<ViewModelBase>? _router;
+        [ObservableProperty]
+        private string _pageKey = "Home";
 
-        [RelayCommand]
-        public void GoToHomePage() => _router?.GoTo<HomePageViewModel>();
+        #endregion Observable properties
 
-        [RelayCommand]
-        public void GoToAutolootPage() => _router?.GoTo<AutolootPageViewModel>();
+        public SidebarViewModel Sidebar { get; set; } = new();
 
         public MainWindowViewModel()
         {
@@ -26,7 +31,7 @@ namespace Jido.Components
 
         public MainWindowViewModel(Router<ViewModelBase> router)
         {
-            _router = router;
+            Sidebar = new(router);
             // register route changed event to set content to viewModel, whenever a route changes
             router.CurrentViewModelChanged += viewModel => Content = viewModel;
 
