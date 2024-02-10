@@ -1,12 +1,12 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+﻿using System;
+using System.Collections.Generic;
+using System.Reflection;
+using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Jido.Components.Common.Sidebar;
 using Jido.Components.Pages.Autoloot;
 using Jido.Components.Pages.Home;
 using Jido.Routing;
-using System;
-using System.Collections.Generic;
-using System.Reflection;
 
 namespace Jido.Components
 {

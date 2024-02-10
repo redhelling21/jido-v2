@@ -1,16 +1,15 @@
-﻿using CommunityToolkit.Mvvm.Input;
-using Jido.Routing;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using CommunityToolkit.Mvvm.Input;
+using Jido.Routing;
 
 namespace Jido.Components.Common.Sidebar
 {
     public partial class SidebarViewModel : ViewModelBase
-
     {
         private Router<ViewModelBase> _router = default!;
 

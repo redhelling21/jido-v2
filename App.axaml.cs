@@ -1,3 +1,4 @@
+using System;
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Data.Core;
@@ -9,7 +10,6 @@ using Jido.Components.Pages.Autoloot;
 using Jido.Components.Pages.Home;
 using Jido.Routing;
 using Microsoft.Extensions.DependencyInjection;
-using System;
 
 namespace Jido
 {
@@ -29,10 +29,7 @@ namespace Jido
                 // Line below is needed to remove Avalonia data validation. Without this line you
                 // will get duplicate validations from both Avalonia and CT
                 BindingPlugins.DataValidators.RemoveAt(0);
-                desktop.MainWindow = new MainWindow
-                {
-                    DataContext = new MainWindowViewModel(router),
-                };
+                desktop.MainWindow = new MainWindow { DataContext = new MainWindowViewModel(router), };
             }
 
             base.OnFrameworkInitializationCompleted();
@@ -42,7 +39,9 @@ namespace Jido
         {
             var services = new ServiceCollection();
             // Routing
-            services.AddSingleton<Router<ViewModelBase>>(s => new Router<ViewModelBase>(t => (ViewModelBase)s.GetRequiredService(t)));
+            services.AddSingleton<Router<ViewModelBase>>(s => new Router<ViewModelBase>(t =>
+                (ViewModelBase)s.GetRequiredService(t)
+            ));
             services.AddTransient<HomePageViewModel>();
             services.AddTransient<AutolootPageViewModel>();
 

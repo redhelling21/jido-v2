@@ -3,6 +3,5 @@
 namespace Jido.Components
 {
     public class ViewModelBase : ObservableObject
-    {
-    }
+    { }
 }

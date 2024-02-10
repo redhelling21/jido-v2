@@ -1,7 +1,7 @@
+using System;
 using Avalonia.Controls;
 using Avalonia.Controls.Templates;
 using Jido.Components;
-using System;
 
 namespace Jido
 {

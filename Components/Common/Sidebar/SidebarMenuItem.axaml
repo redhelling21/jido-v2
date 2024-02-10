@@ -1,7 +1,7 @@
 <Styles xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-		xmlns:i="https://github.com/projektanker/icons.avalonia"
-        xmlns:controls="using:Jido.Components.Common.Sidebar">
+        xmlns:controls="using:Jido.Components.Common.Sidebar"
+        xmlns:i="https://github.com/projektanker/icons.avalonia">
 	<Design.PreviewWith>
 		<StackPanel Width="200">
 			<controls:SidebarMenuItem Classes="active" />
@@ -13,6 +13,9 @@
 		<Setter Property="Background" Value="{DynamicResource Highlight600}" />
 	</Style>
 	<Style Selector="controls|SidebarMenuItem:pointerover Button /template/ ContentPresenter">
+		<Setter Property="Background" Value="{DynamicResource Highlight600}" />
+	</Style>
+	<Style Selector="controls|SidebarMenuItem.active:pointerover Button /template/ ContentPresenter">
 		<Setter Property="Background" Value="{DynamicResource Highlight700}" />
 	</Style>
 	<Style Selector="controls|SidebarMenuItem">
@@ -20,11 +23,15 @@
 		<Setter Property="MenuIcon" Value="fa fa-github" />
 		<Setter Property="Template">
 			<ControlTemplate>
-				<Button HorizontalAlignment="Stretch" Command="{TemplateBinding Command}" CommandParameter="{TemplateBinding CommandParameter}" Padding="10" Margin="0, 3, 0, 0" Background="{DynamicResource Highlight500}">
-					<Grid ColumnDefinitions="Auto, *, Auto">
-						<i:Icon Grid.Column="0" Value="{TemplateBinding MenuIcon}" FontSize="18" />
-						<TextBlock Grid.Column="1" Text="{TemplateBinding MenuName}" VerticalAlignment="Center" Margin="5,0,0,0" />
-						<i:Icon Grid.Column="2" Value="fa fa-circle" FontSize="8" />
+				<Button Margin="0,3,0,0" Padding="10" HorizontalAlignment="Stretch"
+                        Background="{DynamicResource Highlight500}"
+                        Command="{TemplateBinding Command}"
+                        CommandParameter="{TemplateBinding CommandParameter}">
+					<Grid VerticalAlignment="Center" ColumnDefinitions="Auto, *, Auto">
+						<i:Icon Grid.Column="0" FontSize="18" Value="{TemplateBinding MenuIcon}" />
+						<TextBlock Grid.Column="1" Margin="10,1,0,0" VerticalAlignment="Center"
+                                   Text="{TemplateBinding MenuName}" />
+						<i:Icon Grid.Column="2" FontSize="8" Value="fa fa-circle" />
 					</Grid>
 				</Button>
 			</ControlTemplate>

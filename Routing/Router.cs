@@ -1,16 +1,17 @@
-﻿using Jido.Components;
-using Jido.Components.Pages.Autoloot;
-using Jido.Components.Pages.Home;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using Jido.Components;
+using Jido.Components.Pages.Autoloot;
+using Jido.Components.Pages.Home;
 
 namespace Jido.Routing
 {
-    public class Router<TViewModelBase> where TViewModelBase : ViewModelBase
+    public class Router<TViewModelBase>
+        where TViewModelBase : ViewModelBase
     {
         private TViewModelBase _currentViewModel = default!;
         private readonly Dictionary<string, Type> _routes;
@@ -21,7 +22,8 @@ namespace Jido.Routing
         public Router(Func<Type, TViewModelBase> createViewModel)
         {
             CreateViewModel = createViewModel;
-            _routes = new Dictionary<string, System.Type> {
+            _routes = new Dictionary<string, System.Type>
+            {
                 { "Home", typeof(HomePageViewModel) },
                 { "Autoloot", typeof(AutolootPageViewModel) }
             };
@@ -31,7 +33,8 @@ namespace Jido.Routing
         {
             set
             {
-                if (value == _currentViewModel) return;
+                if (value == _currentViewModel)
+                    return;
                 _currentViewModel = value;
                 OnCurrentViewModelChanged(value);
             }
@@ -42,7 +45,8 @@ namespace Jido.Routing
             CurrentViewModelChanged?.Invoke(viewModel);
         }
 
-        public virtual T GoTo<T>() where T : TViewModelBase
+        public virtual T GoTo<T>()
+            where T : TViewModelBase
         {
             var viewModel = InstantiateViewModel<T>();
             CurrentViewModel = viewModel;
@@ -53,7 +57,11 @@ namespace Jido.Routing
         {
             if (_routes.ContainsKey(path))
             {
-                MethodInfo goToMethod = GetType().GetMethods().Where(m => m.Name == "GoTo" && m.IsGenericMethod).FirstOrDefault().MakeGenericMethod(_routes[path]);
+                MethodInfo goToMethod = GetType()
+                    .GetMethods()
+                    .Where(m => m.Name == "GoTo" && m.IsGenericMethod)
+                    .FirstOrDefault()
+                    .MakeGenericMethod(_routes[path]);
                 var model = goToMethod.Invoke(this, null);
                 return (TViewModelBase)model;
             }
@@ -64,7 +72,8 @@ namespace Jido.Routing
             }
         }
 
-        protected T InstantiateViewModel<T>() where T : TViewModelBase
+        protected T InstantiateViewModel<T>()
+            where T : TViewModelBase
         {
             return (T)Convert.ChangeType(CreateViewModel(typeof(T)), typeof(T));
         }

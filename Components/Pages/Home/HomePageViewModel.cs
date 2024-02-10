@@ -7,6 +7,5 @@ using System.Threading.Tasks;
 namespace Jido.Components.Pages.Home
 {
     public class HomePageViewModel : ViewModelBase
-    {
-    }
+    { }
 }
