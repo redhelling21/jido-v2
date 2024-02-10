@@ -1,0 +1,66 @@
+<Styles xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Design.PreviewWith>
+        <StackPanel Margin="20">
+            <!--  TextBlock Control  -->
+            <TextBlock FontSize="20" FontWeight="Bold" Text="Hello, Avalonia!" />
+
+            <!--  Button Control  -->
+            <Button Margin="0,20,0,0" Content="Click Me" />
+
+            <!--  TextBox Control  -->
+            <TextBox Margin="0,20,0,0" Watermark="Enter some text" />
+
+            <!--  ComboBox Control  -->
+            <ComboBox Margin="0,20,0,0">
+                <ComboBoxItem Content="Option 1" />
+                <ComboBoxItem Content="Option 2" />
+                <ComboBoxItem Content="Option 3" />
+            </ComboBox>
+
+            <!--  CheckBox Control  -->
+            <CheckBox Margin="0,20,0,0" Content="Check me" />
+
+            <!--  RadioButton Controls  -->
+            <StackPanel Margin="0,20,0,0">
+                <RadioButton Content="Option 1" GroupName="Options" IsChecked="True" />
+                <RadioButton Content="Option 2" GroupName="Options" />
+                <RadioButton Content="Option 3" GroupName="Options" />
+            </StackPanel>
+            <ProgressBar Margin="0,20,0,0" Maximum="100" Minimum="0" Value="50" />
+            <Slider Margin="0,20,0,0" Maximum="100" Minimum="0" Value="50" />
+
+            <!--  ToggleButton Control  -->
+            <ToggleButton Margin="0,20,0,0" Content="Toggle me" />
+
+            <!--  TreeView Control  -->
+            <TreeView Height="100" Margin="0,20,0,0">
+                <TreeViewItem Header="Item 1">
+                    <TreeViewItem Header="Subitem 1.1" />
+                    <TreeViewItem Header="Subitem 1.2" />
+                </TreeViewItem>
+                <TreeViewItem Header="Item 2" />
+            </TreeView>
+
+            <!--  Expander Control  -->
+            <Expander Margin="0,20,0,0" Header="Expander">
+                <TextBlock Text="Expanded Content" />
+            </Expander>
+
+            <!--  Numeric up down  -->
+            <NumericUpDown Margin="0,20,0,0" Maximum="10" Minimum="0" Value="5" />
+        </StackPanel>
+    </Design.PreviewWith>
+
+    <Style Selector="Button">
+        <Setter Property="Background" Value="{DynamicResource Highlight500}" />
+        <Setter Property="Foreground" Value="White" />
+    </Style>
+    <Style Selector="Button:pointerover /template/ ContentPresenter">
+        <Setter Property="Background" Value="{DynamicResource Highlight600}" />
+        <Setter Property="Foreground" Value="White" />
+    </Style>
+    <Style Selector="Button:pressed /template/ ContentPresenter">
+        <Setter Property="Background" Value="{DynamicResource Highlight700}" />
+        <Setter Property="Foreground" Value="White" />
+    </Style>
+</Styles>

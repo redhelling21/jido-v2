@@ -9,9 +9,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Components\Common\" />
-    <Folder Include="Models\" />
     <AvaloniaResource Include="Assets\**" />
+    <AvaloniaXaml Remove="Models\**" />
+    <Compile Remove="Models\**" />
+    <EmbeddedResource Remove="Models\**" />
+    <None Remove="Models\**" />
     <Folder Include="Services\" />
   </ItemGroup>
 
@@ -29,5 +31,15 @@
     <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" Version="11.0.6" />
     <PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.1" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="8.0.0" />
+    <PackageReference Include="Projektanker.Icons.Avalonia" Version="9.0.1" />
+    <PackageReference Include="Projektanker.Icons.Avalonia.FontAwesome" Version="9.0.1" />
+    <PackageReference Include="Projektanker.Icons.Avalonia.MaterialDesign" Version="9.0.1" />
+  </ItemGroup>
+
+
+  <ItemGroup>
+    <Compile Update="Components\Common\Sidebar\SidebarView.axaml.cs">
+      <DependentUpon>SidebarView.axaml</DependentUpon>
+    </Compile>
   </ItemGroup>
 </Project>

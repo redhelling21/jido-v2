@@ -1,29 +1,31 @@
-<Application xmlns="https://github.com/avaloniaui"
+<Application x:Class="Jido.App" xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             x:Class="Jido.App"
-             xmlns:local="using:Jido"
-             RequestedThemeVariant="Light">
-	<!-- "Default" ThemeVariant follows system theme variant. "Dark" or "Light" are other available options. -->
+             xmlns:i="https://github.com/projektanker/icons.avalonia"
+             xmlns:local="using:Jido" RequestedThemeVariant="Light">
+    <!--  "Default" ThemeVariant follows system theme variant. "Dark" or "Light" are other available options.  -->
 
-	<Application.DataTemplates>
-		<local:ViewLocator />
-	</Application.DataTemplates>
+    <Application.DataTemplates>
+        <local:ViewLocator />
+    </Application.DataTemplates>
 
-	<Application.Styles>
-		<FluentTheme />
-	</Application.Styles>
+    <Application.Styles>
+        <FluentTheme />
+        <StyleInclude Source="Styles/Common.axaml" />
+        <StyleInclude Source="Styles/Sidebar.axaml" />
+        <StyleInclude Source="Components/Common/Sidebar/SidebarMenuItem.axaml" />
+    </Application.Styles>
 
-	<Application.Resources>
-		<SolidColorBrush x:Key="Highlight50">#f2f9f9</SolidColorBrush>
-		<SolidColorBrush x:Key="Highlight100">#ddeff0</SolidColorBrush>
-		<SolidColorBrush x:Key="Highlight200">#bfe0e2</SolidColorBrush>
-		<SolidColorBrush x:Key="Highlight300">#92cace</SolidColorBrush>
-		<SolidColorBrush x:Key="Highlight400">#5faab1</SolidColorBrush>
-		<SolidColorBrush x:Key="Highlight500">#438e96</SolidColorBrush>
-		<SolidColorBrush x:Key="Highlight600">#3b757f</SolidColorBrush>
-		<SolidColorBrush x:Key="Highlight700">#356169</SolidColorBrush>
-		<SolidColorBrush x:Key="Highlight800">#325158</SolidColorBrush>
-		<SolidColorBrush x:Key="Highlight900">#2d464c</SolidColorBrush>
-		<SolidColorBrush x:Key="Highlight950">#1a2c32</SolidColorBrush>
-	</Application.Resources>
+    <Application.Resources>
+        <SolidColorBrush x:Key="Highlight50">#f2f9f9</SolidColorBrush>
+        <SolidColorBrush x:Key="Highlight100">#ddeff0</SolidColorBrush>
+        <SolidColorBrush x:Key="Highlight200">#bfe0e2</SolidColorBrush>
+        <SolidColorBrush x:Key="Highlight300">#92cace</SolidColorBrush>
+        <SolidColorBrush x:Key="Highlight400">#5faab1</SolidColorBrush>
+        <SolidColorBrush x:Key="Highlight500">#438e96</SolidColorBrush>
+        <SolidColorBrush x:Key="Highlight600">#3b757f</SolidColorBrush>
+        <SolidColorBrush x:Key="Highlight700">#356169</SolidColorBrush>
+        <SolidColorBrush x:Key="Highlight800">#325158</SolidColorBrush>
+        <SolidColorBrush x:Key="Highlight900">#2d464c</SolidColorBrush>
+        <SolidColorBrush x:Key="Highlight950">#1a2c32</SolidColorBrush>
+    </Application.Resources>
 </Application>
