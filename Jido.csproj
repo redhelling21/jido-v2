@@ -16,7 +16,6 @@
     <None Remove="Models\**" />
     <Folder Include="Assets\Fonts\" />
     <Folder Include="Assets\Images\" />
-    <Folder Include="Services\" />
   </ItemGroup>
 
 
@@ -32,6 +31,7 @@
     <PackageReference Include="Projektanker.Icons.Avalonia" Version="9.0.1" />
     <PackageReference Include="Projektanker.Icons.Avalonia.FontAwesome" Version="9.0.1" />
     <PackageReference Include="Projektanker.Icons.Avalonia.MaterialDesign" Version="9.0.1" />
+    <PackageReference Include="SharpHook" Version="5.2.3" />
   </ItemGroup>
 
 
