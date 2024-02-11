@@ -11,7 +11,7 @@
 		<vm:AutolootPageViewModel />
 	</Design.DataContext>
 	<common:PageWithHeader Title="Autoloot" Subtitle="Reads the screen periodically, and clicks on detected shapes">
-		<StackPanel Grid.Row="1" VerticalAlignment="Center" Spacing="5">
+		<StackPanel VerticalAlignment="Center" Spacing="5">
 			<TextBlock VerticalAlignment="Center" FontSize="16" FontWeight="SemiBold"
                        Text="Coucou autoloot page" TextAlignment="Center" TextWrapping="Wrap" />
 			<TextBlock VerticalAlignment="Center" FontSize="16" Text="Super !" TextAlignment="Center"
