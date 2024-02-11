@@ -6,12 +6,14 @@
              xmlns:sidebar="using:Jido.Components.Common.Sidebar"
              xmlns:vm="using:Jido.Components.Common.Sidebar" d:DesignHeight="600"
              d:DesignWidth="260" x:DataType="vm:SidebarViewModel" mc:Ignorable="d">
-	<Grid Background="{DynamicResource Highlight500}" RowDefinitions="Auto, Auto, Auto, *">
+	<Design.DataContext>
+		<vm:SidebarViewModel />
+	</Design.DataContext>
+	<Grid Background="{DynamicResource Highlight500}" RowDefinitions="94, Auto, *">
 		<Border Grid.Row="0">
-			<Image Margin="30" Source="/Assets/logo.png" />
+			<Image Margin="30,20,30,0" Source="/Assets/Images/logo.png" />
 		</Border>
-		<Border Grid.Row="1" Height="1" Margin="30,0,30,30" Background="White" />
-		<Border Grid.Row="2" Padding="20" Classes="menuitems">
+		<Border Grid.Row="1" Padding="20" Classes="menuitems">
 			<StackPanel>
 				<sidebar:SidebarMenuItem Name="Default" Classes="active" Click="SetActiveState"
                                          Command="{Binding NavigateTo}"

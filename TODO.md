@@ -1,0 +1,35 @@
+# Task list
+Because I'm too lazy to create issues, here's a list of things I want to do with this project:
+
+- [ ] General
+  - [ ] Add a license to the project
+  - [ ] Define a general theme
+  - [ ] Handle dark theme
+  - [ ] Randomize delays, click positions, etc
+  - [ ] Display features activation status
+  - [ ] Auto toggle features if in city or in map
+  - [ ] OpenCV debugger
+  - [ ] Configuration handling
+- [ ] Autoloot
+  - [ ] Implement autoloot
+  - [ ] Allow colors selection
+  - [ ] Allow shape selection
+  - [ ] Auto disable if low life/es/mana
+- [ ] Autopress
+  - [ ] Implement autopress
+  - [ ] Allow groups of keys to trigger together with a specific delay
+  - [ ] Give a special status to the movement key
+  - [ ] Allow toggling spam of a key
+  - [ ] Allow a key to be pressed regularly no matter wwhat
+  - [ ] Save configs in json
+  - [ ] Configure delay for a new keypress & pressing duration
+- [ ] Bulk item click
+- [ ] Empty inventory
+  - [ ] Implement
+  - [ ] Make it work when selling to a vendor or a player
+- [ ] Cards
+- [ ] Expeditions
+- [ ] Currency spammer
+- [ ] Map crafter
+- [ ] Autoclicker
+- [ ] Chaos recipe

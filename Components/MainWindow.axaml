@@ -6,7 +6,8 @@
         xmlns:sidebar="using:Jido.Components.Common.Sidebar"
         xmlns:vm="using:Jido.Components" Title="Jido" Width="1080" Height="640"
         d:DesignHeight="640" d:DesignWidth="1080" x:DataType="vm:MainWindowViewModel"
-        Icon="/Assets/avalonia-logo.ico" mc:Ignorable="d">
+        FontFamily="{StaticResource Nunito}"
+        Icon="/Assets/Images/avalonia-logo.ico" mc:Ignorable="d">
 
 	<Design.DataContext>
 		<!--
