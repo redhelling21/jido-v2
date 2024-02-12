@@ -9,7 +9,7 @@ using SharpHook.Native;
 
 namespace Jido.Utils
 {
-    public class KeyHooksManager : IDisposable
+    public class KeyHooksManager : IDisposable, IKeyHooksManager
     {
         private TaskPoolGlobalHook _hook = new();
         public Dictionary<KeyCode, EventHandler> _keyPressedEvents = new();
@@ -74,5 +74,12 @@ namespace Jido.Utils
         {
             _hook.Dispose();
         }
+    }
+
+    public interface IKeyHooksManager
+    {
+        void RegisterKey(KeyCode key, EventHandler pressed, EventHandler released);
+
+        void UnregisterKey(KeyCode key);
     }
 }

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Reflection;
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -29,9 +29,9 @@ namespace Jido.Components
             _content = new HomePageViewModel();
         }
 
-        public MainWindowViewModel(Router<ViewModelBase> router)
+        public MainWindowViewModel(Router<ViewModelBase> router, SidebarViewModel sidebar)
         {
-            Sidebar = new(router);
+            Sidebar = sidebar;
             // register route changed event to set content to viewModel, whenever a route changes
             router.CurrentViewModelChanged += viewModel => Content = viewModel;
 
