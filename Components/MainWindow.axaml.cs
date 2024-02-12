@@ -1,5 +1,6 @@
 using Avalonia;
 using Avalonia.Controls;
+using System.ComponentModel;
 
 namespace Jido.Components
 {
@@ -8,6 +9,13 @@ namespace Jido.Components
         public MainWindow()
         {
             InitializeComponent();
+            Closing += OnClosing;
+        }
+
+        public void OnClosing(object? sender, CancelEventArgs e)
+        {
+            if (this.DataContext is not null && this.DataContext is MainWindowViewModel viewModel)
+                viewModel.OnClosing(sender, e);
         }
     }
 }

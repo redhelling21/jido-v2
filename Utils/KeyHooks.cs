@@ -9,7 +9,7 @@ using SharpHook.Native;
 
 namespace Jido.Utils
 {
-    public class KeyHooksManager : IDisposable, IKeyHooksManager
+    public class KeyHooksManager : IKeyHooksManager
     {
         private TaskPoolGlobalHook _hook = new();
         public Dictionary<KeyCode, EventHandler> _keyPressedEvents = new();
@@ -21,6 +21,7 @@ namespace Jido.Utils
         {
             _hook.KeyPressed += OnKeyPressed;
             _hook.KeyReleased += OnKeyReleased;
+            _hook.RunAsync();
         }
 
         public void RegisterKey(KeyCode key, EventHandler pressed, EventHandler released)
@@ -52,10 +53,6 @@ namespace Jido.Utils
             {
                 _keyPressedEvents[args.RawEvent.Keyboard.KeyCode]?.Invoke(sender, args);
             }
-            else
-            {
-                throw new Exception("Key not registered");
-            }
         }
 
         public void OnKeyReleased(object? sender, KeyboardHookEventArgs args)
@@ -63,10 +60,6 @@ namespace Jido.Utils
             if (_keyReleasedEvents.ContainsKey(args.RawEvent.Keyboard.KeyCode))
             {
                 _keyReleasedEvents[args.RawEvent.Keyboard.KeyCode]?.Invoke(sender, args);
-            }
-            else
-            {
-                throw new Exception("Key not registered");
             }
         }
 
@@ -76,7 +69,7 @@ namespace Jido.Utils
         }
     }
 
-    public interface IKeyHooksManager
+    public interface IKeyHooksManager : IDisposable
     {
         void RegisterKey(KeyCode key, EventHandler pressed, EventHandler released);
 
