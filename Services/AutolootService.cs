@@ -12,9 +12,9 @@ namespace Jido.Services
     public class AutolootService : IAutolootService
     {
         private IKeyHooksManager _keyHooksManager;
-        public ServiceStatus AutolootStatus { get; set; } = ServiceStatus.STOPPED;
+        public ServiceStatus Status { get; set; } = ServiceStatus.STOPPED;
 
-        public event EventHandler<ServiceStatus> AutolootStatusChanged;
+        public event EventHandler<ServiceStatus> StatusChanged;
 
         public AutolootService(IKeyHooksManager keyHooksManager)
         {
@@ -25,22 +25,19 @@ namespace Jido.Services
 
         private void ToggleAutoloot(object? sender, EventArgs e)
         {
-            if ((AutolootStatus & (ServiceStatus.RUNNING | ServiceStatus.WORKING)) == 0)
+            if ((Status & (ServiceStatus.RUNNING | ServiceStatus.WORKING)) == 0)
             {
-                AutolootStatus = ServiceStatus.RUNNING | ServiceStatus.WORKING;
+                Status = ServiceStatus.RUNNING | ServiceStatus.WORKING;
             }
             else
             {
-                AutolootStatus = ServiceStatus.STOPPED;
+                Status = ServiceStatus.STOPPED;
             }
-            AutolootStatusChanged?.Invoke(this, AutolootStatus);
+            StatusChanged?.Invoke(this, Status);
         }
     }
 
-    public interface IAutolootService
+    public interface IAutolootService : IServiceWithStatus
     {
-        public event EventHandler<ServiceStatus> AutolootStatusChanged;
-
-        public ServiceStatus AutolootStatus { get; set; }
     }
 }

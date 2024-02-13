@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.Input;
 using Jido.Routing;
+using Jido.Services;
 
 namespace Jido.Components.Common.Sidebar
 {
@@ -19,7 +20,7 @@ namespace Jido.Components.Common.Sidebar
             _router.GoTo(item.Path);
         }
 
-        public SidebarViewModel()
+        public SidebarViewModel(IAutolootService autolootService)
         {
             Console.WriteLine("SidebarViewModel created");
         }

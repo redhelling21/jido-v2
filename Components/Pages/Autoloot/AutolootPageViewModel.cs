@@ -25,8 +25,8 @@ namespace Jido.Components.Pages.Autoloot
         public AutolootPageViewModel(IAutolootService autolootService)
         {
             _autolootService = autolootService;
-            _autolootService.AutolootStatusChanged += OnAutolootStatusChange;
-            IsKeyPressed = (_autolootService.AutolootStatus & (ServiceStatus.RUNNING)) == ServiceStatus.RUNNING;
+            _autolootService.StatusChanged += OnAutolootStatusChange;
+            IsKeyPressed = (_autolootService.Status & (ServiceStatus.RUNNING)) == ServiceStatus.RUNNING;
         }
 
         private void OnAutolootStatusChange(object? sender, ServiceStatus status)

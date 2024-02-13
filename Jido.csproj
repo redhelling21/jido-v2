@@ -36,6 +36,9 @@
 
 
   <ItemGroup>
+    <Compile Update="Components\Common\Sidebar\SidebarMenuItemView.axaml.cs">
+      <DependentUpon>SidebarMenuItemView.axaml</DependentUpon>
+    </Compile>
     <Compile Update="Components\Common\Sidebar\SidebarView.axaml.cs">
       <DependentUpon>SidebarView.axaml</DependentUpon>
     </Compile>
