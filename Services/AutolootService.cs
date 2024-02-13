@@ -12,32 +12,35 @@ namespace Jido.Services
     public class AutolootService : IAutolootService
     {
         private IKeyHooksManager _keyHooksManager;
+        public ServiceStatus AutolootStatus { get; set; } = ServiceStatus.STOPPED;
 
-        public event EventHandler<EventArgs> PressEvent;
-
-        public event EventHandler<EventArgs> ReleaseEvent;
+        public event EventHandler<ServiceStatus> AutolootStatusChanged;
 
         public AutolootService(IKeyHooksManager keyHooksManager)
         {
             _keyHooksManager = keyHooksManager;
-            _keyHooksManager.RegisterKey(SharpHook.Native.KeyCode.VcZ, ZKeyPressed, ZKeyReleased);
+            var toggleKey = SharpHook.Native.KeyCode.VcF3;
+            _keyHooksManager.RegisterKey(toggleKey, ToggleAutoloot);
         }
 
-        private void ZKeyPressed(object? sender, EventArgs e)
+        private void ToggleAutoloot(object? sender, EventArgs e)
         {
-            PressEvent.Invoke(sender, e);
-        }
-
-        private void ZKeyReleased(object? sender, EventArgs e)
-        {
-            ReleaseEvent.Invoke(sender, e);
+            if ((AutolootStatus & (ServiceStatus.RUNNING | ServiceStatus.WORKING)) == 0)
+            {
+                AutolootStatus = ServiceStatus.RUNNING | ServiceStatus.WORKING;
+            }
+            else
+            {
+                AutolootStatus = ServiceStatus.STOPPED;
+            }
+            AutolootStatusChanged?.Invoke(this, AutolootStatus);
         }
     }
 
     public interface IAutolootService
     {
-        public event EventHandler<EventArgs> PressEvent;
+        public event EventHandler<ServiceStatus> AutolootStatusChanged;
 
-        public event EventHandler<EventArgs> ReleaseEvent;
+        public ServiceStatus AutolootStatus { get; set; }
     }
 }

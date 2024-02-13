@@ -7,17 +7,15 @@
              xmlns:vm="using:Jido.Components.Pages.Autoloot" d:DesignHeight="450"
              d:DesignWidth="800" x:CompileBindings="True"
              x:DataType="vm:AutolootPageViewModel" mc:Ignorable="d">
-    <Design.DataContext>
-        <vm:AutolootPageViewModel />
-    </Design.DataContext>
-    <common:PageWithHeader Title="Autoloot" Subtitle="Reads the screen periodically, and clicks on detected shapes">
-        <StackPanel VerticalAlignment="Center" Spacing="5">
-            <TextBlock FontSize="16" FontWeight="SemiBold"
-                       Text="Coucou autoloot page" TextAlignment="Center" TextWrapping="Wrap" />
-            <CheckBox IsChecked="{Binding IsKeyPressed}">Is pressed</CheckBox>
-            <CheckBox IsChecked="{Binding IsKeyReleased}">Is released</CheckBox>
-            <TextBlock FontSize="16" Text="Super !" TextAlignment="Center"
-                       TextWrapping="Wrap" />
-        </StackPanel>
-    </common:PageWithHeader>
+	<Design.DataContext>
+		<vm:AutolootPageViewModel />
+	</Design.DataContext>
+	<common:PageWithHeader Title="Autoloot" Subtitle="Reads the screen periodically, and clicks on detected shapes">
+		<StackPanel VerticalAlignment="Center" Spacing="5">
+			<TextBlock FontSize="16" FontWeight="SemiBold" Text="Coucou autoloot page"
+                       TextAlignment="Center" TextWrapping="Wrap" />
+			<CheckBox IsChecked="{Binding IsKeyPressed}">Is pressed</CheckBox>
+			<TextBlock FontSize="16" Text="Super !" TextAlignment="Center" TextWrapping="Wrap" />
+		</StackPanel>
+	</common:PageWithHeader>
 </UserControl>

@@ -13,33 +13,29 @@ namespace Jido.Utils
     {
         private TaskPoolGlobalHook _hook = new();
         public Dictionary<KeyCode, EventHandler> _keyPressedEvents = new();
-        public Dictionary<KeyCode, EventHandler> _keyReleasedEvents = new();
 
         //private Dictionary<string, KeyHook> _hooks = new Dictionary<string, KeyHook>();
 
         public KeyHooksManager()
         {
             _hook.KeyPressed += OnKeyPressed;
-            _hook.KeyReleased += OnKeyReleased;
             _hook.RunAsync();
         }
 
-        public void RegisterKey(KeyCode key, EventHandler pressed, EventHandler released)
+        public void RegisterKey(KeyCode key, EventHandler pressed)
         {
-            if (_keyPressedEvents.ContainsKey(key) || _keyReleasedEvents.ContainsKey(key))
+            if (_keyPressedEvents.ContainsKey(key))
             {
                 throw new Exception("Key already registered");
             }
             _keyPressedEvents.Add(key, pressed);
-            _keyReleasedEvents.Add(key, released);
         }
 
         public void UnregisterKey(KeyCode key)
         {
-            if (_keyPressedEvents.ContainsKey(key) && _keyReleasedEvents.ContainsKey(key))
+            if (_keyPressedEvents.ContainsKey(key))
             {
                 _keyPressedEvents.Remove(key);
-                _keyReleasedEvents.Remove(key);
             }
             else
             {
@@ -55,14 +51,6 @@ namespace Jido.Utils
             }
         }
 
-        public void OnKeyReleased(object? sender, KeyboardHookEventArgs args)
-        {
-            if (_keyReleasedEvents.ContainsKey(args.RawEvent.Keyboard.KeyCode))
-            {
-                _keyReleasedEvents[args.RawEvent.Keyboard.KeyCode]?.Invoke(sender, args);
-            }
-        }
-
         public void Dispose()
         {
             _hook.Dispose();
@@ -71,7 +59,7 @@ namespace Jido.Utils
 
     public interface IKeyHooksManager : IDisposable
     {
-        void RegisterKey(KeyCode key, EventHandler pressed, EventHandler released);
+        void RegisterKey(KeyCode key, EventHandler pressed);
 
         void UnregisterKey(KeyCode key);
     }
