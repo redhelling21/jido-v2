@@ -12,10 +12,10 @@
 	</Design.DataContext>
 	<common:PageWithHeader Title="Autoloot" Subtitle="Reads the screen periodically, and clicks on detected shapes">
 		<StackPanel VerticalAlignment="Center" Spacing="5">
-			<TextBlock VerticalAlignment="Center" FontSize="16" FontWeight="SemiBold"
-                       Text="Coucou autoloot page" TextAlignment="Center" TextWrapping="Wrap" />
-			<TextBlock VerticalAlignment="Center" FontSize="16" Text="Super !" TextAlignment="Center"
-                       TextWrapping="Wrap" />
+			<TextBlock FontSize="16" FontWeight="SemiBold" Text="Coucou autoloot page"
+                       TextAlignment="Center" TextWrapping="Wrap" />
+			<CheckBox IsChecked="{Binding IsKeyPressed}">Is pressed</CheckBox>
+			<TextBlock FontSize="16" Text="Super !" TextAlignment="Center" TextWrapping="Wrap" />
 		</StackPanel>
 	</common:PageWithHeader>
 </UserControl>

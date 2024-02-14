@@ -6,24 +6,25 @@
              xmlns:sidebar="using:Jido.Components.Common.Sidebar"
              xmlns:vm="using:Jido.Components.Common.Sidebar" d:DesignHeight="600"
              d:DesignWidth="260" x:DataType="vm:SidebarViewModel" mc:Ignorable="d">
-	<Design.DataContext>
-		<vm:SidebarViewModel />
-	</Design.DataContext>
-	<Grid Background="{DynamicResource Highlight500}" RowDefinitions="94, Auto, *">
-		<Border Grid.Row="0">
-			<Image Margin="30,20,30,0" Source="/Assets/Images/logo.png" />
-		</Border>
-		<Border Grid.Row="1" Padding="20" Classes="menuitems">
-			<StackPanel>
-				<sidebar:SidebarMenuItem Name="Default" Classes="active" Click="SetActiveState"
+    <Design.DataContext>
+        <vm:SidebarViewModel />
+    </Design.DataContext>
+    <Grid Background="{DynamicResource Highlight500}" RowDefinitions="94, Auto, *">
+        <Border Grid.Row="0">
+            <Image Margin="30,20,30,0" Source="/Assets/Images/logo.png" />
+        </Border>
+        <Border Grid.Row="1" Padding="20" Classes="menuitems">
+            <StackPanel>
+                <sidebar:SidebarMenuItem Name="Default" Classes="active" Click="SetActiveState"
                                          Command="{Binding NavigateTo}"
-                                         CommandParameter="{Binding $self}"
+                                         CommandParameter="{Binding $self.Path}"
                                          MenuIcon="fa fa-house" MenuName="Home" Path="Home" />
-				<sidebar:SidebarMenuItem Click="SetActiveState"
+                <sidebar:SidebarMenuItem Click="SetActiveState"
                                          Command="{Binding NavigateTo}"
-                                         CommandParameter="{Binding $self}"
+                                         CommandParameter="{Binding $self.Path}"
+                                         Status="{Binding AutolootStatus}"
                                          MenuIcon="fa fa-eye" MenuName="Autoloot" Path="Autoloot" />
-			</StackPanel>
-		</Border>
-	</Grid>
+            </StackPanel>
+        </Border>
+    </Grid>
 </UserControl>

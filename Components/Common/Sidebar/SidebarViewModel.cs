@@ -1,11 +1,14 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Jido.Routing;
+using Jido.Services;
+using Jido.Utils;
 
 namespace Jido.Components.Common.Sidebar
 {
@@ -13,10 +16,13 @@ namespace Jido.Components.Common.Sidebar
     {
         private Router<ViewModelBase> _router = default!;
 
+        [ObservableProperty]
+        private ServiceStatus _autolootStatus = ServiceStatus.STOPPED;
+
         [RelayCommand]
-        public void NavigateTo(SidebarMenuItem item)
+        public void NavigateTo(string path)
         {
-            _router.GoTo(item.Path);
+            _router.GoTo(path);
         }
 
         public SidebarViewModel()
@@ -24,9 +30,10 @@ namespace Jido.Components.Common.Sidebar
             Console.WriteLine("SidebarViewModel created");
         }
 
-        public SidebarViewModel(Router<ViewModelBase> router)
+        public SidebarViewModel(IAutolootService autolootService, Router<ViewModelBase> router)
         {
             _router = router;
+            autolootService.StatusChanged += (sender, e) => AutolootStatus = e;
         }
     }
 }
