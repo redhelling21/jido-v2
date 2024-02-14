@@ -25,9 +25,9 @@ namespace Jido.Services
 
         private void ToggleAutoloot(object? sender, EventArgs e)
         {
-            if ((Status & (ServiceStatus.RUNNING | ServiceStatus.WORKING)) == 0)
+            if (Status == ServiceStatus.STOPPED)
             {
-                Status = ServiceStatus.RUNNING | ServiceStatus.WORKING;
+                Status = ServiceStatus.IDLE;
             }
             else
             {

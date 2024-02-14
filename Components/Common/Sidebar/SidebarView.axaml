@@ -18,12 +18,11 @@
                 <sidebar:SidebarMenuItem Name="Default" Classes="active" Click="SetActiveState"
                                          Command="{Binding NavigateTo}"
                                          CommandParameter="{Binding $self.Path}"
-                                         Status="{Binding Statuses[Home]}"
                                          MenuIcon="fa fa-house" MenuName="Home" Path="Home" />
                 <sidebar:SidebarMenuItem Click="SetActiveState"
                                          Command="{Binding NavigateTo}"
                                          CommandParameter="{Binding $self.Path}"
-                                         Status="{Binding Statuses[Autoloot]}"
+                                         Status="{Binding AutolootStatus}"
                                          MenuIcon="fa fa-eye" MenuName="Autoloot" Path="Autoloot" />
             </StackPanel>
         </Border>

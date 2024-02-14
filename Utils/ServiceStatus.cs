@@ -7,13 +7,11 @@ using System.Threading.Tasks;
 namespace Jido.Utils
 {
     [Flags]
-    public enum ServiceStatus : ushort
+    public enum ServiceStatus
     {
-        NONE = 0,
-        RUNNING = 1,
-        STOPPED = 2,
-        WORKING = 4,
-        IDLE = 8,
-        ERROR = 16
+        STOPPED,
+        WORKING,
+        IDLE,
+        ERROR,
     }
 }

@@ -16,11 +16,8 @@ namespace Jido.Components.Common.Sidebar
     {
         private Router<ViewModelBase> _router = default!;
 
-        private Dictionary<string, ServiceStatus> statuses = new Dictionary<string, ServiceStatus>
-        {
-            { "Home", ServiceStatus.STOPPED },
-            { "Autoloot", ServiceStatus.STOPPED }
-        };
+        [ObservableProperty]
+        private ServiceStatus _autolootStatus = ServiceStatus.STOPPED;
 
         [RelayCommand]
         public void NavigateTo(string path)
@@ -33,9 +30,10 @@ namespace Jido.Components.Common.Sidebar
             Console.WriteLine("SidebarViewModel created");
         }
 
-        public SidebarViewModel(Router<ViewModelBase> router)
+        public SidebarViewModel(IAutolootService autolootService, Router<ViewModelBase> router)
         {
             _router = router;
+            autolootService.StatusChanged += (sender, e) => AutolootStatus = e;
         }
     }
 }
