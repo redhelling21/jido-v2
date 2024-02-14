@@ -4,6 +4,7 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
 using Avalonia.Styling;
+using Jido.Utils;
 using static System.Net.Mime.MediaTypeNames;
 
 namespace Jido.Components.Common.Sidebar;
@@ -22,6 +23,10 @@ public partial class SidebarMenuItem : Button
         nameof(Path)
     );
 
+    public static readonly StyledProperty<ServiceStatus> StatusProperty = AvaloniaProperty.Register<SidebarMenuItem, ServiceStatus>(
+        nameof(Status)
+    );
+
     public string MenuName
     {
         get => GetValue(MenuNameProperty);
@@ -38,5 +43,11 @@ public partial class SidebarMenuItem : Button
     {
         get => GetValue(PathProperty);
         set => SetValue(PathProperty, value);
+    }
+
+    public ServiceStatus Status
+    {
+        get => GetValue(StatusProperty);
+        set => SetValue(StatusProperty, value);
     }
 }

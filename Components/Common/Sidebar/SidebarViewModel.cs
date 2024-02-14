@@ -4,9 +4,11 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Jido.Routing;
 using Jido.Services;
+using Jido.Utils;
 
 namespace Jido.Components.Common.Sidebar
 {
@@ -14,13 +16,19 @@ namespace Jido.Components.Common.Sidebar
     {
         private Router<ViewModelBase> _router = default!;
 
-        [RelayCommand]
-        public void NavigateTo(SidebarMenuItem item)
+        private Dictionary<string, ServiceStatus> statuses = new Dictionary<string, ServiceStatus>
         {
-            _router.GoTo(item.Path);
+            { "Home", ServiceStatus.STOPPED },
+            { "Autoloot", ServiceStatus.STOPPED }
+        };
+
+        [RelayCommand]
+        public void NavigateTo(string path)
+        {
+            _router.GoTo(path);
         }
 
-        public SidebarViewModel(IAutolootService autolootService)
+        public SidebarViewModel()
         {
             Console.WriteLine("SidebarViewModel created");
         }
