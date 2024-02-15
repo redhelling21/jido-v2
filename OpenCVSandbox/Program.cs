@@ -32,10 +32,6 @@ internal class Program
                 if (key == (int)ConsoleKey.Escape) // Exit if the escape key is pressed
                     break;
             }
-            /*if (counter % 20 == 0)
-            {
-                GC.Collect();
-            }*/
         }
 
         // Destroy the window
@@ -44,16 +40,13 @@ internal class Program
 
     public static Mat TestingGround(Mat origin)
     {
-        using (var t = new ResourcesTracker())
-        {
-            Cv2.CvtColor(origin, origin, ColorConversionCodes.BGRA2RGB);
-            Mat thresh = new Mat();
-            Scalar lowerBound = new Scalar(253, 0, 253); // Adjusted lower bound
-            Scalar upperBound = new Scalar(253, 20, 253); // Adjusted upper bound
-            Cv2.InRange(origin, lowerBound, upperBound, thresh);
-            //Cv2.Threshold(thresh, thresh, 0, 255, ThresholdTypes.Binary);
-            return thresh;
-        }
+        Cv2.CvtColor(origin, origin, ColorConversionCodes.BGRA2RGB);
+        Mat thresh = new Mat();
+        Scalar lowerBound = new Scalar(253, 0, 253); // Adjusted lower bound
+        Scalar upperBound = new Scalar(253, 20, 253); // Adjusted upper bound
+        Cv2.InRange(origin, lowerBound, upperBound, thresh);
+        //Cv2.Threshold(thresh, thresh, 0, 255, ThresholdTypes.Binary);
+        return thresh;
     }
 
     public static Mat CaptureScreen()
@@ -70,8 +63,17 @@ internal class Program
         // Capture the screen into the Bitmap object
         using (Graphics graphics = Graphics.FromImage(screenshot))
         {
-            graphics.CopyFromScreen(centerBounds.X, centerBounds.Y, 0, 0, centerBounds.Size, CopyPixelOperation.SourceCopy);
+            graphics.CopyFromScreen(
+                centerBounds.X,
+                centerBounds.Y,
+                0,
+                0,
+                centerBounds.Size,
+                CopyPixelOperation.SourceCopy
+            );
         }
-        return screenshot.ToMat();
+        Mat mat = screenshot.ToMat();
+        screenshot.Dispose();
+        return mat;
     }
 }
