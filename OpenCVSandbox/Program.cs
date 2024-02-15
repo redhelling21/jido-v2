@@ -17,21 +17,25 @@ internal class Program
         Cv2.NamedWindow("ScreenCapture");
 
         // Set up the screen capture
+        int counter = 0;
         while (true)
         {
-            using (var t = new ResourcesTracker())
+            counter++;
+            using (var screenImage = CaptureScreen())
             {
-                // Capture the screen
-                var screenImage = CaptureScreen();
-                var result = TestingGround(screenImage);
+                using var result = TestingGround(screenImage);
                 // Display the captured screen in the window
                 Cv2.ImShow("ScreenCapture", result);
 
                 // Wait for a key press for a short time (10ms)
-                int key = Cv2.WaitKey(30);
+                int key = Cv2.WaitKey(10);
                 if (key == (int)ConsoleKey.Escape) // Exit if the escape key is pressed
                     break;
             }
+            /*if (counter % 20 == 0)
+            {
+                GC.Collect();
+            }*/
         }
 
         // Destroy the window
@@ -42,8 +46,6 @@ internal class Program
     {
         using (var t = new ResourcesTracker())
         {
-            Console.WriteLine(origin.Channels());
-            Console.WriteLine(origin.GetType());
             Cv2.CvtColor(origin, origin, ColorConversionCodes.BGRA2RGB);
             Mat thresh = new Mat();
             Scalar lowerBound = new Scalar(253, 0, 253); // Adjusted lower bound
@@ -57,16 +59,19 @@ internal class Program
     public static Mat CaptureScreen()
     {
         Rectangle bounds = Screen.PrimaryScreen.Bounds;
-
+        int width = bounds.Width / 2;
+        int height = bounds.Height / 2;
+        int x = bounds.X + width / 2;
+        int y = bounds.Y + height / 2;
+        Rectangle centerBounds = new Rectangle(x, y, width, height);
         // Create a Bitmap object to hold the screen capture
-        Bitmap screenshot = new Bitmap(bounds.Width, bounds.Height, PixelFormat.Format32bppArgb);
+        Bitmap screenshot = new Bitmap(centerBounds.Width, centerBounds.Height, PixelFormat.Format32bppArgb);
 
         // Capture the screen into the Bitmap object
         using (Graphics graphics = Graphics.FromImage(screenshot))
         {
-            graphics.CopyFromScreen(bounds.X, bounds.Y, 0, 0, bounds.Size, CopyPixelOperation.SourceCopy);
+            graphics.CopyFromScreen(centerBounds.X, centerBounds.Y, 0, 0, centerBounds.Size, CopyPixelOperation.SourceCopy);
         }
-
-        return BitmapConverter.ToMat(screenshot);
+        return screenshot.ToMat();
     }
 }
