@@ -10,6 +10,7 @@
 
     <Application.Styles>
         <FluentTheme />
+        <StyleInclude Source="avares://Avalonia.Controls.ColorPicker/Themes/Fluent/Fluent.xaml" />
         <StyleInclude Source="Styles/Common.axaml" />
         <StyleInclude Source="Styles/Sidebar.axaml" />
         <StyleInclude Source="Components/Common/Sidebar/SidebarMenuItem.axaml" />
