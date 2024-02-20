@@ -5,6 +5,7 @@ The goal here is not to create a fully functioning bot, but to reduce the amount
 ## Technical stack
 * .Net 8.0
 * Avalonia 11.0
+* OpenCVSharp 4.9.0
 
 ## Useful links
 https://github.com/AvaloniaUI/Avalonia.Samples/tree/main/src/Avalonia.Samples/Routing/BasicViewLocatorSample

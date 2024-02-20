@@ -11,6 +11,7 @@ using Jido.Components.Pages.Home;
 using Jido.Routing;
 using Jido.Services;
 using Jido.Utils;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Jido
@@ -43,7 +44,9 @@ namespace Jido
         private static ServiceProvider ConfigureServices()
         {
             var services = new ServiceCollection();
-            // Routing
+            // Config
+            IConfiguration config = new ConfigurationBuilder().AddJsonFile("settings.json").Build();
+            services.AddSingleton<IConfiguration>(s => config);
             services.AddSingleton<Router<ViewModelBase>>(s => new Router<ViewModelBase>(t =>
                 (ViewModelBase)s.GetRequiredService(t)
             ));

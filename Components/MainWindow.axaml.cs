@@ -1,6 +1,6 @@
+using System.ComponentModel;
 using Avalonia;
 using Avalonia.Controls;
-using System.ComponentModel;
 
 namespace Jido.Components
 {
