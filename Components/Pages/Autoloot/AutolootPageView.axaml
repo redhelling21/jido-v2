@@ -11,14 +11,12 @@
         <vm:AutolootPageViewModel />
     </Design.DataContext>
     <common:PageWithHeader Title="Autoloot" Subtitle="Reads the screen periodically, and clicks on detected shapes">
-        <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" Spacing="5">
-            <Grid ColumnDefinitions="Auto, 5, 100, 5, Auto" RowDefinitions="Auto, 5, Auto">
-                <TextBlock Grid.Row="0" Grid.Column="0" Text="Toggle key" VerticalAlignment="Center" HorizontalAlignment="Right" />
-                <TextBox Grid.Row="0" Grid.Column="2" Text="Test" VerticalAlignment="Center" IsEnabled="False" />
-                <Button Grid.Row="0" Grid.Column="4" Content="Change" VerticalAlignment="Center" />
-                <TextBlock Grid.Row="2" Grid.Column="0" Text="Color to look for" VerticalAlignment="Center" HorizontalAlignment="Right" />
-                <ColorPicker Grid.Row="2" Grid.Column="2" Width="100" />
-            </Grid>
-        </StackPanel>
+        <Grid ColumnDefinitions="*, 5, 100, 5, *" RowDefinitions="Auto, 5, Auto">
+            <TextBlock Grid.Row="0" Grid.Column="0" Text="Toggle key" VerticalAlignment="Center" HorizontalAlignment="Right" />
+            <TextBox Grid.Row="0" Grid.Column="2" Text="{Binding ToggleKey}" VerticalAlignment="Center" IsEnabled="False" />
+            <Button Grid.Row="0" Grid.Column="4" Command="{Binding ChangeKeyCommand}" Content="{Binding ChangeKeyButtonText}" VerticalAlignment="Center" />
+            <TextBlock Grid.Row="2" Grid.Column="0" Text="Color to look for" VerticalAlignment="Center" HorizontalAlignment="Right" />
+            <ColorPicker Grid.Row="2" Grid.Column="2" Width="100" />
+        </Grid>
     </common:PageWithHeader>
 </UserControl>

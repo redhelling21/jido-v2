@@ -51,6 +51,19 @@ namespace Jido.Utils
             }
         }
 
+        public Task<KeyCode> ListenNextKey()
+        {
+            var tcs = new TaskCompletionSource<KeyCode>();
+            EventHandler<KeyboardHookEventArgs> handler = null;
+            handler = (sender, e) =>
+            {
+                tcs.SetResult(e.RawEvent.Keyboard.KeyCode);
+                _hook.KeyPressed -= handler;
+            };
+            _hook.KeyPressed += handler;
+            return tcs.Task;
+        }
+
         public void Dispose()
         {
             _hook.Dispose();
@@ -62,5 +75,7 @@ namespace Jido.Utils
         void RegisterKey(KeyCode key, EventHandler pressed);
 
         void UnregisterKey(KeyCode key);
+
+        Task<KeyCode> ListenNextKey();
     }
 }

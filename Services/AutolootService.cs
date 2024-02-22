@@ -20,6 +20,7 @@ namespace Jido.Services
         private EventSimulator _simulator = new EventSimulator();
         private CancellationTokenSource _cancellationTokenSource;
         private IConfiguration _config;
+        private KeyCode _toggleKey = KeyCode.VcF3;
         public ServiceStatus Status { get; set; } = ServiceStatus.STOPPED;
 
         public event EventHandler<ServiceStatus> StatusChanged;
@@ -28,9 +29,19 @@ namespace Jido.Services
         {
             _keyHooksManager = keyHooksManager;
             _config = config;
+            _keyHooksManager.RegisterKey(_toggleKey, ToggleAutoloot);
+        }
 
-            var toggleKey = SharpHook.Native.KeyCode.VcF3;
-            _keyHooksManager.RegisterKey(toggleKey, ToggleAutoloot);
+        public Task<KeyCode> ChangeToggleKey()
+        {
+            var task = _keyHooksManager.ListenNextKey().ContinueWith((key) =>
+            {
+                _keyHooksManager.UnregisterKey(_toggleKey);
+                _toggleKey = key.Result;
+                _keyHooksManager.RegisterKey(_toggleKey, ToggleAutoloot);
+                return _toggleKey;
+            });
+            return task;
         }
 
         private void ToggleAutoloot(object? sender, EventArgs e)
@@ -121,5 +132,7 @@ namespace Jido.Services
     }
 
     public interface IAutolootService : IServiceWithStatus
-    { }
+    {
+        public Task<KeyCode> ChangeToggleKey();
+    }
 }
