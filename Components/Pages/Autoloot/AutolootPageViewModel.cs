@@ -1,9 +1,5 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using Jido.Services;
 using Jido.Utils;
 
@@ -14,22 +10,42 @@ namespace Jido.Components.Pages.Autoloot
         private readonly IAutolootService? _autolootService;
 
         [ObservableProperty]
-        private bool isKeyPressed = false;
+        private string changeKeyButtonText;
 
         [ObservableProperty]
-        private bool isKeyReleased = true;
+        private string toggleKey;
 
         public AutolootPageViewModel()
-        { }
+        {
+            ChangeKeyButtonText = "Change";
+        }
 
         public AutolootPageViewModel(IAutolootService autolootService)
         {
             _autolootService = autolootService;
             _autolootService.StatusChanged += OnAutolootStatusChange;
+            ToggleKey = _autolootService.ToggleKey.ToString();
+            ChangeKeyButtonText = "Change";
         }
 
         private void OnAutolootStatusChange(object? sender, ServiceStatus status)
+        { }
+
+        [RelayCommand]
+        private void ChangeKey()
         {
+            if (_autolootService is not null)
+            {
+                ChangeKeyButtonText = "Listening...";
+                var task = _autolootService.ChangeToggleKey();
+                task.ContinueWith(
+                    (key) =>
+                    {
+                        ToggleKey = key.Result.ToString();
+                        ChangeKeyButtonText = "Change";
+                    }
+                );
+            }
         }
     }
 }
