@@ -24,13 +24,12 @@ namespace Jido.Components.Pages.Autoloot
         {
             _autolootService = autolootService;
             _autolootService.StatusChanged += OnAutolootStatusChange;
-
+            ToggleKey = _autolootService.ToggleKey.ToString();
             ChangeKeyButtonText = "Change";
         }
 
         private void OnAutolootStatusChange(object? sender, ServiceStatus status)
-        {
-        }
+        { }
 
         [RelayCommand]
         private void ChangeKey()
@@ -39,11 +38,13 @@ namespace Jido.Components.Pages.Autoloot
             {
                 ChangeKeyButtonText = "Listening...";
                 var task = _autolootService.ChangeToggleKey();
-                task.ContinueWith((key) =>
-                {
-                    ToggleKey = key.Result.ToString();
-                    ChangeKeyButtonText = "Change";
-                });
+                task.ContinueWith(
+                    (key) =>
+                    {
+                        ToggleKey = key.Result.ToString();
+                        ChangeKeyButtonText = "Change";
+                    }
+                );
             }
         }
     }

@@ -3,6 +3,7 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.Threading;
 using System.Threading.Tasks;
+using Jido.Config;
 using Jido.Utils;
 using Microsoft.Extensions.Configuration;
 using OpenCvSharp;
@@ -19,28 +20,41 @@ namespace Jido.Services
         private IKeyHooksManager _keyHooksManager;
         private EventSimulator _simulator = new EventSimulator();
         private CancellationTokenSource _cancellationTokenSource;
-        private IConfiguration _config;
-        private KeyCode _toggleKey = KeyCode.VcF3;
+        private JidoConfig _config;
+        private KeyCode _toggleKey;
+
+        public KeyCode ToggleKey
+        {
+            get => _toggleKey;
+        }
+
         public ServiceStatus Status { get; set; } = ServiceStatus.STOPPED;
 
         public event EventHandler<ServiceStatus> StatusChanged;
 
-        public AutolootService(IKeyHooksManager keyHooksManager, IConfiguration config)
+        public AutolootService(IKeyHooksManager keyHooksManager, JidoConfig config)
         {
             _keyHooksManager = keyHooksManager;
             _config = config;
+            _toggleKey = _config.Features.Autoloot.ToggleKey;
             _keyHooksManager.RegisterKey(_toggleKey, ToggleAutoloot);
         }
 
         public Task<KeyCode> ChangeToggleKey()
         {
-            var task = _keyHooksManager.ListenNextKey().ContinueWith((key) =>
-            {
-                _keyHooksManager.UnregisterKey(_toggleKey);
-                _toggleKey = key.Result;
-                _keyHooksManager.RegisterKey(_toggleKey, ToggleAutoloot);
-                return _toggleKey;
-            });
+            var task = _keyHooksManager
+                .ListenNextKey()
+                .ContinueWith(
+                    (key) =>
+                    {
+                        _keyHooksManager.UnregisterKey(_toggleKey);
+                        _toggleKey = key.Result;
+                        _config.Features.Autoloot.ToggleKey = key.Result;
+                        _config.Persist();
+                        _keyHooksManager.RegisterKey(_toggleKey, ToggleAutoloot);
+                        return _toggleKey;
+                    }
+                );
             return task;
         }
 
@@ -62,8 +76,8 @@ namespace Jido.Services
 
         private async Task AutolootRoutine(CancellationToken cancellationToken)
         {
-            int width = Int32.Parse(_config.GetSection("screen")["width"]) / 2;
-            int height = Int32.Parse(_config.GetSection("screen")["height"]) / 2;
+            int width = _config.Screen.Width / 2;
+            int height = _config.Screen.Height / 2;
             int x = width / 2;
             int y = height / 2;
 
@@ -134,5 +148,7 @@ namespace Jido.Services
     public interface IAutolootService : IServiceWithStatus
     {
         public Task<KeyCode> ChangeToggleKey();
+
+        public KeyCode ToggleKey { get; }
     }
 }

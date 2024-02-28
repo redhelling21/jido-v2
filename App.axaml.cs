@@ -8,6 +8,7 @@ using Jido.Components;
 using Jido.Components.Common.Sidebar;
 using Jido.Components.Pages.Autoloot;
 using Jido.Components.Pages.Home;
+using Jido.Config;
 using Jido.Routing;
 using Jido.Services;
 using Jido.Utils;
@@ -45,8 +46,7 @@ namespace Jido
         {
             var services = new ServiceCollection();
             // Config
-            IConfiguration config = new ConfigurationBuilder().AddJsonFile("settings.json").Build();
-            services.AddSingleton<IConfiguration>(s => config);
+            services.AddSingleton<JidoConfig>(s => new JidoConfig("settings.json"));
             services.AddSingleton<Router<ViewModelBase>>(s => new Router<ViewModelBase>(t =>
                 (ViewModelBase)s.GetRequiredService(t)
             ));

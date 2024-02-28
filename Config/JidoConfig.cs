@@ -1,20 +1,58 @@
+using System;
 using System.IO;
+using System.Reflection;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
+using OpenCvSharp;
+using SharpHook.Native;
 
 namespace Jido.Config;
 
 public class JidoConfig
 {
-    private readonly JsonSerializerOptions _serializerOptions;
+    [JsonIgnore]
+    private readonly JsonSerializerOptions? _serializerOptions;
 
-    public JidoConfig() => _serializerOptions = new JsonSerializerOptions
+    [JsonIgnore]
+    private string PersistentFileLocation { get; set; } =
+        Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "settings.json");
+
+    public JidoConfig()
+    { }
+
+    public JidoConfig(string filename)
     {
-        WriteIndented = true
-    };
+        _serializerOptions = new()
+        {
+            WriteIndented = true,
+            PropertyNameCaseInsensitive = true,
+            PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
+        };
+        string appRootFolder = AppDomain.CurrentDomain.BaseDirectory;
+        PersistentFileLocation = Path.Combine(appRootFolder, filename);
+        if (string.IsNullOrWhiteSpace(PersistentFileLocation))
+            throw new ArgumentException("File path cannot be null or empty.", nameof(PersistentFileLocation));
 
-    [JsonIgnore] private string PersistentFileLocation { get; set; }
+        // Check if the file exists
+        if (File.Exists(PersistentFileLocation))
+        {
+            using var sr = new StreamReader(PersistentFileLocation);
+            var config = JsonSerializer.Deserialize<JidoConfig>(sr.ReadToEnd(), _serializerOptions);
+            PropertyInfo[] properties = typeof(JidoConfig).GetProperties();
+            foreach (PropertyInfo property in properties)
+            {
+                if (property.GetCustomAttribute<JsonIgnoreAttribute>() == null)
+                {
+                    property.SetValue(this, property.GetValue(config));
+                }
+            }
+        }
+        else
+        {
+            Persist();
+        }
+    }
 
     #region Methods
 
@@ -38,18 +76,28 @@ public class JidoConfig
         await sw.WriteAsync(json);
     }
 
-    /// <summary>
-    /// Initialize the config with data
-    /// </summary>
-    /// <param name="persistentFileLocation">Location of the file to persist the data to</param>
-    /// <returns></returns>
-    public static JidoConfig Init(string persistentFileLocation)
-    {
-        using var sr = new StreamReader(persistentFileLocation);
-        var config = JsonSerializer.Deserialize<JidoConfig>(sr.ReadToEnd()) ?? new JidoConfig();
-        config.PersistentFileLocation = persistentFileLocation;
-        return config;
-    }
-
     #endregion Methods
+
+    #region Properties
+
+    public ScreenConfig Screen { get; set; } = new();
+    public FeaturesConfig Features { get; set; } = new();
+
+    #endregion Properties
+}
+
+public class ScreenConfig
+{
+    public int Width { get; set; } = 1920;
+    public int Height { get; set; } = 1080;
+}
+
+public class FeaturesConfig
+{
+    public AutolootConfig Autoloot { get; set; } = new();
+}
+
+public class AutolootConfig
+{
+    public KeyCode ToggleKey { get; set; } = KeyCode.VcF3;
 }
