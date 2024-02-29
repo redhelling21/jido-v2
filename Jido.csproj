@@ -10,13 +10,9 @@
 
   <ItemGroup>
     <AvaloniaResource Include="Assets\**" />
-    <AvaloniaXaml Remove="Models\**" />
     <AvaloniaXaml Remove="OpenCVSandbox\**" />
-    <Compile Remove="Models\**" />
     <Compile Remove="OpenCVSandbox\**" />
-    <EmbeddedResource Remove="Models\**" />
     <EmbeddedResource Remove="OpenCVSandbox\**" />
-    <None Remove="Models\**" />
     <None Remove="OpenCVSandbox\**" />
     <Folder Include="Assets\Fonts\" />
     <Folder Include="Assets\Images\" />

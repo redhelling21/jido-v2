@@ -1,9 +1,11 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
+using Jido.Models;
 using OpenCvSharp;
 using SharpHook.Native;
 
@@ -100,4 +102,10 @@ public class FeaturesConfig
 public class AutolootConfig
 {
     public KeyCode ToggleKey { get; set; } = KeyCode.VcF3;
+
+    public List<Color> Colors { get; set; } =
+        new List<Color>()
+        {
+            new Color() { Name = "Default", RGB = [253, 0, 253] }
+        };
 }
