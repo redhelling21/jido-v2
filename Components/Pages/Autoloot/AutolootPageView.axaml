@@ -15,8 +15,16 @@
             <TextBlock Grid.Row="0" Grid.Column="0" Text="Toggle key" VerticalAlignment="Center" HorizontalAlignment="Right" />
             <TextBox Grid.Row="0" Grid.Column="2" Text="{Binding ToggleKey}" VerticalAlignment="Center" IsEnabled="False" />
             <Button Grid.Row="0" Grid.Column="4" Command="{Binding ChangeKeyCommand}" Content="{Binding ChangeKeyButtonText}" VerticalAlignment="Center" />
-            <TextBlock Grid.Row="2" Grid.Column="0" Text="Color to look for" VerticalAlignment="Center" HorizontalAlignment="Right" />
-            <ColorPicker Grid.Row="2" Grid.Column="2" Width="100" />
+            <ItemsControl ItemsSource="{Binding ColorItems}">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBox Text="{Binding Name, Mode=TwoWay}" Width="100" Margin="5" />
+                            <ColorPicker Color="{Binding RGB, Mode=TwoWay, Converter={StaticResource RGBToColorConverter}}" Width="100" Margin="5" />
+                        </StackPanel>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
         </Grid>
     </common:PageWithHeader>
 </UserControl>

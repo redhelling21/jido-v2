@@ -1,7 +1,9 @@
 <Application x:Class="Jido.App" xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:i="https://github.com/projektanker/icons.avalonia"
-             xmlns:local="using:Jido" RequestedThemeVariant="Light">
+             xmlns:local="using:Jido"
+             xmlns:converters="using:Jido.Converters"
+             RequestedThemeVariant="Light">
     <!--  "Default" ThemeVariant follows system theme variant. "Dark" or "Light" are other available options.  -->
 
     <Application.DataTemplates>
@@ -38,5 +40,7 @@
         <FontFamily x:Key="Nunito">avares://Jido/Assets/Fonts#Nunito</FontFamily>
         <FontFamily x:Key="Inter">avares://Jido/Assets/Fonts#Inter</FontFamily>
         <FontFamily x:Key="Montserrat">avares://Jido/Assets/Fonts#Montserrat</FontFamily>
+
+        <converters:RGBToColorConverter x:Key="RGBToColorConverter" />
     </Application.Resources>
 </Application>

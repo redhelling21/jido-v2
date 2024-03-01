@@ -1,31 +1,34 @@
 using System;
+using System.Collections.Generic;
 using System.Drawing;
-using System.Drawing.Imaging;
 using System.Threading;
 using System.Threading.Tasks;
 using Jido.Config;
 using Jido.Utils;
-using Microsoft.Extensions.Configuration;
 using OpenCvSharp;
-using OpenCvSharp.Extensions;
 using SharpHook;
 using SharpHook.Native;
-using static OpenCvSharp.Stitcher;
 using Point = OpenCvSharp.Point;
+using Color = Jido.Models.Color;
 
 namespace Jido.Services
 {
     public class AutolootService : IAutolootService
     {
         private IKeyHooksManager _keyHooksManager;
-        private EventSimulator _simulator = new EventSimulator();
         private CancellationTokenSource _cancellationTokenSource;
         private JidoConfig _config;
         private KeyCode _toggleKey;
+        private List<Color> _colors;
 
         public KeyCode ToggleKey
         {
             get => _toggleKey;
+        }
+
+        public List<Color> Colors
+        {
+            get => _colors;
         }
 
         public ServiceStatus Status { get; set; } = ServiceStatus.STOPPED;
@@ -37,6 +40,7 @@ namespace Jido.Services
             _keyHooksManager = keyHooksManager;
             _config = config;
             _toggleKey = _config.Features.Autoloot.ToggleKey;
+            _colors = _config.Features.Autoloot.Colors;
             _keyHooksManager.RegisterKey(_toggleKey, ToggleAutoloot);
         }
 
@@ -87,19 +91,23 @@ namespace Jido.Services
             {
                 await Task.Delay(100);
                 using Mat screenImage = ScreenUtils.CaptureScreen(centerBounds);
-                using Mat thresh = new Mat();
-                Scalar lowerBound = new Scalar(253, 0, 253); // Adjusted lower bound
-                Scalar upperBound = new Scalar(255, 2, 255); // Adjusted upper bound
-                Cv2.InRange(screenImage, lowerBound, upperBound, thresh);
+                using Mat finalMask = new Mat(height, width, MatType.CV_8UC3, new Scalar(0));
+                foreach (var color in _colors)
+                {
+                    (Scalar lower, Scalar higher) = color.ToBGRScalarRange(1);
+                    using Mat mask = new Mat();
+                    Cv2.InRange(screenImage, lower, higher, mask);
+                    Cv2.BitwiseOr(finalMask, mask, finalMask);
+                }
                 if (lastMask != null)
                 {
                     using Mat diff = new Mat();
-                    Cv2.Absdiff(thresh, lastMask, diff);
+                    Cv2.Absdiff(finalMask, lastMask, diff);
                     var count = Cv2.CountNonZero(diff);
                     if (Cv2.CountNonZero(diff) > 100)
                     {
                         lastMask.Dispose();
-                        lastMask = thresh.Clone();
+                        lastMask = finalMask.Clone();
                         continue;
                     }
                     else if (Status == ServiceStatus.WORKING)
@@ -110,12 +118,12 @@ namespace Jido.Services
                 }
                 else
                 {
-                    lastMask = thresh.Clone();
+                    lastMask = finalMask.Clone();
                 }
                 Point[][] contours;
                 HierarchyIndex[] hierarchy;
                 Cv2.FindContours(
-                    thresh,
+                    finalMask,
                     out contours,
                     out hierarchy,
                     RetrievalModes.List,
@@ -150,5 +158,6 @@ namespace Jido.Services
         public Task<KeyCode> ChangeToggleKey();
 
         public KeyCode ToggleKey { get; }
+        public List<Color> Colors { get; }
     }
 }

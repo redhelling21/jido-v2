@@ -1,7 +1,10 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using Jido.Models;
 using Jido.Services;
 using Jido.Utils;
+using System.Collections.ObjectModel;
+using System.Linq;
 
 namespace Jido.Components.Pages.Autoloot
 {
@@ -15,6 +18,8 @@ namespace Jido.Components.Pages.Autoloot
         [ObservableProperty]
         private string toggleKey;
 
+        public ObservableCollection<Color> ColorItems { get; } = new ObservableCollection<Color>();
+
         public AutolootPageViewModel()
         {
             ChangeKeyButtonText = "Change";
@@ -25,6 +30,10 @@ namespace Jido.Components.Pages.Autoloot
             _autolootService = autolootService;
             _autolootService.StatusChanged += OnAutolootStatusChange;
             ToggleKey = _autolootService.ToggleKey.ToString();
+            foreach (var color in _autolootService.Colors)
+            {
+                ColorItems.Add(color);
+            }
             ChangeKeyButtonText = "Change";
         }
 
