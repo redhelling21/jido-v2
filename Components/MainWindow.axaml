@@ -6,38 +6,39 @@
         xmlns:sidebar="using:Jido.Components.Common.Sidebar"
         xmlns:vm="using:Jido.Components" Title="Jido" Width="1080" Height="640"
         d:DesignHeight="640" d:DesignWidth="1080" x:DataType="vm:MainWindowViewModel"
+        Focusable="True"
         FontFamily="{StaticResource Nunito}"
         Icon="/Assets/Images/avalonia-logo.ico" mc:Ignorable="d">
 
-	<Design.DataContext>
-		<!--
+    <Design.DataContext>
+        <!--
             This only sets the DataContext for the previewer in an IDE,
             to set the actual DataContext for runtime, set the DataContext property in code (look at App.axaml.cs)
         -->
-		<vm:MainWindowViewModel />
-	</Design.DataContext>
+        <vm:MainWindowViewModel />
+    </Design.DataContext>
 
-	<Grid RowDefinitions="Auto, *, Auto">
-		<Grid Grid.Row="0" Background="Teal" ColumnDefinitions="Auto, *, Auto">
-			<!--  Title bar  -->
-		</Grid>
+    <Grid RowDefinitions="Auto, *, Auto">
+        <Grid Grid.Row="0" Background="Teal" ColumnDefinitions="Auto, *, Auto">
+            <!--  Title bar  -->
+        </Grid>
 
-		<Grid Grid.Row="1" Classes="sidebar" ColumnDefinitions="260, *">
-			<!--  Side bar  -->
-			<sidebar:SidebarView Grid.Column="0" DataContext="{Binding Sidebar}" />
-			<!--  Main content  -->
-			<Border Grid.Column="1">
-				<ContentControl Content="{Binding Content}" />
-			</Border>
-		</Grid>
-		<!--  Footer  -->
-		<Grid Grid.Row="2" Background="{DynamicResource Highlight200}" ColumnDefinitions="Auto, *, Auto">
-			<Border Grid.Column="0">
-				<Label>Label</Label>
-			</Border>
-			<Border Grid.Column="2">
-				<Label>Buttons</Label>
-			</Border>
-		</Grid>
-	</Grid>
+        <Grid Grid.Row="1" Classes="sidebar" ColumnDefinitions="260, *">
+            <!--  Side bar  -->
+            <sidebar:SidebarView Grid.Column="0" DataContext="{Binding Sidebar}" />
+            <!--  Main content  -->
+            <Border Grid.Column="1">
+                <ContentControl Content="{Binding Content}" />
+            </Border>
+        </Grid>
+        <!--  Footer  -->
+        <Grid Grid.Row="2" Background="{DynamicResource Highlight200}" ColumnDefinitions="Auto, *, Auto">
+            <Border Grid.Column="0">
+                <Label>Label</Label>
+            </Border>
+            <Border Grid.Column="2">
+                <Label>Buttons</Label>
+            </Border>
+        </Grid>
+    </Grid>
 </Window>
