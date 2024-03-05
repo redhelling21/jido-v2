@@ -54,7 +54,10 @@ namespace Jido.Components.Pages.Autoloot
 
         private void OnColorChanged(object? sender, EventArgs e)
         {
-            Console.WriteLine("Color changed");
+            if (_autolootService is not null)
+            {
+                _autolootService.UpdateColors(ColorItems.ToList());
+            }
         }
 
         [RelayCommand]
@@ -80,6 +83,19 @@ namespace Jido.Components.Pages.Autoloot
             var color = new Color() { Name = "New", RGB = [255, 255, 255] };
             color.PropertyChanged += OnColorChanged;
             ColorItems.Add(color);
+            // Trigger color update ?
+        }
+
+        [RelayCommand]
+        private void DeleteColor(Color color)
+        {
+            color.PropertyChanged -= OnColorChanged;
+            ColorItems.Remove(color);
+            if (_autolootService is not null)
+            {
+                _autolootService.UpdateColors(ColorItems.ToList());
+            }
+            // Trigger color update ?
         }
     }
 }

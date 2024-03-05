@@ -1,9 +1,8 @@
 <Application x:Class="Jido.App" xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:i="https://github.com/projektanker/icons.avalonia"
-             xmlns:local="using:Jido"
              xmlns:converters="using:Jido.Converters"
-             RequestedThemeVariant="Light">
+             xmlns:i="https://github.com/projektanker/icons.avalonia"
+             xmlns:local="using:Jido" RequestedThemeVariant="Light">
     <!--  "Default" ThemeVariant follows system theme variant. "Dark" or "Light" are other available options.  -->
 
     <Application.DataTemplates>

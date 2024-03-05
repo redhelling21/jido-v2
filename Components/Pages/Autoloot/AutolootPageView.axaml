@@ -29,7 +29,7 @@
                         <StackPanel Orientation="Horizontal">
                             <ColorPicker Width="100" Margin="0,5,5,5" Color="{Binding RGB, Mode=TwoWay, Converter={StaticResource RGBToColorConverter}}" />
                             <TextBox Width="100" Margin="0,5,5,5" Text="{Binding Name, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" />
-                            <Button Content=" - " />
+                            <Button Command="{Binding $parent[ItemsControl].((vm:AutolootPageViewModel)DataContext).DeleteColorCommand}" CommandParameter="{Binding .}" Content=" - " />
                         </StackPanel>
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
