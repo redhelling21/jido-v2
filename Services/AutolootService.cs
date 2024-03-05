@@ -8,8 +8,8 @@ using Jido.Utils;
 using OpenCvSharp;
 using SharpHook;
 using SharpHook.Native;
-using Point = OpenCvSharp.Point;
 using Color = Jido.Models.Color;
+using Point = OpenCvSharp.Point;
 
 namespace Jido.Services
 {
@@ -60,6 +60,13 @@ namespace Jido.Services
                     }
                 );
             return task;
+        }
+
+        public void UpdateColors(List<Color> colors)
+        {
+            _colors = colors;
+            _config.Features.Autoloot.Colors = colors;
+            _config.Persist();
         }
 
         private void ToggleAutoloot(object? sender, EventArgs e)
@@ -157,7 +164,10 @@ namespace Jido.Services
     {
         public Task<KeyCode> ChangeToggleKey();
 
+        public void UpdateColors(List<Color> colors);
+
         public KeyCode ToggleKey { get; }
+
         public List<Color> Colors { get; }
     }
 }
