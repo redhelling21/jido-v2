@@ -60,7 +60,7 @@
         <Setter Property="Cursor" Value="Hand" />
     </Style>
     <Style Selector="Button:pointerover /template/ ContentPresenter">
-        <Setter Property="Background" Value="{DynamicResource Highlight600}" />
+        <Setter Property="Background" Value="{DynamicResource Highlight400}" />
         <Setter Property="Foreground" Value="White" />
         <Setter Property="Cursor" Value="Hand" />
     </Style>
@@ -72,9 +72,9 @@
 
     <Style Selector="ColorPicker DropDownButton">
         <Setter Property="Background" Value="{DynamicResource Highlight500}" />
-        <Setter Property="Foreground" Value="White" />
     </Style>
-    <Style Selector="ColorPicker:pointerover DropDownButton Border">
-        <Setter Property="Background" Value="{DynamicResource Highlight500}" />
+
+    <Style Selector="ColorPicker:pointerover DropDownButton Border#RootBorder">
+        <Setter Property="Background" Value="{DynamicResource Highlight400}" />
     </Style>
 </Styles>
