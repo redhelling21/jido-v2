@@ -97,6 +97,7 @@ public class ScreenConfig
 public class FeaturesConfig
 {
     public AutolootConfig Autoloot { get; set; } = new();
+    public AutopressConfig Autopress { get; set; } = new();
 }
 
 public class AutolootConfig
@@ -108,4 +109,9 @@ public class AutolootConfig
         {
             new Color() { Name = "Default", RGB = [253, 0, 253] }
         };
+}
+
+public class AutopressConfig
+{
+    public KeyCode ToggleKey { get; set; } = KeyCode.VcQ;
 }

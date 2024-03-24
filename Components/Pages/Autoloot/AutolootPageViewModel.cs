@@ -95,7 +95,6 @@ namespace Jido.Components.Pages.Autoloot
             {
                 _autolootService.UpdateColors(ColorItems.ToList());
             }
-            // Trigger color update ?
         }
     }
 }

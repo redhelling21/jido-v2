@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
     <TargetFramework>net8.0</TargetFramework>
@@ -46,6 +46,9 @@
     </Compile>
     <Compile Update="Components\Common\Sidebar\SidebarView.axaml.cs">
       <DependentUpon>SidebarView.axaml</DependentUpon>
+    </Compile>
+    <Compile Update="Components\Pages\Autopress\AutopressPageView.axaml.cs">
+      <DependentUpon>AutopressPageView.axaml</DependentUpon>
     </Compile>
   </ItemGroup>
 

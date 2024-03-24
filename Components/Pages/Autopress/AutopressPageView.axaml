@@ -1,0 +1,40 @@
+<UserControl x:Class="Jido.Components.Pages.Autopress.AutopressPageView"
+             xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:common="using:Jido.Components.Common"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="using:Jido.Components.Pages.Autopress" d:DesignHeight="450"
+             d:DesignWidth="800" x:CompileBindings="True"
+             x:DataType="vm:AutopressPageViewModel" mc:Ignorable="d">
+    <Design.DataContext>
+        <vm:AutopressPageViewModel />
+    </Design.DataContext>
+    <common:PageWithHeader Title="Autopress" Subtitle="Periodically presses keys">
+        <Grid ColumnDefinitions="*, 5, *">
+            <StackPanel Grid.Column="0" HorizontalAlignment="Left">
+                <TextBlock Margin="0,10,0,5" FontSize="16" FontWeight="Bold" Text="General" />
+                <Grid ColumnDefinitions="*, 5, 100, 5, *" RowDefinitions="Auto, 5, Auto">
+                    <TextBlock Grid.Row="0" Grid.Column="0" HorizontalAlignment="Right"
+                               VerticalAlignment="Center" Text="Toggle key" />
+                    <TextBox Grid.Row="0" Grid.Column="2" VerticalAlignment="Center" IsEnabled="False"
+                             Text="{Binding ToggleKey}" />
+                    <Button Grid.Row="0" Grid.Column="4" VerticalAlignment="Center"
+                            Command="{Binding ChangeKeyCommand}"
+                            Content="{Binding ChangeKeyButtonText}" />
+                </Grid>
+            </StackPanel>
+            <StackPanel Grid.Column="2" HorizontalAlignment="Left">
+                <ListBox>
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <Border Padding="4" BorderBrush="Blue" BorderThickness="1" CornerRadius="4">
+                                <TextBlock Text="TT" />
+                            </Border>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+            </StackPanel>
+        </Grid>
+    </common:PageWithHeader>
+</UserControl>
