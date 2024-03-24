@@ -17,6 +17,9 @@
                 <ComboBoxItem Content="Option 3" />
             </ComboBox>
 
+            <!--  Color picker  -->
+            <ColorPicker Margin="0,20,0,0" />
+
             <!--  CheckBox Control  -->
             <CheckBox Margin="0,20,0,0" Content="Check me" />
 
@@ -57,7 +60,7 @@
         <Setter Property="Cursor" Value="Hand" />
     </Style>
     <Style Selector="Button:pointerover /template/ ContentPresenter">
-        <Setter Property="Background" Value="{DynamicResource Highlight600}" />
+        <Setter Property="Background" Value="{DynamicResource Highlight400}" />
         <Setter Property="Foreground" Value="White" />
         <Setter Property="Cursor" Value="Hand" />
     </Style>
@@ -65,5 +68,13 @@
         <Setter Property="Background" Value="{DynamicResource Highlight700}" />
         <Setter Property="Foreground" Value="White" />
         <Setter Property="Cursor" Value="Hand" />
+    </Style>
+
+    <Style Selector="ColorPicker DropDownButton">
+        <Setter Property="Background" Value="{DynamicResource Highlight500}" />
+    </Style>
+
+    <Style Selector="ColorPicker:pointerover DropDownButton Border#RootBorder">
+        <Setter Property="Background" Value="{DynamicResource Highlight400}" />
     </Style>
 </Styles>

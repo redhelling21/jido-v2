@@ -14,17 +14,37 @@ namespace OpenCVSandbox.Tests
 
             // Set up the screen capture
             int counter = 0;
+            double averageTime = 0;
+            double totalMS = 0;
             Mat lastMask = null;
             while (true)
             {
                 counter++;
+                var watch = System.Diagnostics.Stopwatch.StartNew();
                 using (var screenImage = CaptureScreen())
                 {
-                    using Mat thresh = new Mat();
-                    Scalar lowerBound = new Scalar(253, 0, 253); // Adjusted lower bound
-                    Scalar upperBound = new Scalar(255, 20, 255); // Adjusted upper bound
-                    Cv2.InRange(screenImage, lowerBound, upperBound, thresh);
-                    if (lastMask != null)
+                    using Mat mask1 = new Mat();
+                    using Mat mask2 = new Mat();
+                    using Mat mask3 = new Mat();
+                    using Mat mask4 = new Mat();
+                    using Mat finalMask = new Mat();
+                    Scalar lowerBound1 = new Scalar(253, 0, 253); // Adjusted lower bound
+                    Scalar upperBound1 = new Scalar(255, 20, 255); // Adjusted upper bound
+                    Scalar lowerBound2 = new Scalar(50, 203, 253); // Adjusted lower bound
+                    Scalar upperBound2 = new Scalar(51, 205, 255); // Adjusted upper bound
+                    Scalar lowerBound3 = new Scalar(0, 203, 253); // Adjusted lower bound
+                    Scalar upperBound3 = new Scalar(2, 205, 255); // Adjusted upper bound
+                    Scalar lowerBound4 = new Scalar(150, 203, 253); // Adjusted lower bound
+                    Scalar upperBound4 = new Scalar(152, 205, 255); // Adjusted upper bound
+
+                    Cv2.InRange(screenImage, lowerBound1, upperBound1, mask1);
+                    Cv2.InRange(screenImage, lowerBound2, upperBound2, mask2);
+                    Cv2.InRange(screenImage, lowerBound3, upperBound3, mask3);
+                    Cv2.InRange(screenImage, lowerBound4, upperBound4, mask4);
+                    Cv2.BitwiseOr(mask1, mask2, finalMask);
+                    Cv2.BitwiseOr(finalMask, mask3, finalMask);
+                    Cv2.BitwiseOr(finalMask, mask4, finalMask);
+                    /*if (lastMask != null)
                     {
                         using Mat diff = new Mat();
                         Cv2.Absdiff(thresh, lastMask, diff);
@@ -38,11 +58,11 @@ namespace OpenCVSandbox.Tests
                             Console.WriteLine("CHANGED : " + count);
                         }
                     }
-                    lastMask = thresh.Clone();
+                    lastMask = thresh.Clone();*/
                     Point[][] contours;
                     HierarchyIndex[] hierarchy;
                     Cv2.FindContours(
-                        thresh,
+                        finalMask,
                         out contours,
                         out hierarchy,
                         RetrievalModes.List,
@@ -77,6 +97,10 @@ namespace OpenCVSandbox.Tests
                             2
                         );
                     }
+                    watch.Stop();
+                    totalMS += watch.ElapsedMilliseconds;
+                    averageTime = totalMS / counter;
+                    Console.WriteLine("Average time: " + averageTime);
                     Cv2.ImShow("ScreenCapture", screenImage);
                     // Wait for a key press for a short time (10ms)
                     int key = Cv2.WaitKey(10);

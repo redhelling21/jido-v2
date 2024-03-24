@@ -10,13 +10,9 @@
 
   <ItemGroup>
     <AvaloniaResource Include="Assets\**" />
-    <AvaloniaXaml Remove="Models\**" />
     <AvaloniaXaml Remove="OpenCVSandbox\**" />
-    <Compile Remove="Models\**" />
     <Compile Remove="OpenCVSandbox\**" />
-    <EmbeddedResource Remove="Models\**" />
     <EmbeddedResource Remove="OpenCVSandbox\**" />
-    <None Remove="Models\**" />
     <None Remove="OpenCVSandbox\**" />
     <Folder Include="Assets\Fonts\" />
     <Folder Include="Assets\Images\" />
@@ -24,23 +20,23 @@
 
 
   <ItemGroup>
-    <PackageReference Include="Avalonia" Version="11.0.6" />
-    <PackageReference Include="Avalonia.Desktop" Version="11.0.6" />
-    <PackageReference Include="Avalonia.Themes.Fluent" Version="11.0.6" />
-    <PackageReference Include="Avalonia.Fonts.Inter" Version="11.0.6" />
+    <PackageReference Include="Avalonia" Version="11.1.999-cibuild0045693-beta" />
+    <PackageReference Include="Avalonia.Desktop" Version="11.1.999-cibuild0045693-beta" />
+    <PackageReference Include="Avalonia.Themes.Fluent" Version="11.1.999-cibuild0045693-beta" />
+    <PackageReference Include="Avalonia.Fonts.Inter" Version="11.1.999-cibuild0045693-beta" />
     <!--Condition below is needed to remove Avalonia.Diagnostics package from build output in Release configuration.-->
-    <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" Version="11.0.6" />
-    <PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.1" />
+    <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" Version="11.0.10" />
+    <PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.2" />
     <PackageReference Include="Microsoft.Extensions.Configuration" Version="8.0.0" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="8.0.0" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="8.0.0" />
     <PackageReference Include="OpenCvSharp4" Version="4.9.0.20240103" />
     <PackageReference Include="OpenCvSharp4.Extensions" Version="4.9.0.20240103" />
     <PackageReference Include="OpenCvSharp4.runtime.win" Version="4.9.0.20240103" />
-    <PackageReference Include="Projektanker.Icons.Avalonia" Version="9.0.1" />
-    <PackageReference Include="Projektanker.Icons.Avalonia.FontAwesome" Version="9.0.1" />
-    <PackageReference Include="Projektanker.Icons.Avalonia.MaterialDesign" Version="9.0.1" />
-    <PackageReference Include="SharpHook" Version="5.2.3" />
+    <PackageReference Include="Projektanker.Icons.Avalonia" Version="9.1.1" />
+    <PackageReference Include="Projektanker.Icons.Avalonia.FontAwesome" Version="9.1.1" />
+    <PackageReference Include="Projektanker.Icons.Avalonia.MaterialDesign" Version="9.1.1" />
+    <PackageReference Include="SharpHook" Version="5.3.1" />
   </ItemGroup>
 
 
