@@ -160,13 +160,9 @@ namespace Jido.Services
         }
     }
 
-    public interface IAutolootService : IServiceWithStatus
+    public interface IAutolootService : IServiceWithStatus, IToggleableService
     {
-        public Task<KeyCode> ChangeToggleKey();
-
         public void UpdateColors(List<Color> colors);
-
-        public KeyCode ToggleKey { get; }
 
         public List<Color> Colors { get; }
     }

@@ -25,12 +25,21 @@
                 </Grid>
             </StackPanel>
             <StackPanel Grid.Column="2" HorizontalAlignment="Left">
-                <ListBox>
+                <ListBox ItemsSource="{Binding ScheduledCommands}">
+                    <ListBox.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <StackPanel Spacing="-18" />
+                        </ItemsPanelTemplate>
+                    </ListBox.ItemsPanel>
                     <ListBox.ItemTemplate>
                         <DataTemplate>
-                            <Border Padding="4" BorderBrush="Blue" BorderThickness="1" CornerRadius="4">
-                                <TextBlock Text="TT" />
-                            </Border>
+                            <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
+                                <TextBlock Margin="0,0,5,0" VerticalAlignment="Center" Text="Key" />
+                                <TextBox Width="50" Margin="0,0,5,0" Text="" />
+                                <TextBlock Margin="0,0,5,0" VerticalAlignment="Center" Text="Interval" />
+                                <TextBox Width="50" Margin="0,0,5,0" Text="{Binding IntervalInMs}" />
+                                <Button Padding="10,2,10,5" Content="x" />
+                            </StackPanel>
                         </DataTemplate>
                     </ListBox.ItemTemplate>
                 </ListBox>

@@ -21,17 +21,28 @@ namespace Jido.Components.Pages.Autopress
         [ObservableProperty]
         private string toggleKey;
 
-        public ObservableCollection<Color> ColorItems { get; } = new ObservableCollection<Color>();
+        public ObservableCollection<HighLevelCommand> ScheduledCommands { get; } =
+            new ObservableCollection<HighLevelCommand>();
+
+        public ObservableCollection<ConstantCommand> ConstantCommands { get; } =
+            new ObservableCollection<ConstantCommand>();
 
         public AutopressPageViewModel()
         {
             ChangeKeyButtonText = "Change";
-            ColorItems = new ObservableCollection<Color>(
-                new List<Color>()
+            ScheduledCommands = new ObservableCollection<HighLevelCommand>(
+                new List<HighLevelCommand>()
                 {
-                    new() { Name = "Red", RGB = [255, 0, 0] },
-                    new() { Name = "Green", RGB = [0, 255, 0] },
-                    new() { Name = "Blue", RGB = [0, 0, 255] },
+                    new(new PressCommand() { KeyToPress = SharpHook.Native.KeyCode.VcE }, 1000),
+                    new(new PressCommand() { KeyToPress = SharpHook.Native.KeyCode.VcR }, 2000),
+                    new(new PressCommand() { KeyToPress = SharpHook.Native.KeyCode.VcZ }, 4000)
+                }
+            );
+            ConstantCommands = new ObservableCollection<ConstantCommand>(
+                new List<ConstantCommand>()
+                {
+                    new() { KeyToPress = SharpHook.Native.KeyCode.VcY },
+                    new() { KeyToPress = SharpHook.Native.KeyCode.VcH },
                 }
             );
         }

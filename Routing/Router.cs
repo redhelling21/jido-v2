@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Jido.Components;
 using Jido.Components.Pages.Autoloot;
+using Jido.Components.Pages.Autopress;
 using Jido.Components.Pages.Home;
 
 namespace Jido.Routing
@@ -25,7 +26,8 @@ namespace Jido.Routing
             _routes = new Dictionary<string, System.Type>
             {
                 { "Home", typeof(HomePageViewModel) },
-                { "Autoloot", typeof(AutolootPageViewModel) }
+                { "Autoloot", typeof(AutolootPageViewModel) },
+                { "Autopress", typeof(AutopressPageViewModel) }
             };
         }
 

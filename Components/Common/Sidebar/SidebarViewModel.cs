@@ -19,6 +19,9 @@ namespace Jido.Components.Common.Sidebar
         [ObservableProperty]
         private ServiceStatus _autolootStatus = ServiceStatus.STOPPED;
 
+        [ObservableProperty]
+        private ServiceStatus _autopressStatus = ServiceStatus.STOPPED;
+
         [RelayCommand]
         public void NavigateTo(string path)
         {
@@ -30,10 +33,15 @@ namespace Jido.Components.Common.Sidebar
             Console.WriteLine("SidebarViewModel created");
         }
 
-        public SidebarViewModel(IAutolootService autolootService, Router<ViewModelBase> router)
+        public SidebarViewModel(
+            IAutolootService autolootService,
+            IAutopressService autopressService,
+            Router<ViewModelBase> router
+        )
         {
             _router = router;
             autolootService.StatusChanged += (sender, e) => AutolootStatus = e;
+            autopressService.StatusChanged += (sender, e) => AutopressStatus = e;
         }
     }
 }

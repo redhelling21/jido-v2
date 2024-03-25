@@ -114,4 +114,6 @@ public class AutolootConfig
 public class AutopressConfig
 {
     public KeyCode ToggleKey { get; set; } = KeyCode.VcQ;
+    public List<HighLevelCommand> ScheduledCommands { get; set; } = new();
+    public List<ConstantCommand> ConstantCommands { get; set; } = new();
 }

@@ -22,8 +22,13 @@
                 <sidebar:SidebarMenuItem Click="SetActiveState"
                                          Command="{Binding NavigateTo}"
                                          CommandParameter="{Binding $self.Path}"
-                                         Status="{Binding AutolootStatus}"
-                                         MenuIcon="fa fa-eye" MenuName="Autoloot" Path="Autoloot" />
+                                         MenuIcon="fa fa-eye" MenuName="Autoloot" Path="Autoloot"
+                                         Status="{Binding AutolootStatus}" />
+                <sidebar:SidebarMenuItem Click="SetActiveState"
+                                         Command="{Binding NavigateTo}"
+                                         CommandParameter="{Binding $self.Path}"
+                                         MenuIcon="fa fa-layer-group" MenuName="Autopress" Path="Autopress"
+                                         Status="{Binding AutopressStatus}" />
             </StackPanel>
         </Border>
     </Grid>

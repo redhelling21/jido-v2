@@ -7,6 +7,7 @@ using Avalonia.Markup.Xaml;
 using Jido.Components;
 using Jido.Components.Common.Sidebar;
 using Jido.Components.Pages.Autoloot;
+using Jido.Components.Pages.Autopress;
 using Jido.Components.Pages.Home;
 using Jido.Config;
 using Jido.Routing;
@@ -52,12 +53,14 @@ namespace Jido
             ));
             services.AddSingleton<IKeyHooksManager, KeyHooksManager>();
             services.AddSingleton<IAutolootService, AutolootService>();
+            services.AddSingleton<IAutopressService, AutopressService>();
 
-            //ViewModels
+            // ViewModels
             services.AddSingleton<MainWindowViewModel>();
             services.AddSingleton<SidebarViewModel>();
             services.AddTransient<HomePageViewModel>();
             services.AddTransient<AutolootPageViewModel>();
+            services.AddTransient<AutopressPageViewModel>();
             return services.BuildServiceProvider();
         }
     }

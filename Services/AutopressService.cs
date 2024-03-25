@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows.Input;
 using Jido.Config;
 using Jido.Models;
 using Jido.Utils;
@@ -22,14 +23,13 @@ namespace Jido.Services
         private CancellationTokenSource _cancellationTokenSource;
         private JidoConfig _config;
         private KeyCode _toggleKey;
-        private List<HighLevelCommand> _commands;
+        private List<HighLevelCommand> _scheduledCommands;
         private List<ConstantCommand> _constantCommands;
-        private ConcurrentQueue<LowLevelCommand> _queuedCommands;
+        private ConcurrentQueue<LowLevelCommand> _queuedCommands = new ConcurrentQueue<LowLevelCommand>();
 
-        public KeyCode ToggleKey
-        {
-            get => _toggleKey;
-        }
+        public KeyCode ToggleKey => _toggleKey;
+        public List<HighLevelCommand> ScheduledCommands => _scheduledCommands;
+        public List<ConstantCommand> ConstantCommands => _constantCommands;
 
         public ServiceStatus Status { get; set; } = ServiceStatus.STOPPED;
 
@@ -40,6 +40,8 @@ namespace Jido.Services
             _keyHooksManager = keyHooksManager;
             _config = config;
             _toggleKey = _config.Features.Autopress.ToggleKey;
+            _scheduledCommands = _config.Features.Autopress.ScheduledCommands;
+            _constantCommands = _config.Features.Autopress.ConstantCommands;
             _keyHooksManager.RegisterKey(_toggleKey, ToggleAutopress);
         }
 
@@ -67,17 +69,17 @@ namespace Jido.Services
             {
                 Status = ServiceStatus.IDLE;
                 _cancellationTokenSource = new CancellationTokenSource();
-                Task.Run(() => MainRoutine(_cancellationTokenSource.Token));
+                StartAutoPress();
             }
             else
             {
-                _cancellationTokenSource.Cancel();
+                StopAutoPress();
                 Status = ServiceStatus.STOPPED;
             }
             StatusChanged?.Invoke(this, Status);
         }
 
-        private async Task MainRoutine(CancellationToken cancellationToken)
+        private void StartAutoPress()
         {
             // Setup
             foreach (var command in _constantCommands)
@@ -85,13 +87,19 @@ namespace Jido.Services
                 _eventSimulator.SimulateKeyPress(command.KeyToPress);
             }
 
-            // Loops
-            while (!cancellationToken.IsCancellationRequested)
-            {
-                await Task.Delay(100);
-            }
+            // Start key press routine
+            _ = Task.Run(() => KeyPressRoutine(_cancellationTokenSource.Token));
 
-            // Teardown
+            foreach (var command in _scheduledCommands)
+            {
+                command.Start(_queuedCommands);
+            }
+        }
+
+        private void StopAutoPress()
+        {
+            _cancellationTokenSource.Cancel();
+
             foreach (var command in _constantCommands)
             {
                 _eventSimulator.SimulateKeyRelease(command.KeyToPress);
@@ -125,10 +133,9 @@ namespace Jido.Services
         }
     }
 
-    public interface IAutopressService : IServiceWithStatus
+    public interface IAutopressService : IServiceWithStatus, IToggleableService
     {
-        public Task<KeyCode> ChangeToggleKey();
-
-        public KeyCode ToggleKey { get; }
+        public List<HighLevelCommand> ScheduledCommands { get; }
+        public List<ConstantCommand> ConstantCommands { get; }
     }
 }
