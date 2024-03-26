@@ -5,6 +5,8 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:vm="using:Jido.Components.Pages.Autopress" d:DesignHeight="450"
+             xmlns:i="https://github.com/projektanker/icons.avalonia"
+             xmlns:commands="clr-namespace:Jido.Models"
              d:DesignWidth="800" x:CompileBindings="True"
              x:DataType="vm:AutopressPageViewModel" mc:Ignorable="d">
     <Design.DataContext>
@@ -25,23 +27,41 @@
                 </Grid>
             </StackPanel>
             <StackPanel Grid.Column="2" HorizontalAlignment="Left">
-                <ListBox ItemsSource="{Binding ScheduledCommands}">
-                    <ListBox.ItemsPanel>
-                        <ItemsPanelTemplate>
-                            <StackPanel Spacing="-18" />
-                        </ItemsPanelTemplate>
-                    </ListBox.ItemsPanel>
-                    <ListBox.ItemTemplate>
-                        <DataTemplate>
+                <ListBox ItemsSource="{Binding ScheduledCommands}" SelectionMode="Single">
+                    <ListBox.Styles>
+                        <Style Selector="ListBoxItem">
+                            <Setter Property="Padding" Value="10, 2, 10, 2" />
+                        </Style>
+                    </ListBox.Styles>
+                    <ListBox.DataTemplates>
+                        <DataTemplate DataType="{x:Type commands:BasicHighLevelCommand}">
                             <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
                                 <TextBlock Margin="0,0,5,0" VerticalAlignment="Center" Text="Key" />
-                                <TextBox Width="50" Margin="0,0,5,0" Text="" />
+                                <TextBox Width="50" Margin="0,0,5,0" Text="{Binding Command.KeyToPress}" />
                                 <TextBlock Margin="0,0,5,0" VerticalAlignment="Center" Text="Interval" />
                                 <TextBox Width="50" Margin="0,0,5,0" Text="{Binding IntervalInMs}" />
-                                <Button Padding="10,2,10,5" Content="x" />
+                                <Button Padding="5,3,5,3" Content="">
+                                    <i:Icon Value="fa fa-minus" />
+                                </Button>
                             </StackPanel>
                         </DataTemplate>
-                    </ListBox.ItemTemplate>
+                        <DataTemplate DataType="{x:Type commands:CompositeHighLevelCommand}">
+                            <StackPanel>
+                                <Grid ColumnDefinitions="Auto, *, Auto">
+                                    <TextBlock Grid.Column="0" Margin="0,0,5,0" VerticalAlignment="Center" Text="Group" />
+                                    <Button Grid.Column="2" Padding="5,3,5,3" Content="">
+                                        <i:Icon Value="fa fa-minus" />
+                                    </Button>
+                                </Grid>
+                                <TextBlock VerticalAlignment="Center" Text="Interval" />
+                                <TextBlock VerticalAlignment="Center" Text="Interval" />
+                                <TextBlock VerticalAlignment="Center" Text="Interval" />
+                                <TextBlock VerticalAlignment="Center" Text="Interval" />
+                                <TextBlock VerticalAlignment="Center" Text="Interval" />
+                                <TextBlock VerticalAlignment="Center" Text="Interval" />
+                            </StackPanel>
+                        </DataTemplate>
+                    </ListBox.DataTemplates>
                 </ListBox>
             </StackPanel>
         </Grid>

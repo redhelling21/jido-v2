@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Threading;
 using System.Timers;
 using SharpHook.Native;
 
@@ -23,43 +24,16 @@ namespace Jido.Models
     public class HighLevelCommand
     {
         public int IntervalInMs { get; set; }
-        public bool IsComposite => CommandGroup != null;
-        public LowLevelCommand? Command { get; set; }
-        public CommandGroup? CommandGroup { get; set; }
+        protected System.Timers.Timer Timer { get; set; }
+        protected ConcurrentQueue<LowLevelCommand> CommandQueue { get; set; }
 
-        private Timer Timer { get; set; }
-        private ConcurrentQueue<LowLevelCommand> CommandQueue { get; set; }
-
-        private void TimerCallback(Object? source, ElapsedEventArgs e)
-        {
-            if (CommandQueue == null)
-                return;
-            if (Command != null)
-            {
-                CommandQueue.Enqueue(Command);
-            }
-            else if (CommandGroup != null)
-            {
-                foreach (var command in CommandGroup.Commands)
-                {
-                    CommandQueue.Enqueue(command);
-                }
-            }
-            Random rnd = new Random();
-            Timer.Interval = IntervalInMs * rnd.Next(9, 11) / 10;
-        }
-
-        public HighLevelCommand(LowLevelCommand command, int interval)
+        public HighLevelCommand(int interval)
         {
             if (interval == 0)
             {
                 throw new ArgumentException("Interval cannot be 0");
             }
-            Command = command;
             IntervalInMs = interval;
-            Timer = new Timer(IntervalInMs);
-            Timer.Elapsed += TimerCallback;
-            Timer.AutoReset = true;
         }
 
         public void Start(ConcurrentQueue<LowLevelCommand> queue)
@@ -71,6 +45,54 @@ namespace Jido.Models
         public void Stop()
         {
             Timer.Stop();
+        }
+    }
+
+    public class CompositeHighLevelCommand : HighLevelCommand
+    {
+        public CommandGroup Command { get; set; }
+
+        private void TimerCallback(Object? source, ElapsedEventArgs e)
+        {
+            if (CommandQueue == null)
+                return;
+            foreach (var command in Command.Commands)
+            {
+                CommandQueue.Enqueue(command);
+            }
+            Random rnd = new Random();
+            Timer.Interval = IntervalInMs * rnd.Next(9, 11) / 10;
+        }
+
+        public CompositeHighLevelCommand(CommandGroup commandGroup, int interval) : base(interval)
+        {
+            Command = commandGroup;
+            Timer = new System.Timers.Timer(IntervalInMs);
+            Timer.Elapsed += TimerCallback;
+            Timer.AutoReset = true;
+        }
+    }
+
+    public class BasicHighLevelCommand : HighLevelCommand
+    {
+        public PressCommand Command { get; set; }
+
+        private void TimerCallback(Object? source, ElapsedEventArgs e)
+        {
+            if (CommandQueue == null)
+                return;
+            CommandQueue.Enqueue(Command);
+            Random rnd = new Random();
+            Timer.Interval = IntervalInMs * rnd.Next(9, 11) / 10;
+        }
+
+        public BasicHighLevelCommand(PressCommand command, int interval) : base(interval)
+        {
+            Command = command;
+
+            Timer = new System.Timers.Timer(IntervalInMs);
+            Timer.Elapsed += TimerCallback;
+            Timer.AutoReset = true;
         }
     }
 

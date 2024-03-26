@@ -33,9 +33,22 @@ namespace Jido.Components.Pages.Autopress
             ScheduledCommands = new ObservableCollection<HighLevelCommand>(
                 new List<HighLevelCommand>()
                 {
-                    new(new PressCommand() { KeyToPress = SharpHook.Native.KeyCode.VcE }, 1000),
-                    new(new PressCommand() { KeyToPress = SharpHook.Native.KeyCode.VcR }, 2000),
-                    new(new PressCommand() { KeyToPress = SharpHook.Native.KeyCode.VcZ }, 4000)
+                    new BasicHighLevelCommand(new PressCommand() { KeyToPress = SharpHook.Native.KeyCode.VcE }, 1000),
+                    new BasicHighLevelCommand(new PressCommand() { KeyToPress = SharpHook.Native.KeyCode.VcR }, 2000),
+                    new BasicHighLevelCommand(new PressCommand() { KeyToPress = SharpHook.Native.KeyCode.VcR }, 3000),
+                    new CompositeHighLevelCommand(new CommandGroup() {
+                        Commands = new List<LowLevelCommand>() {
+                            new PressCommand() { KeyToPress = SharpHook.Native.KeyCode.VcW },
+                            new WaitCommand() { WaitTimeInMs = 500 },
+                            new PressCommand() { KeyToPress = SharpHook.Native.KeyCode.VcO },
+                        }
+                    }, 1500),
+                    new CompositeHighLevelCommand(new CommandGroup() {
+                        Commands = new List<LowLevelCommand>() {
+                            new PressCommand() { KeyToPress = SharpHook.Native.KeyCode.VcT },
+                            new PressCommand() { KeyToPress = SharpHook.Native.KeyCode.VcB }
+                        }
+                    }, 2500)
                 }
             );
             ConstantCommands = new ObservableCollection<ConstantCommand>(
