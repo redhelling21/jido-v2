@@ -66,6 +66,34 @@ namespace Jido.Components.Pages.Autopress
             _autopressService.StatusChanged += OnAutopressStatusChange;
             ToggleKey = _autopressService.ToggleKey.ToString();
             ChangeKeyButtonText = "Change";
+            ScheduledCommands = new ObservableCollection<HighLevelCommand>(
+                new List<HighLevelCommand>()
+                {
+                    new BasicHighLevelCommand(new PressCommand() { KeyToPress = SharpHook.Native.KeyCode.VcE }, 1000),
+                    new BasicHighLevelCommand(new PressCommand() { KeyToPress = SharpHook.Native.KeyCode.VcR }, 2000),
+                    new BasicHighLevelCommand(new PressCommand() { KeyToPress = SharpHook.Native.KeyCode.VcR }, 3000),
+                    new CompositeHighLevelCommand(new CommandGroup() {
+                        Commands = new List<LowLevelCommand>() {
+                            new PressCommand() { KeyToPress = SharpHook.Native.KeyCode.VcW },
+                            new WaitCommand() { WaitTimeInMs = 500 },
+                            new PressCommand() { KeyToPress = SharpHook.Native.KeyCode.VcO },
+                        }
+                    }, 1500),
+                    new CompositeHighLevelCommand(new CommandGroup() {
+                        Commands = new List<LowLevelCommand>() {
+                            new PressCommand() { KeyToPress = SharpHook.Native.KeyCode.VcT },
+                            new PressCommand() { KeyToPress = SharpHook.Native.KeyCode.VcB }
+                        }
+                    }, 2500)
+                }
+            );
+            ConstantCommands = new ObservableCollection<ConstantCommand>(
+                new List<ConstantCommand>()
+                {
+                    new() { KeyToPress = SharpHook.Native.KeyCode.VcY },
+                    new() { KeyToPress = SharpHook.Native.KeyCode.VcH },
+                }
+            );
         }
 
         private void OnAutopressStatusChange(object? sender, ServiceStatus status)

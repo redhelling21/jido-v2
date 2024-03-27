@@ -13,8 +13,10 @@
         <vm:AutopressPageViewModel />
     </Design.DataContext>
     <common:PageWithHeader Title="Autopress" Subtitle="Periodically presses keys">
-        <Grid ColumnDefinitions="*, 5, *">
+        <Grid ColumnDefinitions="*, 1, *">
+            <!-- LEFT COLUMN -->
             <StackPanel Grid.Column="0" HorizontalAlignment="Left">
+                <!-- GENERAL -->
                 <TextBlock Margin="0,10,0,5" FontSize="16" FontWeight="Bold" Text="General" />
                 <Grid ColumnDefinitions="*, 5, 100, 5, *" RowDefinitions="Auto, 5, Auto">
                     <TextBlock Grid.Row="0" Grid.Column="0" HorizontalAlignment="Right"
@@ -24,41 +26,97 @@
                     <Button Grid.Row="0" Grid.Column="4" VerticalAlignment="Center"
                             Command="{Binding ChangeKeyCommand}"
                             Content="{Binding ChangeKeyButtonText}" />
+                    <TextBlock Grid.Row="2" Grid.Column="0" HorizontalAlignment="Right"
+                               VerticalAlignment="Center" Text="Click delay" />
+                    <TextBox Grid.Row="2" Grid.Column="2" VerticalAlignment="Center" IsEnabled="False"
+                             Text="" />
                 </Grid>
-            </StackPanel>
-            <StackPanel Grid.Column="2" HorizontalAlignment="Left">
-                <ListBox ItemsSource="{Binding ScheduledCommands}" SelectionMode="Single">
+                <!-- CONSTANT KEYPRESS -->
+                <TextBlock Margin="0,10,0,5" FontSize="16" FontWeight="Bold" Text="Constant keypress" />
+                <ListBox ItemsSource="{Binding ConstantCommands}" SelectionMode="Single" Background="White" BorderBrush="{DynamicResource Highlight100}" BorderThickness="1" Padding="10">
                     <ListBox.Styles>
                         <Style Selector="ListBoxItem">
-                            <Setter Property="Padding" Value="10, 2, 10, 2" />
+                            <Setter Property="Padding" Value="10, 3, 10, 3" />
+                        </Style>
+                    </ListBox.Styles>
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <Grid ColumnDefinitions="Auto, *, Auto">
+                                <StackPanel Grid.Column="0" Orientation="Horizontal">
+                                    <TextBlock Margin="0,0,5,0" VerticalAlignment="Center" Text="Interval" />
+                                    <TextBox Width="50" Margin="0,0,5,0" Text="{Binding KeyToPress}" />
+                                </StackPanel>
+                                <Button Grid.Column="2" Padding="5,3,5,3" Content="">
+                                    <i:Icon Value="fa fa-minus" />
+                                </Button>
+                            </Grid>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+            </StackPanel>
+            <Border Grid.Column="1" Width="1" Margin="20, 0, 20, 10" Background="{DynamicResource Highlight100}"></Border>
+            <!-- RIGHT COLUMN -->
+            <StackPanel Grid.Column="2" HorizontalAlignment="Left">
+                <TextBlock Margin="0,10,0,5" FontSize="16" FontWeight="Bold" Text="Scheduled keypress" />
+                <ListBox ItemsSource="{Binding ScheduledCommands}" SelectionMode="Single" Background="White" BorderBrush="{DynamicResource Highlight100}" BorderThickness="1" Padding="10">
+                    <ListBox.Styles>
+                        <Style Selector="ListBoxItem">
+                            <Setter Property="Padding" Value="10, 3, 10, 3" />
+                        </Style>
+                        <Style Selector="ListBoxItem:nth-child(odd)">
+                            <Setter Property="Background" Value="{DynamicResource Highlight50}" />
                         </Style>
                     </ListBox.Styles>
                     <ListBox.DataTemplates>
+                        <!-- BASIC COMMANDS -->
                         <DataTemplate DataType="{x:Type commands:BasicHighLevelCommand}">
                             <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
                                 <TextBlock Margin="0,0,5,0" VerticalAlignment="Center" Text="Key" />
                                 <TextBox Width="50" Margin="0,0,5,0" Text="{Binding Command.KeyToPress}" />
                                 <TextBlock Margin="0,0,5,0" VerticalAlignment="Center" Text="Interval" />
                                 <TextBox Width="50" Margin="0,0,5,0" Text="{Binding IntervalInMs}" />
-                                <Button Padding="5,3,5,3" Content="">
-                                    <i:Icon Value="fa fa-minus" />
-                                </Button>
                             </StackPanel>
                         </DataTemplate>
+                        <!-- COMPOSITE COMMANDS -->
                         <DataTemplate DataType="{x:Type commands:CompositeHighLevelCommand}">
                             <StackPanel>
                                 <Grid ColumnDefinitions="Auto, *, Auto">
                                     <TextBlock Grid.Column="0" Margin="0,0,5,0" VerticalAlignment="Center" Text="Group" />
-                                    <Button Grid.Column="2" Padding="5,3,5,3" Content="">
-                                        <i:Icon Value="fa fa-minus" />
-                                    </Button>
+                                    <StackPanel Grid.Column="2" Orientation="Horizontal">
+                                        <TextBlock Margin="0,0,5,0" VerticalAlignment="Center" Text="Interval" />
+                                        <TextBox Width="50" Margin="0,0,5,0" Text="{Binding IntervalInMs}" />
+                                        <Button Padding="5,3,5,3" Content="">
+                                            <i:Icon Value="fa fa-minus" />
+                                        </Button>
+                                    </StackPanel>
                                 </Grid>
-                                <TextBlock VerticalAlignment="Center" Text="Interval" />
-                                <TextBlock VerticalAlignment="Center" Text="Interval" />
-                                <TextBlock VerticalAlignment="Center" Text="Interval" />
-                                <TextBlock VerticalAlignment="Center" Text="Interval" />
-                                <TextBlock VerticalAlignment="Center" Text="Interval" />
-                                <TextBlock VerticalAlignment="Center" Text="Interval" />
+                                <Grid ColumnDefinitions="Auto, *">
+                                    <Border Grid.Column="0" Width="1" Margin="5, 0, 10, 0" Background="{DynamicResource Highlight300}"></Border>
+                                    <ItemsControl Grid.Column="1" ItemsSource="{Binding Command.Commands}" Margin="0, 5, 0, 0">
+                                        <ItemsControl.DataTemplates>
+                                            <!-- PRESS -->
+                                            <DataTemplate DataType="{x:Type commands:PressCommand}">
+                                                <StackPanel HorizontalAlignment="Left" Orientation="Horizontal">
+                                                    <TextBlock  Width="40" Margin="0,0,5,0" VerticalAlignment="Center" Text="Press" />
+                                                    <TextBox Width="50" Margin="0,0,5,0" Text="{Binding KeyToPress}" />
+                                                    <Button Padding="5,3,5,3" Content="">
+                                                        <i:Icon Value="fa fa-minus" />
+                                                    </Button>
+                                                </StackPanel>
+                                            </DataTemplate>
+                                            <!-- WAIT -->
+                                            <DataTemplate DataType="{x:Type commands:WaitCommand}">
+                                                <StackPanel HorizontalAlignment="Left" Orientation="Horizontal">
+                                                    <TextBlock  Width="40" Margin="0,0,5,0" VerticalAlignment="Center" Text="Wait" />
+                                                    <TextBox Width="50" Margin="0,0,5,0" Text="{Binding WaitTimeInMs}" />
+                                                    <Button Padding="5,3,5,3" Content="">
+                                                        <i:Icon Value="fa fa-minus" />
+                                                    </Button>
+                                                </StackPanel>
+                                            </DataTemplate>
+                                        </ItemsControl.DataTemplates>
+                                    </ItemsControl>
+                                </Grid>
                             </StackPanel>
                         </DataTemplate>
                     </ListBox.DataTemplates>
