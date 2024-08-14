@@ -94,16 +94,39 @@ namespace Jido.Components.Pages.Autopress
                             }
                         },
                         2500
+                    ),
+                    new CompositeHighLevelCommand(
+                        new CommandGroup()
+                        {
+                            Commands = new List<LowLevelCommand>()
+                            {
+                                new PressCommand() { KeyToPress = SharpHook.Native.KeyCode.VcT },
+                                new PressCommand() { KeyToPress = SharpHook.Native.KeyCode.VcB }
+                            }
+                        },
+                        2500
+                    ),
+                    new CompositeHighLevelCommand(
+                        new CommandGroup()
+                        {
+                            Commands = new List<LowLevelCommand>()
+                            {
+                                new PressCommand() { KeyToPress = SharpHook.Native.KeyCode.VcT },
+                                new PressCommand() { KeyToPress = SharpHook.Native.KeyCode.VcB }
+                            }
+                        },
+                        2500
                     )
                 }
             );
-            ConstantCommands = new ObservableCollection<ConstantCommand>(
+            /*ConstantCommands = new ObservableCollection<ConstantCommand>(
                 new List<ConstantCommand>()
                 {
                     new() { KeyToPress = SharpHook.Native.KeyCode.VcY },
                     new() { KeyToPress = SharpHook.Native.KeyCode.VcH },
                 }
-            );
+            );*/
+            ConstantCommands = new ObservableCollection<ConstantCommand>();
         }
 
         private void OnAutopressStatusChange(object? sender, ServiceStatus status)
@@ -130,6 +153,42 @@ namespace Jido.Components.Pages.Autopress
         private void AddConstantCommand()
         {
             var command = new ConstantCommand();
+            ConstantCommands.Add(command);
+        }
+
+        [RelayCommand]
+        private void RemoveConstantCommand(ConstantCommand command)
+        {
+            ConstantCommands.Remove(command);
+        }
+
+        [RelayCommand]
+        private void AddBasicHighLevelCommand()
+        {
+            var command = new BasicHighLevelCommand(new PressCommand() { KeyToPress = SharpHook.Native.KeyCode.VcUndefined }, 1000);
+            ScheduledCommands.Add(command);
+        }
+
+        [RelayCommand]
+        private void AddCompositeHighLevelCommand()
+        {
+            var command = new CompositeHighLevelCommand(
+                        new CommandGroup()
+                        {
+                            Commands = new List<LowLevelCommand>()
+                            {
+                                new PressCommand() { KeyToPress = SharpHook.Native.KeyCode.VcUndefined },
+                            }
+                        },
+                        1000
+                    );
+            ScheduledCommands.Add(command);
+        }
+
+        [RelayCommand]
+        private void RemoveHighLevelCommand(HighLevelCommand command)
+        {
+            ScheduledCommands.Remove(command);
         }
     }
 }
