@@ -21,6 +21,9 @@ namespace Jido.Components.Pages.Autopress
         [ObservableProperty]
         private string toggleKey;
 
+        [ObservableProperty]
+        private int clickDelay;
+
         public ObservableCollection<HighLevelCommand> ScheduledCommands { get; } =
             new ObservableCollection<HighLevelCommand>();
 
@@ -30,42 +33,7 @@ namespace Jido.Components.Pages.Autopress
         public AutopressPageViewModel()
         {
             ChangeKeyButtonText = "Change";
-            /*ScheduledCommands = new ObservableCollection<HighLevelCommand>(
-                new List<HighLevelCommand>()
-                {
-                    new BasicHighLevelCommand(new PressCommand() { KeyToPress = SharpHook.Native.KeyCode.VcE }, 1000),
-                    new BasicHighLevelCommand(new PressCommand() { KeyToPress = SharpHook.Native.KeyCode.VcR }, 2000),
-                    new BasicHighLevelCommand(new PressCommand() { KeyToPress = SharpHook.Native.KeyCode.VcR }, 3000),
-                    new CompositeHighLevelCommand(new CommandGroup() {
-                        Commands = new List<LowLevelCommand>() {
-                            new PressCommand() { KeyToPress = SharpHook.Native.KeyCode.VcW },
-                            new WaitCommand() { WaitTimeInMs = 500 },
-                            new PressCommand() { KeyToPress = SharpHook.Native.KeyCode.VcO },
-                        }
-                    }, 1500),
-                    new CompositeHighLevelCommand(new CommandGroup() {
-                        Commands = new List<LowLevelCommand>() {
-                            new PressCommand() { KeyToPress = SharpHook.Native.KeyCode.VcT },
-                            new PressCommand() { KeyToPress = SharpHook.Native.KeyCode.VcB }
-                        }
-                    }, 2500)
-                }
-            );
-            ConstantCommands = new ObservableCollection<ConstantCommand>(
-                new List<ConstantCommand>()
-                {
-                    new() { KeyToPress = SharpHook.Native.KeyCode.VcY },
-                    new() { KeyToPress = SharpHook.Native.KeyCode.VcH },
-                }
-            );*/
-        }
-
-        public AutopressPageViewModel(IAutopressService autopressService)
-        {
-            _autopressService = autopressService;
-            _autopressService.StatusChanged += OnAutopressStatusChange;
-            ToggleKey = _autopressService.ToggleKey.ToString();
-            ChangeKeyButtonText = "Change";
+            // Placeholder for design purpose
             ScheduledCommands = new ObservableCollection<HighLevelCommand>(
                 new List<HighLevelCommand>()
                 {
@@ -94,43 +62,39 @@ namespace Jido.Components.Pages.Autopress
                             }
                         },
                         2500
-                    ),
-                    new CompositeHighLevelCommand(
-                        new CommandGroup()
-                        {
-                            Commands = new List<LowLevelCommand>()
-                            {
-                                new PressCommand() { KeyToPress = SharpHook.Native.KeyCode.VcT },
-                                new PressCommand() { KeyToPress = SharpHook.Native.KeyCode.VcB }
-                            }
-                        },
-                        2500
-                    ),
-                    new CompositeHighLevelCommand(
-                        new CommandGroup()
-                        {
-                            Commands = new List<LowLevelCommand>()
-                            {
-                                new PressCommand() { KeyToPress = SharpHook.Native.KeyCode.VcT },
-                                new PressCommand() { KeyToPress = SharpHook.Native.KeyCode.VcB }
-                            }
-                        },
-                        2500
                     )
                 }
             );
-            /*ConstantCommands = new ObservableCollection<ConstantCommand>(
+            ConstantCommands = new ObservableCollection<ConstantCommand>(
                 new List<ConstantCommand>()
                 {
                     new() { KeyToPress = SharpHook.Native.KeyCode.VcY },
                     new() { KeyToPress = SharpHook.Native.KeyCode.VcH },
                 }
-            );*/
+            );
+        }
+
+        public AutopressPageViewModel(IAutopressService autopressService)
+        {
+            _autopressService = autopressService;
+            _autopressService.StatusChanged += OnAutopressStatusChange;
+            ToggleKey = _autopressService.ToggleKey.ToString();
+            ChangeKeyButtonText = "Change";
             ConstantCommands = new ObservableCollection<ConstantCommand>();
         }
 
         private void OnAutopressStatusChange(object? sender, ServiceStatus status)
         { }
+
+        private void OnClickDelayChanged(object? sender, EventArgs e)
+        {
+            if (_autopressService is not null)
+            {
+                _autopressService.UpdateClickDelay(ClickDelay);
+            }
+        }
+
+        #region commands
 
         [RelayCommand]
         private void ChangeKey()
@@ -165,7 +129,10 @@ namespace Jido.Components.Pages.Autopress
         [RelayCommand]
         private void AddBasicHighLevelCommand()
         {
-            var command = new BasicHighLevelCommand(new PressCommand() { KeyToPress = SharpHook.Native.KeyCode.VcUndefined }, 1000);
+            var command = new BasicHighLevelCommand(
+                new PressCommand() { KeyToPress = SharpHook.Native.KeyCode.VcUndefined },
+                1000
+            );
             ScheduledCommands.Add(command);
         }
 
@@ -173,15 +140,15 @@ namespace Jido.Components.Pages.Autopress
         private void AddCompositeHighLevelCommand()
         {
             var command = new CompositeHighLevelCommand(
-                        new CommandGroup()
-                        {
-                            Commands = new List<LowLevelCommand>()
-                            {
-                                new PressCommand() { KeyToPress = SharpHook.Native.KeyCode.VcUndefined },
-                            }
-                        },
-                        1000
-                    );
+                new CommandGroup()
+                {
+                    Commands = new List<LowLevelCommand>()
+                    {
+                        new PressCommand() { KeyToPress = SharpHook.Native.KeyCode.VcUndefined },
+                    }
+                },
+                1000
+            );
             ScheduledCommands.Add(command);
         }
 
@@ -190,5 +157,45 @@ namespace Jido.Components.Pages.Autopress
         {
             ScheduledCommands.Remove(command);
         }
+
+        [RelayCommand]
+        private void MoveUpHighLevelCommand(HighLevelCommand command)
+        {
+            var index = ScheduledCommands.IndexOf(command);
+            if (index > 0)
+            {
+                ScheduledCommands.Move(index, index - 1);
+            }
+        }
+
+        [RelayCommand]
+        private void MoveDownHighLevelCommand(HighLevelCommand command)
+        {
+            var index = ScheduledCommands.IndexOf(command);
+            if (index < ScheduledCommands.Count - 1)
+            {
+                ScheduledCommands.Move(index, index + 1);
+            }
+        }
+
+        [RelayCommand]
+        private void SaveHighLevelCommands()
+        {
+            if (_autopressService is not null)
+            {
+                _autopressService.UpdateScheduledCommands(ScheduledCommands.ToList());
+            }
+        }
+
+        [RelayCommand]
+        private void SaveConstantCommands()
+        {
+            if (_autopressService is not null)
+            {
+                _autopressService.UpdateConstantCommands(ConstantCommands.ToList());
+            }
+        }
+
+        #endregion commands
     }
 }

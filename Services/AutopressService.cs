@@ -5,6 +5,7 @@ using System.Drawing;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using Avalonia.Media;
 using Jido.Config;
 using Jido.Models;
 using Jido.Utils;
@@ -25,11 +26,13 @@ namespace Jido.Services
         private KeyCode _toggleKey;
         private List<HighLevelCommand> _scheduledCommands;
         private List<ConstantCommand> _constantCommands;
+        private int _clickDelay;
         private ConcurrentQueue<LowLevelCommand> _queuedCommands = new ConcurrentQueue<LowLevelCommand>();
 
         public KeyCode ToggleKey => _toggleKey;
         public List<HighLevelCommand> ScheduledCommands => _scheduledCommands;
         public List<ConstantCommand> ConstantCommands => _constantCommands;
+        public int ClickDelay => _clickDelay;
 
         public ServiceStatus Status { get; set; } = ServiceStatus.STOPPED;
 
@@ -61,6 +64,27 @@ namespace Jido.Services
                     }
                 );
             return task;
+        }
+
+        public void UpdateScheduledCommands(List<HighLevelCommand> commands)
+        {
+            _scheduledCommands = commands;
+            _config.Features.Autopress.ScheduledCommands = commands;
+            _config.Persist();
+        }
+
+        public void UpdateConstantCommands(List<ConstantCommand> commands)
+        {
+            _constantCommands = commands;
+            _config.Features.Autopress.ConstantCommands = commands;
+            _config.Persist();
+        }
+
+        public void UpdateClickDelay(int delay)
+        {
+            _clickDelay = delay;
+            _config.Features.Autopress.ClickDelay = delay;
+            _config.Persist();
         }
 
         private void ToggleAutopress(object? sender, EventArgs e)
@@ -137,5 +161,11 @@ namespace Jido.Services
     {
         public List<HighLevelCommand> ScheduledCommands { get; }
         public List<ConstantCommand> ConstantCommands { get; }
+
+        public void UpdateScheduledCommands(List<HighLevelCommand> commands);
+
+        public void UpdateConstantCommands(List<ConstantCommand> commands);
+
+        public void UpdateClickDelay(int delay);
     }
 }
