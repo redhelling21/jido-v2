@@ -77,6 +77,9 @@
                     <Button Command="{Binding AddConstantCommandCommand}">
                         <i:Icon Value="fa fa-plus" />
                     </Button>
+                    <Button Command="{Binding SaveConstantCommandsCommand}>">
+                        <i:Icon Value="fa fa-floppy-disk" />
+                    </Button>
                 </StackPanel>
             </StackPanel>
             <Border Grid.Column="1" Width="1" Margin="20,0,20,10"
@@ -172,7 +175,7 @@
                     <Button Command="{Binding AddCompositeHighLevelCommandCommand}>">
                         <i:Icon Value="fa fa-folder-plus" />
                     </Button>
-                    <Button Command="{Binding AddCompositeHighLevelCommandCommand}>">
+                    <Button Command="{Binding SaveHighLevelCommandsCommand}>">
                         <i:Icon Value="fa fa-floppy-disk" />
                     </Button>
                 </StackPanel>

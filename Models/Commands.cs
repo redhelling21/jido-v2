@@ -1,12 +1,15 @@
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Text.Json.Serialization;
 using System.Threading;
 using System.Timers;
 using SharpHook.Native;
 
 namespace Jido.Models
 {
+    [JsonDerivedType(typeof(PressCommand), typeDiscriminator: "press")]
+    [JsonDerivedType(typeof(WaitCommand), typeDiscriminator: "wait")]
     public abstract class LowLevelCommand
     { }
 
@@ -21,19 +24,22 @@ namespace Jido.Models
         public int WaitTimeInMs { get; set; }
     }
 
+    [JsonDerivedType(typeof(HighLevelCommand), typeDiscriminator: "base")]
+    [JsonDerivedType(typeof(CompositeHighLevelCommand), typeDiscriminator: "composite")]
+    [JsonDerivedType(typeof(BasicHighLevelCommand), typeDiscriminator: "basic")]
     public class HighLevelCommand
     {
         public int IntervalInMs { get; set; }
-        protected System.Timers.Timer Timer { get; set; }
-        protected ConcurrentQueue<LowLevelCommand> CommandQueue { get; set; }
+        protected System.Timers.Timer Timer { get; set; } = new System.Timers.Timer();
+        protected ConcurrentQueue<LowLevelCommand> CommandQueue { get; set; } = new ConcurrentQueue<LowLevelCommand>();
 
-        public HighLevelCommand(int interval)
+        public HighLevelCommand(int intervalInMs)
         {
-            if (interval == 0)
+            if (intervalInMs == 0)
             {
                 throw new ArgumentException("Interval cannot be 0");
             }
-            IntervalInMs = interval;
+            IntervalInMs = intervalInMs;
         }
 
         public void Start(ConcurrentQueue<LowLevelCommand> queue)
@@ -64,9 +70,9 @@ namespace Jido.Models
             Timer.Interval = IntervalInMs * rnd.Next(9, 11) / 10;
         }
 
-        public CompositeHighLevelCommand(CommandGroup commandGroup, int interval) : base(interval)
+        public CompositeHighLevelCommand(CommandGroup command, int intervalInMs) : base(intervalInMs)
         {
-            Command = commandGroup;
+            Command = command;
             Timer = new System.Timers.Timer(IntervalInMs);
             Timer.Elapsed += TimerCallback;
             Timer.AutoReset = true;
@@ -86,7 +92,7 @@ namespace Jido.Models
             Timer.Interval = IntervalInMs * rnd.Next(9, 11) / 10;
         }
 
-        public BasicHighLevelCommand(PressCommand command, int interval) : base(interval)
+        public BasicHighLevelCommand(PressCommand command, int intervalInMs) : base(intervalInMs)
         {
             Command = command;
 
@@ -98,7 +104,7 @@ namespace Jido.Models
 
     public class CommandGroup
     {
-        public List<LowLevelCommand> Commands { get; set; }
+        public List<LowLevelCommand> Commands { get; set; } = new List<LowLevelCommand>();
     }
 
     public class ConstantCommand

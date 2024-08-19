@@ -86,11 +86,11 @@ namespace Jido.Components.Pages.Autopress
         private void OnAutopressStatusChange(object? sender, ServiceStatus status)
         { }
 
-        private void OnClickDelayChanged(object? sender, EventArgs e)
+        partial void OnClickDelayChanged(int value)
         {
             if (_autopressService is not null)
             {
-                _autopressService.UpdateClickDelay(ClickDelay);
+                _autopressService.UpdateClickDelay(value);
             }
         }
 
@@ -150,6 +150,24 @@ namespace Jido.Components.Pages.Autopress
                 1000
             );
             ScheduledCommands.Add(command);
+        }
+
+        [RelayCommand]
+        private void AddLowLevelCommandToComposite(CompositeHighLevelCommand command)
+        {
+        }
+
+        [RelayCommand]
+        private void RemoveLowLevelCommandFromComposite(LowLevelCommand command)
+        {
+            var parent = ScheduledCommands.Where(c =>
+            {
+                return c is CompositeHighLevelCommand && ((CompositeHighLevelCommand)c).Command.Commands.Contains(command);
+            }).FirstOrDefault();
+            if (parent != null)
+            {
+                ((CompositeHighLevelCommand)parent).Command.Commands.Remove(command);
+            }
         }
 
         [RelayCommand]
