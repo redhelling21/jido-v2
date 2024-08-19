@@ -33,7 +33,7 @@
         </Style>
     </UserControl.Styles>
     <common:PageWithHeader Title="Autopress" Subtitle="Periodically presses keys">
-        <Grid ColumnDefinitions="*, 1, *">
+        <Grid ColumnDefinitions="2*, 1, 3*">
             <!--  LEFT COLUMN  -->
             <StackPanel Grid.Column="0" HorizontalAlignment="Left">
                 <!--  GENERAL  -->
@@ -85,7 +85,7 @@
             <Border Grid.Column="1" Width="1" Margin="20,0,20,10"
                     Background="{DynamicResource Highlight100}" />
             <!--  RIGHT COLUMN  -->
-            <Grid Grid.Column="2" HorizontalAlignment="Left" RowDefinitions="20, *, 50">
+            <Grid Grid.Column="2" RowDefinitions="Auto, *, 5, Auto, 5" ColumnDefinitions="*">
                 <TextBlock Grid.Row="0" FontSize="16" FontWeight="Bold" Text="Scheduled keypress" />
                 <Border Grid.Row="1">
                     <ScrollViewer>
@@ -96,30 +96,38 @@
                             <ItemsControl.DataTemplates>
                                 <!--  BASIC COMMANDS  -->
                                 <DataTemplate DataType="{x:Type commands:BasicHighLevelCommand}">
-                                    <StackPanel HorizontalAlignment="Center" Classes="CommandContainer" Orientation="Horizontal">
-                                        <TextBlock Margin="0,0,5,0" VerticalAlignment="Center" Text="Key" />
-                                        <TextBox Width="50" Margin="0,0,5,0" Text="{Binding Command.KeyToPress, UpdateSourceTrigger=LostFocus}" />
-                                        <TextBlock Margin="0,0,5,0" VerticalAlignment="Center" Text="Interval" />
-                                        <TextBox Width="50" Margin="0,0,5,0" Text="{Binding IntervalInMs}" />
-                                        <Button Command="{Binding $parent[ItemsControl].((vm:AutopressPageViewModel)DataContext).RemoveHighLevelCommandCommand}" CommandParameter="{Binding .}">
-                                            <i:Icon Value="fa fa-minus" />
-                                        </Button>
-                                        <Button Command="{Binding $parent[ItemsControl].((vm:AutopressPageViewModel)DataContext).MoveUpHighLevelCommandCommand}" CommandParameter="{Binding .}">
-                                            <i:Icon Value="fa fa-chevron-up" />
-                                        </Button>
-                                        <Button Command="{Binding $parent[ItemsControl].((vm:AutopressPageViewModel)DataContext).MoveDownHighLevelCommandCommand}" CommandParameter="{Binding .}">
-                                            <i:Icon Value="fa fa-chevron-down" />
-                                        </Button>
+                                    <StackPanel Classes="CommandContainer">
+                                        <Grid ColumnDefinitions="Auto, *, Auto">
+                                            <StackPanel Grid.Column="0" Orientation="Horizontal">
+                                                <TextBlock Margin="0,0,5,0" VerticalAlignment="Center" Text="Key" />
+                                                <TextBox Width="50" Margin="0,0,5,0" Text="{Binding Command.KeyToPress, UpdateSourceTrigger=LostFocus}" />
+                                            </StackPanel>
+                                            <StackPanel Grid.Column="2" Orientation="Horizontal">
+                                                <TextBlock Margin="0,0,5,0" VerticalAlignment="Center" Text="Interval" />
+                                                <TextBox Width="50" Margin="0,0,5,0" Text="{Binding IntervalInMs}" />
+                                                <Button Command="{Binding $parent[ItemsControl].((vm:AutopressPageViewModel)DataContext).RemoveHighLevelCommandCommand}" CommandParameter="{Binding .}">
+                                                    <i:Icon Value="fa fa-minus" />
+                                                </Button>
+                                                <Button Command="{Binding $parent[ItemsControl].((vm:AutopressPageViewModel)DataContext).MoveUpHighLevelCommandCommand}" CommandParameter="{Binding .}">
+                                                    <i:Icon Value="fa fa-chevron-up" />
+                                                </Button>
+                                                <Button Command="{Binding $parent[ItemsControl].((vm:AutopressPageViewModel)DataContext).MoveDownHighLevelCommandCommand}" CommandParameter="{Binding .}">
+                                                    <i:Icon Value="fa fa-chevron-down" />
+                                                </Button>
+                                            </StackPanel>
+                                        </Grid>
                                     </StackPanel>
                                 </DataTemplate>
                                 <!--  COMPOSITE COMMANDS  -->
                                 <DataTemplate DataType="{x:Type commands:CompositeHighLevelCommand}">
                                     <StackPanel Classes="CommandContainer">
                                         <Grid ColumnDefinitions="Auto, *, Auto">
-                                            <TextBlock Grid.Column="0" Margin="0,0,5,0" VerticalAlignment="Center" Text="Group" />
-                                            <Button Grid.Column="1">
-                                                <i:Icon Value="fa fa-plus" />
-                                            </Button>
+                                            <StackPanel Orientation="Horizontal">
+                                                <TextBlock Margin="0,0,5,0" VerticalAlignment="Center" Text="Group" />
+                                                <Button>
+                                                    <i:Icon Value="fa fa-plus" />
+                                                </Button>
+                                            </StackPanel>
                                             <StackPanel Grid.Column="2" Orientation="Horizontal">
                                                 <TextBlock Margin="0,0,5,0" VerticalAlignment="Center" Text="Interval" />
                                                 <TextBox Width="50" Margin="0,0,5,0" Text="{Binding IntervalInMs}" />
@@ -168,7 +176,7 @@
                         </ItemsControl>
                     </ScrollViewer>
                 </Border>
-                <StackPanel Grid.Row="2" Orientation="Horizontal">
+                <StackPanel Grid.Row="3" Orientation="Horizontal">
                     <Button Command="{Binding AddBasicHighLevelCommandCommand}">
                         <i:Icon Value="fa fa-plus" />
                     </Button>
