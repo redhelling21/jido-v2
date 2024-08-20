@@ -12,6 +12,7 @@ using Jido.Utils;
 using OpenCvSharp;
 using SharpHook;
 using SharpHook.Native;
+using static Jido.Models.CompositeHighLevelCommand;
 using Color = Jido.Models.Color;
 using Point = OpenCvSharp.Point;
 

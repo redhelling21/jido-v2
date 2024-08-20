@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using Jido.Models;
 using OpenCvSharp;
 using SharpHook.Native;
+using static Jido.Models.CompositeHighLevelCommand;
 
 namespace Jido.Config;
 

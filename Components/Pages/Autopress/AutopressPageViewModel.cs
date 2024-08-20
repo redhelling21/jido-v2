@@ -8,6 +8,7 @@ using CommunityToolkit.Mvvm.Input;
 using Jido.Models;
 using Jido.Services;
 using Jido.Utils;
+using static Jido.Models.CompositeHighLevelCommand;
 
 namespace Jido.Components.Pages.Autopress
 {
@@ -41,26 +42,20 @@ namespace Jido.Components.Pages.Autopress
                     new BasicHighLevelCommand(new PressCommand() { KeyToPress = SharpHook.Native.KeyCode.VcR }, 2000),
                     new BasicHighLevelCommand(new PressCommand() { KeyToPress = SharpHook.Native.KeyCode.VcR }, 3000),
                     new CompositeHighLevelCommand(
-                        new CommandGroup()
-                        {
-                            Commands = new List<LowLevelCommand>()
+                        new ObservableCollection<LowLevelCommand>()
                             {
                                 new PressCommand() { KeyToPress = SharpHook.Native.KeyCode.VcW },
                                 new WaitCommand() { WaitTimeInMs = 500 },
                                 new PressCommand() { KeyToPress = SharpHook.Native.KeyCode.VcO },
-                            }
-                        },
+                            },
                         1500
                     ),
                     new CompositeHighLevelCommand(
-                        new CommandGroup()
-                        {
-                            Commands = new List<LowLevelCommand>()
+                        new ObservableCollection<LowLevelCommand>()
                             {
                                 new PressCommand() { KeyToPress = SharpHook.Native.KeyCode.VcT },
                                 new PressCommand() { KeyToPress = SharpHook.Native.KeyCode.VcB }
-                            }
-                        },
+                            },
                         2500
                     )
                 }
@@ -140,13 +135,10 @@ namespace Jido.Components.Pages.Autopress
         private void AddCompositeHighLevelCommand()
         {
             var command = new CompositeHighLevelCommand(
-                new CommandGroup()
-                {
-                    Commands = new List<LowLevelCommand>()
+                new ObservableCollection<LowLevelCommand>()
                     {
                         new PressCommand() { KeyToPress = SharpHook.Native.KeyCode.VcUndefined },
-                    }
-                },
+                    },
                 1000
             );
             ScheduledCommands.Add(command);
@@ -162,11 +154,11 @@ namespace Jido.Components.Pages.Autopress
         {
             var parent = ScheduledCommands.Where(c =>
             {
-                return c is CompositeHighLevelCommand && ((CompositeHighLevelCommand)c).Command.Commands.Contains(command);
+                return c is CompositeHighLevelCommand && ((CompositeHighLevelCommand)c).Commands.Contains(command);
             }).FirstOrDefault();
             if (parent != null)
             {
-                ((CompositeHighLevelCommand)parent).Command.Commands.Remove(command);
+                ((CompositeHighLevelCommand)parent).Commands.Remove(command);
             }
         }
 

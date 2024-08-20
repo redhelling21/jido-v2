@@ -1,16 +1,19 @@
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Text.Json.Serialization;
 using System.Threading;
 using System.Timers;
+using CommunityToolkit.Mvvm.ComponentModel;
 using SharpHook.Native;
+using static Jido.Models.CompositeHighLevelCommand;
 
 namespace Jido.Models
 {
     [JsonDerivedType(typeof(PressCommand), typeDiscriminator: "press")]
     [JsonDerivedType(typeof(WaitCommand), typeDiscriminator: "wait")]
-    public abstract class LowLevelCommand
+    public abstract class LowLevelCommand : ObservableObject
     { }
 
     public class PressCommand : LowLevelCommand
@@ -27,7 +30,7 @@ namespace Jido.Models
     [JsonDerivedType(typeof(HighLevelCommand), typeDiscriminator: "base")]
     [JsonDerivedType(typeof(CompositeHighLevelCommand), typeDiscriminator: "composite")]
     [JsonDerivedType(typeof(BasicHighLevelCommand), typeDiscriminator: "basic")]
-    public class HighLevelCommand
+    public class HighLevelCommand : ObservableObject
     {
         public int IntervalInMs { get; set; }
         protected System.Timers.Timer Timer { get; set; } = new System.Timers.Timer();
@@ -56,13 +59,13 @@ namespace Jido.Models
 
     public class CompositeHighLevelCommand : HighLevelCommand
     {
-        public CommandGroup Command { get; set; }
+        public ObservableCollection<LowLevelCommand> Commands { get; set; } = new ObservableCollection<LowLevelCommand>();
 
         private void TimerCallback(Object? source, ElapsedEventArgs e)
         {
             if (CommandQueue == null)
                 return;
-            foreach (var command in Command.Commands)
+            foreach (var command in Commands)
             {
                 CommandQueue.Enqueue(command);
             }
@@ -70,12 +73,24 @@ namespace Jido.Models
             Timer.Interval = IntervalInMs * rnd.Next(9, 11) / 10;
         }
 
-        public CompositeHighLevelCommand(CommandGroup command, int intervalInMs) : base(intervalInMs)
+        public CompositeHighLevelCommand(ObservableCollection<LowLevelCommand> commands, int intervalInMs) : base(intervalInMs)
         {
-            Command = command;
+            Commands = commands;
             Timer = new System.Timers.Timer(IntervalInMs);
             Timer.Elapsed += TimerCallback;
             Timer.AutoReset = true;
+        }
+
+        public void AddLowLevelCommand(string type)
+        {
+            if (type == "Press")
+            {
+                Commands.Add(new PressCommand());
+            }
+            else if (type == "Wait")
+            {
+                Commands.Add(new WaitCommand());
+            }
         }
     }
 
@@ -100,11 +115,6 @@ namespace Jido.Models
             Timer.Elapsed += TimerCallback;
             Timer.AutoReset = true;
         }
-    }
-
-    public class CommandGroup
-    {
-        public List<LowLevelCommand> Commands { get; set; } = new List<LowLevelCommand>();
     }
 
     public class ConstantCommand
