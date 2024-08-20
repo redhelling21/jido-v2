@@ -21,6 +21,7 @@ namespace Jido.Services
         private List<HighLevelCommand> _scheduledCommands;
         private List<ConstantCommand> _constantCommands;
         private int _clickDelay;
+        private double _intervalsRandomizationRatio;
         private ConcurrentQueue<LowLevelCommand> _queuedCommands = new ConcurrentQueue<LowLevelCommand>();
         private System.Timers.Timer _suspendTimer = new System.Timers.Timer();
 
@@ -28,6 +29,7 @@ namespace Jido.Services
         public List<HighLevelCommand> ScheduledCommands => _scheduledCommands;
         public List<ConstantCommand> ConstantCommands => _constantCommands;
         public int ClickDelay => _clickDelay;
+        public double IntervalRandomizationRatio => _intervalsRandomizationRatio;
         private ServiceStatus _status = ServiceStatus.STOPPED;
 
         public ServiceStatus Status
@@ -46,12 +48,17 @@ namespace Jido.Services
         {
             _keyHooksManager = keyHooksManager;
             _config = config;
+            InitFromConfig();
+            _keyHooksManager.RegisterKey(_toggleKey, ToggleAutopress);
+            _keyHooksManager.RegisterMouseClick(MouseButton.Button1, SuspendAutoPress);
+        }
+
+        private void InitFromConfig()
+        {
             _toggleKey = _config.Features.Autopress.ToggleKey;
             _scheduledCommands = _config.Features.Autopress.ScheduledCommands;
             _constantCommands = _config.Features.Autopress.ConstantCommands;
             _clickDelay = _config.Features.Autopress.ClickDelay;
-            _keyHooksManager.RegisterKey(_toggleKey, ToggleAutopress);
-            _keyHooksManager.RegisterMouseClick(MouseButton.Button1, SuspendAutoPress);
         }
 
         public void SuspendAutoPress(object? sender, EventArgs e)
@@ -92,33 +99,16 @@ namespace Jido.Services
             return task;
         }
 
-        public void UpdateScheduledCommands(List<HighLevelCommand> commands)
+        public void UpdateConfig(AutopressConfig config)
         {
             if (Status == ServiceStatus.IDLE || Status == ServiceStatus.WORKING)
             {
                 StopAutoPress();
             }
-            _scheduledCommands = commands;
-            _config.Features.Autopress.ScheduledCommands = commands;
+            config.ToggleKey = ToggleKey;
+            _config.Features.Autopress = config;
             _config.Persist();
-        }
-
-        public void UpdateConstantCommands(List<ConstantCommand> commands)
-        {
-            if (Status == ServiceStatus.IDLE || Status == ServiceStatus.WORKING)
-            {
-                StopAutoPress();
-            }
-            _constantCommands = commands;
-            _config.Features.Autopress.ConstantCommands = commands;
-            _config.Persist();
-        }
-
-        public void UpdateClickDelay(int delay)
-        {
-            _clickDelay = delay;
-            _config.Features.Autopress.ClickDelay = delay;
-            _config.Persist();
+            InitFromConfig();
         }
 
         private void ToggleAutopress(object? sender, EventArgs e)
@@ -202,10 +192,8 @@ namespace Jido.Services
 
         public int ClickDelay { get; }
 
-        public void UpdateScheduledCommands(List<HighLevelCommand> commands);
+        public double IntervalRandomizationRatio { get; }
 
-        public void UpdateConstantCommands(List<ConstantCommand> commands);
-
-        public void UpdateClickDelay(int delay);
+        public void UpdateConfig(AutopressConfig config);
     }
 }

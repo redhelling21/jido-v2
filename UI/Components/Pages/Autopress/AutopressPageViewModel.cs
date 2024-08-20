@@ -4,6 +4,7 @@ using System.Linq;
 using AutoMapper;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using Jido.Config;
 using Jido.Models;
 using Jido.Services;
 using Jido.UI.ViewModels;
@@ -25,6 +26,9 @@ namespace Jido.UI.Components.Pages.Autopress
 
         [ObservableProperty]
         private int clickDelay;
+
+        [ObservableProperty]
+        private double intervalsRandomizationRatio;
 
         public ObservableCollection<HighLevelCommandViewModel> ScheduledCommands { get; } =
             new ObservableCollection<HighLevelCommandViewModel>();
@@ -197,22 +201,16 @@ namespace Jido.UI.Components.Pages.Autopress
         }
 
         [RelayCommand]
-        private void SaveHighLevelCommands()
+        private void SaveAutoPressConfig()
         {
             if (_autopressService is not null)
             {
-                var commands = _mapper.Map<List<HighLevelCommand>>(ScheduledCommands.ToList());
-                _autopressService.UpdateScheduledCommands(commands);
-            }
-        }
-
-        [RelayCommand]
-        private void SaveConstantCommands()
-        {
-            if (_autopressService is not null)
-            {
-                var commands = _mapper.Map<List<ConstantCommand>>(ConstantCommands.ToList());
-                _autopressService.UpdateConstantCommands(commands);
+                var config = new AutopressConfig();
+                config.ConstantCommands = _mapper.Map<List<ConstantCommand>>(ConstantCommands.ToList());
+                config.ScheduledCommands = _mapper.Map<List<HighLevelCommand>>(ScheduledCommands.ToList());
+                config.ClickDelay = ClickDelay;
+                config.IntervalRandomizationRatio = IntervalsRandomizationRatio / 100;
+                _autopressService.UpdateConfig(config);
             }
         }
 
