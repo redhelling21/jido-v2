@@ -126,6 +126,12 @@
                                                 <TextBlock Margin="0,0,5,0" VerticalAlignment="Center" Text="Group" />
                                                 <Button>
                                                     <i:Icon Value="fa fa-plus" />
+                                                    <Button.Flyout>
+                                                        <MenuFlyout Placement="RightEdgeAlignedTop">
+                                                            <MenuItem Header="Press" Command="{Binding AddLowLevelCommand}" CommandParameter="Press" />
+                                                            <MenuItem Header="Wait" Command="{Binding AddLowLevelCommand}" CommandParameter="Wait" />
+                                                        </MenuFlyout>
+                                                    </Button.Flyout>
                                                 </Button>
                                             </StackPanel>
                                             <StackPanel Grid.Column="2" Orientation="Horizontal">
