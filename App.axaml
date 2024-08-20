@@ -1,8 +1,8 @@
 <Application x:Class="Jido.App" xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:converters="using:Jido.Converters"
+             xmlns:converters="using:Jido.UI.Converters"
              xmlns:i="https://github.com/projektanker/icons.avalonia"
-             xmlns:local="using:Jido" RequestedThemeVariant="Light">
+             xmlns:local="using:Jido.UI" RequestedThemeVariant="Light">
     <!--  "Default" ThemeVariant follows system theme variant. "Dark" or "Light" are other available options.  -->
 
     <Application.DataTemplates>
@@ -12,10 +12,10 @@
     <Application.Styles>
         <FluentTheme />
         <StyleInclude Source="avares://Avalonia.Controls.ColorPicker/Themes/Fluent/Fluent.xaml" />
-        <StyleInclude Source="Styles/Common.axaml" />
-        <StyleInclude Source="Styles/Sidebar.axaml" />
-        <StyleInclude Source="Components/Common/Sidebar/SidebarMenuItem.axaml" />
-        <StyleInclude Source="Components/Common/PageWithHeader.axaml" />
+        <StyleInclude Source="UI/Styles/Common.axaml" />
+        <StyleInclude Source="UI/Styles/Sidebar.axaml" />
+        <StyleInclude Source="UI/Components/Common/Sidebar/SidebarMenuItem.axaml" />
+        <StyleInclude Source="UI/Components/Common/PageWithHeader.axaml" />
     </Application.Styles>
 
     <Application.Resources>
@@ -36,9 +36,9 @@
         <SolidColorBrush x:Key="StatusStopped">#ecf0f1</SolidColorBrush>
         <SolidColorBrush x:Key="StatusError">#f44336</SolidColorBrush>
 
-        <FontFamily x:Key="Nunito">avares://Jido/Assets/Fonts#Nunito</FontFamily>
-        <FontFamily x:Key="Inter">avares://Jido/Assets/Fonts#Inter</FontFamily>
-        <FontFamily x:Key="Montserrat">avares://Jido/Assets/Fonts#Montserrat</FontFamily>
+        <FontFamily x:Key="Nunito">avares://Jido/UI/Assets/Fonts#Nunito</FontFamily>
+        <FontFamily x:Key="Inter">avares://Jido/UI/Assets/Fonts#Inter</FontFamily>
+        <FontFamily x:Key="Montserrat">avares://Jido/UI/Assets/Fonts#Montserrat</FontFamily>
 
         <converters:RGBToColorConverter x:Key="RGBToColorConverter" />
     </Application.Resources>

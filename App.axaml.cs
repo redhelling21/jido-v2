@@ -1,19 +1,17 @@
 using System;
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
-using Avalonia.Data.Core;
 using Avalonia.Data.Core.Plugins;
 using Avalonia.Markup.Xaml;
-using Jido.Components;
-using Jido.Components.Common.Sidebar;
-using Jido.Components.Pages.Autoloot;
-using Jido.Components.Pages.Autopress;
-using Jido.Components.Pages.Home;
+using Jido.UI.Components;
+using Jido.UI.Components.Common.Sidebar;
+using Jido.UI.Components.Pages.Autoloot;
+using Jido.UI.Components.Pages.Autopress;
 using Jido.Config;
-using Jido.Routing;
 using Jido.Services;
+using Jido.UI.Components.Pages.Home;
+using Jido.UI.Routing;
 using Jido.Utils;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Jido

@@ -9,13 +9,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <AvaloniaResource Include="Assets\**" />
+    <AvaloniaResource Include="UI\Assets\**" />
     <AvaloniaXaml Remove="OpenCVSandbox\**" />
     <Compile Remove="OpenCVSandbox\**" />
     <EmbeddedResource Remove="OpenCVSandbox\**" />
     <None Remove="OpenCVSandbox\**" />
-    <Folder Include="Assets\Fonts\" />
-    <Folder Include="Assets\Images\" />
   </ItemGroup>
 
 
@@ -41,13 +39,10 @@
 
 
   <ItemGroup>
-    <Compile Update="Components\Common\Sidebar\SidebarMenuItemView.axaml.cs">
-      <DependentUpon>SidebarMenuItemView.axaml</DependentUpon>
-    </Compile>
-    <Compile Update="Components\Common\Sidebar\SidebarView.axaml.cs">
+    <Compile Update="UI\Components\Common\Sidebar\SidebarView.axaml.cs">
       <DependentUpon>SidebarView.axaml</DependentUpon>
     </Compile>
-    <Compile Update="Components\Pages\Autopress\AutopressPageView.axaml.cs">
+    <Compile Update="UI\Components\Pages\Autopress\AutopressPageView.axaml.cs">
       <DependentUpon>AutopressPageView.axaml</DependentUpon>
     </Compile>
   </ItemGroup>
@@ -57,5 +52,10 @@
     <None Update="settings.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+  </ItemGroup>
+
+
+  <ItemGroup>
+    <Folder Include="UI\ViewModels\" />
   </ItemGroup>
 </Project>
