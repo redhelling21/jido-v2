@@ -18,6 +18,7 @@
 
 
   <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="13.0.1" />
     <PackageReference Include="Avalonia" Version="11.1.0-beta1" />
     <PackageReference Include="Avalonia.Desktop" Version="11.1.0-beta1" />
     <PackageReference Include="Avalonia.Themes.Fluent" Version="11.1.0-beta1" />
@@ -52,10 +53,5 @@
     <None Update="settings.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-  </ItemGroup>
-
-
-  <ItemGroup>
-    <Folder Include="UI\ViewModels\" />
   </ItemGroup>
 </Project>

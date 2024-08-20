@@ -13,6 +13,7 @@ using Jido.UI.Components.Pages.Home;
 using Jido.UI.Routing;
 using Jido.Utils;
 using Microsoft.Extensions.DependencyInjection;
+using System.Reflection;
 
 namespace Jido
 {
@@ -53,12 +54,15 @@ namespace Jido
             services.AddSingleton<IAutolootService, AutolootService>();
             services.AddSingleton<IAutopressService, AutopressService>();
 
-            // ViewModels
+            // Component ViewModels
             services.AddSingleton<MainWindowViewModel>();
             services.AddSingleton<SidebarViewModel>();
             services.AddTransient<HomePageViewModel>();
             services.AddTransient<AutolootPageViewModel>();
             services.AddTransient<AutopressPageViewModel>();
+
+            // Utilities
+            services.AddAutoMapper(Assembly.GetExecutingAssembly());
             return services.BuildServiceProvider();
         }
     }

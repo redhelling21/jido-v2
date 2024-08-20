@@ -5,15 +5,13 @@ using System.Collections.ObjectModel;
 using System.Text.Json.Serialization;
 using System.Threading;
 using System.Timers;
-using CommunityToolkit.Mvvm.ComponentModel;
 using SharpHook.Native;
-using static Jido.Models.CompositeHighLevelCommand;
 
 namespace Jido.Models
 {
     [JsonDerivedType(typeof(PressCommand), typeDiscriminator: "press")]
     [JsonDerivedType(typeof(WaitCommand), typeDiscriminator: "wait")]
-    public abstract class LowLevelCommand : ObservableObject
+    public abstract class LowLevelCommand
     { }
 
     public class PressCommand : LowLevelCommand
@@ -30,7 +28,7 @@ namespace Jido.Models
     [JsonDerivedType(typeof(HighLevelCommand), typeDiscriminator: "base")]
     [JsonDerivedType(typeof(CompositeHighLevelCommand), typeDiscriminator: "composite")]
     [JsonDerivedType(typeof(BasicHighLevelCommand), typeDiscriminator: "basic")]
-    public class HighLevelCommand : ObservableObject
+    public class HighLevelCommand
     {
         public int IntervalInMs { get; set; }
         protected System.Timers.Timer Timer { get; set; } = new System.Timers.Timer();
@@ -59,7 +57,7 @@ namespace Jido.Models
 
     public class CompositeHighLevelCommand : HighLevelCommand
     {
-        public ObservableCollection<LowLevelCommand> Commands { get; set; } = new ObservableCollection<LowLevelCommand>();
+        public List<LowLevelCommand> Commands { get; set; } = new List<LowLevelCommand>();
 
         private void TimerCallback(Object? source, ElapsedEventArgs e)
         {
@@ -73,24 +71,12 @@ namespace Jido.Models
             Timer.Interval = IntervalInMs * rnd.Next(9, 11) / 10;
         }
 
-        public CompositeHighLevelCommand(ObservableCollection<LowLevelCommand> commands, int intervalInMs) : base(intervalInMs)
+        public CompositeHighLevelCommand(List<LowLevelCommand> commands, int intervalInMs) : base(intervalInMs)
         {
             Commands = commands;
             Timer = new System.Timers.Timer(IntervalInMs);
             Timer.Elapsed += TimerCallback;
             Timer.AutoReset = true;
-        }
-
-        public void AddLowLevelCommand(string type)
-        {
-            if (type == "Press")
-            {
-                Commands.Add(new PressCommand());
-            }
-            else if (type == "Wait")
-            {
-                Commands.Add(new WaitCommand());
-            }
         }
     }
 

@@ -1,7 +1,7 @@
 <UserControl x:Class="Jido.UI.Components.Pages.Autopress.AutopressPageView"
              xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:commands="clr-namespace:Jido.Models"
+             xmlns:commands="clr-namespace:Jido.UI.ViewModels"
              xmlns:common="using:Jido.UI.Components.Common"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:i="https://github.com/projektanker/icons.avalonia"
@@ -95,7 +95,7 @@
                                       ItemsSource="{Binding ScheduledCommands}">
                             <ItemsControl.DataTemplates>
                                 <!--  BASIC COMMANDS  -->
-                                <DataTemplate DataType="{x:Type commands:BasicHighLevelCommand}">
+                                <DataTemplate DataType="{x:Type commands:BasicHighLevelCommandViewModel}">
                                     <StackPanel Classes="CommandContainer">
                                         <Grid ColumnDefinitions="Auto, *, Auto">
                                             <StackPanel Grid.Column="0" Orientation="Horizontal">
@@ -119,7 +119,7 @@
                                     </StackPanel>
                                 </DataTemplate>
                                 <!--  COMPOSITE COMMANDS  -->
-                                <DataTemplate DataType="{x:Type commands:CompositeHighLevelCommand}">
+                                <DataTemplate DataType="{x:Type commands:CompositeHighLevelCommandViewModel}">
                                     <StackPanel Classes="CommandContainer">
                                         <Grid ColumnDefinitions="Auto, *, Auto">
                                             <StackPanel Orientation="Horizontal">
@@ -128,8 +128,8 @@
                                                     <i:Icon Value="fa fa-plus" />
                                                     <Button.Flyout>
                                                         <MenuFlyout Placement="RightEdgeAlignedTop">
-                                                            <MenuItem Header="Press" Command="{Binding AddLowLevelCommand}" CommandParameter="Press" />
-                                                            <MenuItem Header="Wait" Command="{Binding AddLowLevelCommand}" CommandParameter="Wait" />
+                                                            <MenuItem Header="Press" Command="{Binding AddLowLevelCommand}" CommandParameter="press" />
+                                                            <MenuItem Header="Wait" Command="{Binding AddLowLevelCommand}" CommandParameter="wait" />
                                                         </MenuFlyout>
                                                     </Button.Flyout>
                                                 </Button>
@@ -154,7 +154,7 @@
                                             <ItemsControl Grid.Column="1" Margin="0,5,0,0" ItemsSource="{Binding Commands}">
                                                 <ItemsControl.DataTemplates>
                                                     <!--  PRESS  -->
-                                                    <DataTemplate DataType="{x:Type commands:PressCommand}">
+                                                    <DataTemplate DataType="{x:Type commands:PressCommandViewModel}">
                                                         <StackPanel HorizontalAlignment="Left" Classes="CommandContainer" Orientation="Horizontal">
                                                             <TextBlock Width="40" Margin="0,0,5,0" VerticalAlignment="Center" Text="Press" />
                                                             <TextBox Width="50" Margin="0,0,5,0" Text="{Binding KeyToPress, UpdateSourceTrigger=LostFocus}" />
@@ -164,7 +164,7 @@
                                                         </StackPanel>
                                                     </DataTemplate>
                                                     <!--  WAIT  -->
-                                                    <DataTemplate DataType="{x:Type commands:WaitCommand}">
+                                                    <DataTemplate DataType="{x:Type commands:WaitCommandViewModel}">
                                                         <StackPanel HorizontalAlignment="Left" Orientation="Horizontal">
                                                             <TextBlock Width="40" Margin="0,0,5,0" VerticalAlignment="Center" Text="Wait" />
                                                             <TextBox Width="50" Margin="0,0,5,0" Text="{Binding WaitTimeInMs}" />

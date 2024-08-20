@@ -1,21 +1,21 @@
-using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Collections.Specialized;
 using System.Linq;
+using AutoMapper;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Jido.Models;
 using Jido.Services;
-using Jido.UI.Components;
+using Jido.UI.ViewModels;
 using Jido.Utils;
-using static Jido.Models.CompositeHighLevelCommand;
+using static Jido.UI.ViewModels.CompositeHighLevelCommandViewModel;
 
 namespace Jido.UI.Components.Pages.Autopress
 {
     public partial class AutopressPageViewModel : ViewModelBase
     {
         private readonly IAutopressService? _autopressService;
+        private readonly IMapper _mapper;
 
         [ObservableProperty]
         private string changeKeyButtonText;
@@ -26,43 +26,43 @@ namespace Jido.UI.Components.Pages.Autopress
         [ObservableProperty]
         private int clickDelay;
 
-        public ObservableCollection<HighLevelCommand> ScheduledCommands { get; } =
-            new ObservableCollection<HighLevelCommand>();
+        public ObservableCollection<HighLevelCommandViewModel> ScheduledCommands { get; } =
+            new ObservableCollection<HighLevelCommandViewModel>();
 
-        public ObservableCollection<ConstantCommand> ConstantCommands { get; } =
-            new ObservableCollection<ConstantCommand>();
+        public ObservableCollection<ConstantCommandViewModel> ConstantCommands { get; } =
+            new ObservableCollection<ConstantCommandViewModel>();
 
         public AutopressPageViewModel()
         {
             ChangeKeyButtonText = "Change";
             // Placeholder for design purpose
-            ScheduledCommands = new ObservableCollection<HighLevelCommand>(
-                new List<HighLevelCommand>()
+            ScheduledCommands = new ObservableCollection<HighLevelCommandViewModel>(
+                new ObservableCollection<HighLevelCommandViewModel>()
                 {
-                    new BasicHighLevelCommand(new PressCommand() { KeyToPress = SharpHook.Native.KeyCode.VcE }, 1000),
-                    new BasicHighLevelCommand(new PressCommand() { KeyToPress = SharpHook.Native.KeyCode.VcR }, 2000),
-                    new BasicHighLevelCommand(new PressCommand() { KeyToPress = SharpHook.Native.KeyCode.VcR }, 3000),
-                    new CompositeHighLevelCommand(
-                        new ObservableCollection<LowLevelCommand>()
+                    new BasicHighLevelCommandViewModel(new PressCommandViewModel() { KeyToPress = SharpHook.Native.KeyCode.VcE }, 1000),
+                    new BasicHighLevelCommandViewModel(new PressCommandViewModel() { KeyToPress = SharpHook.Native.KeyCode.VcR }, 2000),
+                    new BasicHighLevelCommandViewModel(new PressCommandViewModel() { KeyToPress = SharpHook.Native.KeyCode.VcR }, 3000),
+                    new CompositeHighLevelCommandViewModel(
+                        new List<LowLevelCommandViewModel>()
                             {
-                                new PressCommand() { KeyToPress = SharpHook.Native.KeyCode.VcW },
-                                new WaitCommand() { WaitTimeInMs = 500 },
-                                new PressCommand() { KeyToPress = SharpHook.Native.KeyCode.VcO },
+                                new PressCommandViewModel() { KeyToPress = SharpHook.Native.KeyCode.VcW },
+                                new WaitCommandViewModel() { WaitTimeInMs = 500 },
+                                new PressCommandViewModel() { KeyToPress = SharpHook.Native.KeyCode.VcO },
                             },
                         1500
                     ),
-                    new CompositeHighLevelCommand(
-                        new ObservableCollection<LowLevelCommand>()
+                    new CompositeHighLevelCommandViewModel(
+                        new List<LowLevelCommandViewModel>()
                             {
-                                new PressCommand() { KeyToPress = SharpHook.Native.KeyCode.VcT },
-                                new PressCommand() { KeyToPress = SharpHook.Native.KeyCode.VcB }
+                                new PressCommandViewModel() { KeyToPress = SharpHook.Native.KeyCode.VcT },
+                                new PressCommandViewModel() { KeyToPress = SharpHook.Native.KeyCode.VcB }
                             },
                         2500
                     )
                 }
             );
-            ConstantCommands = new ObservableCollection<ConstantCommand>(
-                new List<ConstantCommand>()
+            ConstantCommands = new ObservableCollection<ConstantCommandViewModel>(
+                new List<ConstantCommandViewModel>()
                 {
                     new() { KeyToPress = SharpHook.Native.KeyCode.VcY },
                     new() { KeyToPress = SharpHook.Native.KeyCode.VcH },
@@ -70,13 +70,19 @@ namespace Jido.UI.Components.Pages.Autopress
             );
         }
 
-        public AutopressPageViewModel(IAutopressService autopressService)
+        public AutopressPageViewModel(IAutopressService autopressService, IMapper mapper)
         {
             _autopressService = autopressService;
             _autopressService.StatusChanged += OnAutopressStatusChange;
+            _mapper = mapper;
             ToggleKey = _autopressService.ToggleKey.ToString();
+            ScheduledCommands = new ObservableCollection<HighLevelCommandViewModel>(
+                _mapper.Map<List<HighLevelCommandViewModel>>(_autopressService.ScheduledCommands)
+            );
+            ConstantCommands = new ObservableCollection<ConstantCommandViewModel>(
+                _mapper.Map<List<ConstantCommandViewModel>>(_autopressService.ConstantCommands)
+            );
             ChangeKeyButtonText = "Change";
-            ConstantCommands = new ObservableCollection<ConstantCommand>();
         }
 
         private void OnAutopressStatusChange(object? sender, ServiceStatus status)
@@ -112,12 +118,12 @@ namespace Jido.UI.Components.Pages.Autopress
         [RelayCommand]
         private void AddConstantCommand()
         {
-            var command = new ConstantCommand();
+            var command = new ConstantCommandViewModel();
             ConstantCommands.Add(command);
         }
 
         [RelayCommand]
-        private void RemoveConstantCommand(ConstantCommand command)
+        private void RemoveConstantCommand(ConstantCommandViewModel command)
         {
             ConstantCommands.Remove(command);
         }
@@ -125,8 +131,8 @@ namespace Jido.UI.Components.Pages.Autopress
         [RelayCommand]
         private void AddBasicHighLevelCommand()
         {
-            var command = new BasicHighLevelCommand(
-                new PressCommand() { KeyToPress = SharpHook.Native.KeyCode.VcUndefined },
+            var command = new BasicHighLevelCommandViewModel(
+                new PressCommandViewModel() { KeyToPress = SharpHook.Native.KeyCode.VcUndefined },
                 1000
             );
             ScheduledCommands.Add(command);
@@ -135,10 +141,10 @@ namespace Jido.UI.Components.Pages.Autopress
         [RelayCommand]
         private void AddCompositeHighLevelCommand()
         {
-            var command = new CompositeHighLevelCommand(
-                new ObservableCollection<LowLevelCommand>()
+            var command = new CompositeHighLevelCommandViewModel(
+                new List<LowLevelCommandViewModel>()
                     {
-                        new PressCommand() { KeyToPress = SharpHook.Native.KeyCode.VcUndefined },
+                        new PressCommandViewModel() { KeyToPress = SharpHook.Native.KeyCode.VcUndefined },
                     },
                 1000
             );
@@ -146,31 +152,31 @@ namespace Jido.UI.Components.Pages.Autopress
         }
 
         [RelayCommand]
-        private void AddLowLevelCommandToComposite(CompositeHighLevelCommand command)
+        private void AddLowLevelCommandToComposite(CompositeHighLevelCommandViewModel command)
         {
         }
 
         [RelayCommand]
-        private void RemoveLowLevelCommandFromComposite(LowLevelCommand command)
+        private void RemoveLowLevelCommandFromComposite(LowLevelCommandViewModel command)
         {
             var parent = ScheduledCommands.Where(c =>
             {
-                return c is CompositeHighLevelCommand && ((CompositeHighLevelCommand)c).Commands.Contains(command);
+                return c is CompositeHighLevelCommandViewModel && ((CompositeHighLevelCommandViewModel)c).Commands.Contains(command);
             }).FirstOrDefault();
             if (parent != null)
             {
-                ((CompositeHighLevelCommand)parent).Commands.Remove(command);
+                ((CompositeHighLevelCommandViewModel)parent).Commands.Remove(command);
             }
         }
 
         [RelayCommand]
-        private void RemoveHighLevelCommand(HighLevelCommand command)
+        private void RemoveHighLevelCommand(HighLevelCommandViewModel command)
         {
             ScheduledCommands.Remove(command);
         }
 
         [RelayCommand]
-        private void MoveUpHighLevelCommand(HighLevelCommand command)
+        private void MoveUpHighLevelCommand(HighLevelCommandViewModel command)
         {
             var index = ScheduledCommands.IndexOf(command);
             if (index > 0)
@@ -180,7 +186,7 @@ namespace Jido.UI.Components.Pages.Autopress
         }
 
         [RelayCommand]
-        private void MoveDownHighLevelCommand(HighLevelCommand command)
+        private void MoveDownHighLevelCommand(HighLevelCommandViewModel command)
         {
             var index = ScheduledCommands.IndexOf(command);
             if (index < ScheduledCommands.Count - 1)
@@ -194,7 +200,8 @@ namespace Jido.UI.Components.Pages.Autopress
         {
             if (_autopressService is not null)
             {
-                _autopressService.UpdateScheduledCommands(ScheduledCommands.ToList());
+                var commands = _mapper.Map<List<HighLevelCommand>>(ScheduledCommands.ToList());
+                _autopressService.UpdateScheduledCommands(commands);
             }
         }
 
@@ -203,7 +210,8 @@ namespace Jido.UI.Components.Pages.Autopress
         {
             if (_autopressService is not null)
             {
-                _autopressService.UpdateConstantCommands(ConstantCommands.ToList());
+                var commands = _mapper.Map<List<ConstantCommand>>(ConstantCommands.ToList());
+                _autopressService.UpdateConstantCommands(commands);
             }
         }
 
