@@ -148,30 +148,38 @@
                                                 </Button>
                                             </StackPanel>
                                         </Grid>
-                                        <Grid ColumnDefinitions="Auto, *">
+                                        <Grid ColumnDefinitions="Auto, 5*, *">
                                             <Border Grid.Column="0" Width="1" Margin="5,0,10,0"
                                                     Background="{DynamicResource Highlight300}" />
                                             <ItemsControl Grid.Column="1" Margin="0,5,0,0" ItemsSource="{Binding Commands}">
                                                 <ItemsControl.DataTemplates>
                                                     <!--  PRESS  -->
                                                     <DataTemplate DataType="{x:Type commands:PressCommandViewModel}">
-                                                        <StackPanel HorizontalAlignment="Left" Classes="CommandContainer" Orientation="Horizontal">
-                                                            <TextBlock Width="40" Margin="0,0,5,0" VerticalAlignment="Center" Text="Press" />
-                                                            <TextBox Width="50" Margin="0,0,5,0" Text="{Binding KeyToPress, UpdateSourceTrigger=LostFocus}" />
-                                                            <Button>
+                                                        <Grid ColumnDefinitions="Auto, *, Auto">
+                                                            <StackPanel Grid.Column="0" HorizontalAlignment="Left" Classes="CommandContainer" Orientation="Horizontal">
+                                                                <TextBlock Width="40" Margin="0,0,5,0" VerticalAlignment="Center" Text="Press" />
+                                                                <TextBox Width="50" Margin="0,0,5,0" Text="{Binding KeyToPress, UpdateSourceTrigger=LostFocus}" />
+                                                                <TextBlock Margin="0,0,5,0" VerticalAlignment="Center" Text="for" />
+                                                                <TextBox Width="50" Margin="0,0,5,0" Text="{Binding PressDurationInMs}" />
+                                                                <TextBlock Margin="0,0,5,0" VerticalAlignment="Center" Text="ms" />
+                                                            </StackPanel>
+                                                            <Button Grid.Column="2" Command="{Binding $parent[ItemsControl].((commands:CompositeHighLevelCommandViewModel)DataContext).RemoveLowLevelCommand}" CommandParameter="{Binding .}">
                                                                 <i:Icon Value="fa fa-minus" />
                                                             </Button>
-                                                        </StackPanel>
+                                                        </Grid>
                                                     </DataTemplate>
                                                     <!--  WAIT  -->
                                                     <DataTemplate DataType="{x:Type commands:WaitCommandViewModel}">
-                                                        <StackPanel HorizontalAlignment="Left" Orientation="Horizontal">
-                                                            <TextBlock Width="40" Margin="0,0,5,0" VerticalAlignment="Center" Text="Wait" />
-                                                            <TextBox Width="50" Margin="0,0,5,0" Text="{Binding WaitTimeInMs}" />
-                                                            <Button>
+                                                        <Grid ColumnDefinitions="Auto, *, Auto">
+                                                            <StackPanel Grid.Column="0" HorizontalAlignment="Left" Orientation="Horizontal">
+                                                                <TextBlock Width="40" Margin="0,0,5,0" VerticalAlignment="Center" Text="Wait" />
+                                                                <TextBox Width="50" Margin="0,0,5,0" Text="{Binding WaitTimeInMs}" />
+                                                                <TextBlock Margin="0,0,5,0" VerticalAlignment="Center" Text="ms" />
+                                                            </StackPanel>
+                                                            <Button Grid.Column="2" Command="{Binding $parent[ItemsControl].((commands:CompositeHighLevelCommandViewModel)DataContext).RemoveLowLevelCommand}" CommandParameter="{Binding .}">
                                                                 <i:Icon Value="fa fa-minus" />
                                                             </Button>
-                                                        </StackPanel>
+                                                        </Grid>
                                                     </DataTemplate>
                                                 </ItemsControl.DataTemplates>
                                             </ItemsControl>

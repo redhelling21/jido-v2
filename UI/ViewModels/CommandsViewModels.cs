@@ -36,6 +36,11 @@ namespace Jido.UI.ViewModels
                 Commands.Add(new WaitCommandViewModel());
             }
         }
+
+        public void RemoveLowLevelCommand(LowLevelCommandViewModel command)
+        {
+            Commands.Remove(command);
+        }
     }
 
     public partial class BasicHighLevelCommandViewModel : HighLevelCommandViewModel

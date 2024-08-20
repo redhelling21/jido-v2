@@ -1,20 +1,13 @@
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Windows.Input;
-using Avalonia.Media;
 using Jido.Config;
 using Jido.Models;
 using Jido.Utils;
-using OpenCvSharp;
 using SharpHook;
 using SharpHook.Native;
-using static Jido.Models.CompositeHighLevelCommand;
-using Color = Jido.Models.Color;
-using Point = OpenCvSharp.Point;
 
 namespace Jido.Services
 {
@@ -69,6 +62,10 @@ namespace Jido.Services
 
         public void UpdateScheduledCommands(List<HighLevelCommand> commands)
         {
+            if (Status == ServiceStatus.IDLE || Status == ServiceStatus.WORKING)
+            {
+                StopAutoPress();
+            }
             _scheduledCommands = commands;
             _config.Features.Autopress.ScheduledCommands = commands;
             _config.Persist();
@@ -76,6 +73,10 @@ namespace Jido.Services
 
         public void UpdateConstantCommands(List<ConstantCommand> commands)
         {
+            if (Status == ServiceStatus.IDLE || Status == ServiceStatus.WORKING)
+            {
+                StopAutoPress();
+            }
             _constantCommands = commands;
             _config.Features.Autopress.ConstantCommands = commands;
             _config.Persist();
@@ -92,20 +93,19 @@ namespace Jido.Services
         {
             if (Status == ServiceStatus.STOPPED)
             {
-                Status = ServiceStatus.IDLE;
                 _cancellationTokenSource = new CancellationTokenSource();
                 StartAutoPress();
             }
             else
             {
                 StopAutoPress();
-                Status = ServiceStatus.STOPPED;
             }
             StatusChanged?.Invoke(this, Status);
         }
 
         private void StartAutoPress()
         {
+            Status = ServiceStatus.IDLE;
             // Setup
             foreach (var command in _constantCommands)
             {
@@ -129,6 +129,11 @@ namespace Jido.Services
             {
                 _eventSimulator.SimulateKeyRelease(command.KeyToPress);
             }
+            foreach (var command in _scheduledCommands)
+            {
+                command.Stop();
+            }
+            Status = ServiceStatus.STOPPED;
         }
 
         private async Task KeyPressRoutine(CancellationToken cancellationToken)
