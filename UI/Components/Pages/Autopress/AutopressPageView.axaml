@@ -48,12 +48,14 @@
                             Content="{Binding ChangeKeyButtonText}" />
                     <TextBlock Grid.Row="2" Grid.Column="0" HorizontalAlignment="Right"
                                VerticalAlignment="Center" Text="Click delay" />
-                    <TextBox Grid.Row="2" Grid.Column="2" VerticalAlignment="Center" Text="{Binding ClickDelay}" />
+                    <TextBox Grid.Row="2" Grid.Column="2" VerticalAlignment="Center"
+                             Text="{Binding ClickDelay}" />
                     <TextBlock Grid.Row="2" Grid.Column="4" HorizontalAlignment="Left"
-                                                   VerticalAlignment="Center" Text="ms" />
+                               VerticalAlignment="Center" Text="ms" />
                     <TextBlock Grid.Row="4" Grid.Column="0" HorizontalAlignment="Right"
                                VerticalAlignment="Center" Text="Intervals rand" />
-                    <TextBox Grid.Row="4" Grid.Column="2" VerticalAlignment="Center" Text="{Binding IntervalsRandomizationRatio}" />
+                    <TextBox Grid.Row="4" Grid.Column="2" VerticalAlignment="Center"
+                             Text="{Binding IntervalsRandomizationRatio}" />
                     <TextBlock Grid.Row="4" Grid.Column="4" HorizontalAlignment="Left"
                                VerticalAlignment="Center" Text="%" />
                 </Grid>
@@ -89,7 +91,7 @@
             <Border Grid.Column="1" Width="1" Margin="20,0,20,10"
                     Background="{DynamicResource Highlight100}" />
             <!--  RIGHT COLUMN  -->
-            <Grid Grid.Column="2" RowDefinitions="Auto, *, 5, Auto, 5" ColumnDefinitions="*">
+            <Grid Grid.Column="2" ColumnDefinitions="*" RowDefinitions="Auto, *, 5, Auto, 5">
                 <TextBlock Grid.Row="0" FontSize="16" FontWeight="Bold" Text="Scheduled keypress" />
                 <Border Grid.Row="1">
                     <ScrollViewer>
@@ -132,8 +134,8 @@
                                                     <i:Icon Value="fa fa-plus" />
                                                     <Button.Flyout>
                                                         <MenuFlyout Placement="RightEdgeAlignedTop">
-                                                            <MenuItem Header="Press" Command="{Binding AddLowLevelCommand}" CommandParameter="press" />
-                                                            <MenuItem Header="Wait" Command="{Binding AddLowLevelCommand}" CommandParameter="wait" />
+                                                            <MenuItem Command="{Binding AddLowLevelCommand}" CommandParameter="press" Header="Press" />
+                                                            <MenuItem Command="{Binding AddLowLevelCommand}" CommandParameter="wait" Header="Wait" />
                                                         </MenuFlyout>
                                                     </Button.Flyout>
                                                 </Button>
@@ -160,7 +162,8 @@
                                                     <!--  PRESS  -->
                                                     <DataTemplate DataType="{x:Type commands:PressCommandViewModel}">
                                                         <Grid ColumnDefinitions="Auto, *, Auto">
-                                                            <StackPanel Grid.Column="0" HorizontalAlignment="Left" Classes="CommandContainer" Orientation="Horizontal">
+                                                            <StackPanel Grid.Column="0" HorizontalAlignment="Left" Classes="CommandContainer"
+                                                                        Orientation="Horizontal">
                                                                 <TextBlock Width="40" Margin="0,0,5,0" VerticalAlignment="Center" Text="Press" />
                                                                 <TextBox Width="50" Margin="0,0,5,0" Text="{Binding KeyToPress, UpdateSourceTrigger=LostFocus}" />
                                                                 <TextBlock Margin="0,0,5,0" VerticalAlignment="Center" Text="for" />
@@ -203,11 +206,11 @@
                             <i:Icon Value="fa fa-folder-plus" />
                         </Button>
                     </StackPanel>
-                    <Button Grid.Column="2" Command="{Binding SaveAutoPressConfig}>">
+                    <Button Grid.Column="2" Command="{Binding SaveAutoPressConfigCommand}>">
                         <Button.Content>
                             <StackPanel Orientation="Horizontal">
-                                <i:Icon Value="fa fa-floppy-disk" Margin="0, 0, 5, 0" />
-                                <TextBlock Text="Save all"></TextBlock>
+                                <i:Icon Margin="0,0,5,0" Value="fa fa-floppy-disk" />
+                                <TextBlock Text="Save all" />
                             </StackPanel>
                         </Button.Content>
                     </Button>
