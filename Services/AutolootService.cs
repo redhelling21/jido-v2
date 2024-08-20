@@ -15,7 +15,7 @@ namespace Jido.Services
 {
     public class AutolootService : IAutolootService
     {
-        private IKeyHooksManager _keyHooksManager;
+        private IHooksManager _keyHooksManager;
         private CancellationTokenSource _cancellationTokenSource;
         private JidoConfig _config;
         private KeyCode _toggleKey;
@@ -35,7 +35,7 @@ namespace Jido.Services
 
         public event EventHandler<ServiceStatus> StatusChanged;
 
-        public AutolootService(IKeyHooksManager keyHooksManager, JidoConfig config)
+        public AutolootService(IHooksManager keyHooksManager, JidoConfig config)
         {
             _keyHooksManager = keyHooksManager;
             _config = config;

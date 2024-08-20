@@ -13,7 +13,7 @@ namespace Jido.Services
 {
     public class AutopressService : IAutopressService
     {
-        private IKeyHooksManager _keyHooksManager;
+        private IHooksManager _keyHooksManager;
         private EventSimulator _eventSimulator = new EventSimulator();
         private CancellationTokenSource _cancellationTokenSource;
         private JidoConfig _config;
@@ -22,24 +22,56 @@ namespace Jido.Services
         private List<ConstantCommand> _constantCommands;
         private int _clickDelay;
         private ConcurrentQueue<LowLevelCommand> _queuedCommands = new ConcurrentQueue<LowLevelCommand>();
+        private System.Timers.Timer _suspendTimer = new System.Timers.Timer();
 
         public KeyCode ToggleKey => _toggleKey;
         public List<HighLevelCommand> ScheduledCommands => _scheduledCommands;
         public List<ConstantCommand> ConstantCommands => _constantCommands;
         public int ClickDelay => _clickDelay;
+        private ServiceStatus _status = ServiceStatus.STOPPED;
 
-        public ServiceStatus Status { get; set; } = ServiceStatus.STOPPED;
+        public ServiceStatus Status
+        {
+            get { return _status; }
+            set
+            {
+                _status = value;
+                StatusChanged?.Invoke(this, value);
+            }
+        }
 
         public event EventHandler<ServiceStatus> StatusChanged;
 
-        public AutopressService(IKeyHooksManager keyHooksManager, JidoConfig config)
+        public AutopressService(IHooksManager keyHooksManager, JidoConfig config)
         {
             _keyHooksManager = keyHooksManager;
             _config = config;
             _toggleKey = _config.Features.Autopress.ToggleKey;
             _scheduledCommands = _config.Features.Autopress.ScheduledCommands;
             _constantCommands = _config.Features.Autopress.ConstantCommands;
+            _clickDelay = _config.Features.Autopress.ClickDelay;
             _keyHooksManager.RegisterKey(_toggleKey, ToggleAutopress);
+            _keyHooksManager.RegisterMouseClick(MouseButton.Button1, SuspendAutoPress);
+        }
+
+        public void SuspendAutoPress(object? sender, EventArgs e)
+        {
+            if (Status == ServiceStatus.IDLE || Status == ServiceStatus.WORKING)
+            {
+                StopAutoPress();
+                Status = ServiceStatus.PAUSED;
+                _suspendTimer = new System.Timers.Timer(ClickDelay);
+                _suspendTimer.Elapsed += (sender, e) =>
+                {
+                    StartAutoPress();
+                };
+                _suspendTimer.AutoReset = false;
+                _suspendTimer.Start();
+            }
+            else if (Status == ServiceStatus.PAUSED)
+            {
+                _suspendTimer.Interval = ClickDelay;
+            }
         }
 
         public Task<KeyCode> ChangeToggleKey()
@@ -93,19 +125,17 @@ namespace Jido.Services
         {
             if (Status == ServiceStatus.STOPPED)
             {
-                _cancellationTokenSource = new CancellationTokenSource();
                 StartAutoPress();
             }
             else
             {
                 StopAutoPress();
             }
-            StatusChanged?.Invoke(this, Status);
         }
 
         private void StartAutoPress()
         {
-            Status = ServiceStatus.IDLE;
+            _cancellationTokenSource = new CancellationTokenSource();
             // Setup
             foreach (var command in _constantCommands)
             {
@@ -119,6 +149,8 @@ namespace Jido.Services
             {
                 command.Start(_queuedCommands);
             }
+
+            Status = ServiceStatus.IDLE;
         }
 
         private void StopAutoPress()
@@ -167,6 +199,8 @@ namespace Jido.Services
     {
         public List<HighLevelCommand> ScheduledCommands { get; }
         public List<ConstantCommand> ConstantCommands { get; }
+
+        public int ClickDelay { get; }
 
         public void UpdateScheduledCommands(List<HighLevelCommand> commands);
 

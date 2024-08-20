@@ -50,7 +50,7 @@ namespace Jido
             services.AddSingleton<Router<ViewModelBase>>(s => new Router<ViewModelBase>(t =>
                 (ViewModelBase)s.GetRequiredService(t)
             ));
-            services.AddSingleton<IKeyHooksManager, KeyHooksManager>();
+            services.AddSingleton<IHooksManager, HooksManager>();
             services.AddSingleton<IAutolootService, AutolootService>();
             services.AddSingleton<IAutopressService, AutopressService>();
 

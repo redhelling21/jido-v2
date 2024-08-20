@@ -9,16 +9,16 @@ using SharpHook.Native;
 
 namespace Jido.Utils
 {
-    public class KeyHooksManager : IKeyHooksManager
+    public class HooksManager : IHooksManager
     {
         private TaskPoolGlobalHook _hook = new();
         public Dictionary<KeyCode, EventHandler> _keyPressedEvents = new();
+        public Dictionary<MouseButton, List<EventHandler>> _mouseClickedEvents = new();
 
-        //private Dictionary<string, KeyHook> _hooks = new Dictionary<string, KeyHook>();
-
-        public KeyHooksManager()
+        public HooksManager()
         {
             _hook.KeyPressed += OnKeyPressed;
+            _hook.MouseClicked += OnMouseClicked;
             _hook.RunAsync();
         }
 
@@ -51,6 +51,14 @@ namespace Jido.Utils
             }
         }
 
+        public void OnMouseClicked(object? sender, MouseHookEventArgs args)
+        {
+            if (_mouseClickedEvents.ContainsKey(args.RawEvent.Mouse.Button))
+            {
+                _mouseClickedEvents[args.RawEvent.Mouse.Button]?.ForEach(e => e.Invoke(sender, args));
+            }
+        }
+
         public Task<KeyCode> ListenNextKey()
         {
             var tcs = new TaskCompletionSource<KeyCode>();
@@ -68,13 +76,38 @@ namespace Jido.Utils
         {
             _hook.Dispose();
         }
+
+        public void RegisterMouseClick(MouseButton button, EventHandler clicked)
+        {
+            if (!_mouseClickedEvents.ContainsKey(button))
+            {
+                _mouseClickedEvents.Add(button, new List<EventHandler>());
+            }
+            _mouseClickedEvents[button].Add(clicked);
+        }
+
+        public void UnRegisterMouseClick(MouseButton button, EventHandler clicked)
+        {
+            if (_mouseClickedEvents.ContainsKey(button))
+            {
+                _mouseClickedEvents[button].Remove(clicked);
+            }
+            else
+            {
+                throw new Exception("Button not registered");
+            }
+        }
     }
 
-    public interface IKeyHooksManager : IDisposable
+    public interface IHooksManager : IDisposable
     {
         void RegisterKey(KeyCode key, EventHandler pressed);
 
         void UnregisterKey(KeyCode key);
+
+        void RegisterMouseClick(MouseButton button, EventHandler clicked);
+
+        void UnRegisterMouseClick(MouseButton button, EventHandler clicked);
 
         Task<KeyCode> ListenNextKey();
     }
