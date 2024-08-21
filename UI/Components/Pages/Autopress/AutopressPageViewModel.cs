@@ -43,24 +43,33 @@ namespace Jido.UI.Components.Pages.Autopress
             ScheduledCommands = new ObservableCollection<HighLevelCommandViewModel>(
                 new ObservableCollection<HighLevelCommandViewModel>()
                 {
-                    new BasicHighLevelCommandViewModel(new PressCommandViewModel() { KeyToPress = SharpHook.Native.KeyCode.VcE }, 1000),
-                    new BasicHighLevelCommandViewModel(new PressCommandViewModel() { KeyToPress = SharpHook.Native.KeyCode.VcR }, 2000),
-                    new BasicHighLevelCommandViewModel(new PressCommandViewModel() { KeyToPress = SharpHook.Native.KeyCode.VcR }, 3000),
+                    new BasicHighLevelCommandViewModel(
+                        new PressCommandViewModel() { KeyToPress = SharpHook.Native.KeyCode.VcE },
+                        1000
+                    ),
+                    new BasicHighLevelCommandViewModel(
+                        new PressCommandViewModel() { KeyToPress = SharpHook.Native.KeyCode.VcR },
+                        2000
+                    ),
+                    new BasicHighLevelCommandViewModel(
+                        new PressCommandViewModel() { KeyToPress = SharpHook.Native.KeyCode.VcR },
+                        3000
+                    ),
                     new CompositeHighLevelCommandViewModel(
                         new List<LowLevelCommandViewModel>()
-                            {
-                                new PressCommandViewModel() { KeyToPress = SharpHook.Native.KeyCode.VcW },
-                                new WaitCommandViewModel() { WaitTimeInMs = 500 },
-                                new PressCommandViewModel() { KeyToPress = SharpHook.Native.KeyCode.VcO },
-                            },
+                        {
+                            new PressCommandViewModel() { KeyToPress = SharpHook.Native.KeyCode.VcW },
+                            new WaitCommandViewModel() { WaitTimeInMs = 500 },
+                            new PressCommandViewModel() { KeyToPress = SharpHook.Native.KeyCode.VcO },
+                        },
                         1500
                     ),
                     new CompositeHighLevelCommandViewModel(
                         new List<LowLevelCommandViewModel>()
-                            {
-                                new PressCommandViewModel() { KeyToPress = SharpHook.Native.KeyCode.VcT },
-                                new PressCommandViewModel() { KeyToPress = SharpHook.Native.KeyCode.VcB }
-                            },
+                        {
+                            new PressCommandViewModel() { KeyToPress = SharpHook.Native.KeyCode.VcT },
+                            new PressCommandViewModel() { KeyToPress = SharpHook.Native.KeyCode.VcB }
+                        },
                         2500
                     )
                 }
@@ -140,9 +149,9 @@ namespace Jido.UI.Components.Pages.Autopress
         {
             var command = new CompositeHighLevelCommandViewModel(
                 new List<LowLevelCommandViewModel>()
-                    {
-                        new PressCommandViewModel() { KeyToPress = SharpHook.Native.KeyCode.VcUndefined },
-                    },
+                {
+                    new PressCommandViewModel() { KeyToPress = SharpHook.Native.KeyCode.VcUndefined },
+                },
                 1000
             );
             ScheduledCommands.Add(command);
@@ -150,16 +159,18 @@ namespace Jido.UI.Components.Pages.Autopress
 
         [RelayCommand]
         private void AddLowLevelCommandToComposite(CompositeHighLevelCommandViewModel command)
-        {
-        }
+        { }
 
         [RelayCommand]
         private void RemoveLowLevelCommandFromComposite(LowLevelCommandViewModel command)
         {
-            var parent = ScheduledCommands.Where(c =>
-            {
-                return c is CompositeHighLevelCommandViewModel && ((CompositeHighLevelCommandViewModel)c).Commands.Contains(command);
-            }).FirstOrDefault();
+            var parent = ScheduledCommands
+                .Where(c =>
+                {
+                    return c is CompositeHighLevelCommandViewModel
+                        && ((CompositeHighLevelCommandViewModel)c).Commands.Contains(command);
+                })
+                .FirstOrDefault();
             if (parent != null)
             {
                 ((CompositeHighLevelCommandViewModel)parent).Commands.Remove(command);
