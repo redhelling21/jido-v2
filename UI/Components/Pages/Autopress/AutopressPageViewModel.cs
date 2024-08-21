@@ -93,14 +93,6 @@ namespace Jido.UI.Components.Pages.Autopress
         private void OnAutopressStatusChange(object? sender, ServiceStatus status)
         { }
 
-        partial void OnClickDelayChanged(int value)
-        {
-            if (_autopressService is not null)
-            {
-                _autopressService.UpdateClickDelay(value);
-            }
-        }
-
         #region commands
 
         [RelayCommand]
