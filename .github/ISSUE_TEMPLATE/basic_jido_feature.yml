@@ -3,3 +3,15 @@ description: New feature request
 title: "[Feature]: "
 labels: ["feature"]
 projects: ["redhelling21/2"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to fill out thisfeature request!
+  - type: textarea
+    id: description
+    attributes:
+      label: Description
+      description: Description
+    validations:
+      required: false
