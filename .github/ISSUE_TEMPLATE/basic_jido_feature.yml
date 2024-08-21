@@ -13,6 +13,5 @@ body:
     attributes:
       label: Description
       description: Description
-      value: ""
     validations:
       required: false
