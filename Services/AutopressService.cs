@@ -133,7 +133,11 @@ namespace Jido.Services
             }
 
             // Start key press routine
-            _ = Task.Run(() => KeyPressRoutine(_cancellationTokenSource.Token));
+            _ = Task.Run(() => KeyPressRoutine(_cancellationTokenSource.Token))
+                    .ContinueWith((t) =>
+                    {
+                        if (t.IsFaulted) throw t.Exception;
+                    }); ;
 
             foreach (var command in _scheduledCommands)
             {

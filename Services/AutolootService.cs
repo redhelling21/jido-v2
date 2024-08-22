@@ -75,7 +75,11 @@ namespace Jido.Services
             {
                 Status = ServiceStatus.IDLE;
                 _cancellationTokenSource = new CancellationTokenSource();
-                Task.Run(() => AutolootRoutine(_cancellationTokenSource.Token));
+                Task.Run(() => AutolootRoutine(_cancellationTokenSource.Token))
+                    .ContinueWith((t) =>
+                {
+                    if (t.IsFaulted) throw t.Exception;
+                });
             }
             else
             {
