@@ -36,13 +36,16 @@
             <!--  LEFT COLUMN  -->
             <StackPanel Grid.Column="0" HorizontalAlignment="Left">
                 <!--  GENERAL  -->
-                <TextBlock Margin="0,10,0,5" FontSize="16" FontWeight="Bold" Text="General" />
+                <TextBlock Margin="0,10,0,5" FontSize="16" FontWeight="Bold" Text="Left column" />
+                <Button Command="{Binding ConfigureInventoryLayoutCommand}">
+                    Open inv overlay
+                </Button>
             </StackPanel>
             <Border Grid.Column="1" Width="1" Margin="20,0,20,10"
                     Background="{DynamicResource Highlight100}" />
             <!--  RIGHT COLUMN  -->
             <Grid Grid.Column="2" ColumnDefinitions="*" RowDefinitions="Auto, *, 5, Auto, 5">
-                <TextBlock Grid.Row="0" FontSize="16" FontWeight="Bold" Text="Scheduled keypress" />
+                <TextBlock Grid.Row="0" FontSize="16" FontWeight="Bold" Text="Right column" />
             </Grid>
         </Grid>
     </common:PageWithHeader>
