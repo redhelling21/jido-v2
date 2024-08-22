@@ -1,0 +1,35 @@
+<UserControl x:Class="Jido.UI.Components.Common.Sidebar.SidebarView"
+             xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:sidebar="using:Jido.UI.Components.Common.Sidebar"
+             xmlns:vm="using:Jido.UI.Components.Common.Sidebar" d:DesignHeight="600"
+             d:DesignWidth="260" x:DataType="vm:SidebarViewModel" mc:Ignorable="d">
+    <Design.DataContext>
+        <vm:SidebarViewModel />
+    </Design.DataContext>
+    <Grid Background="{DynamicResource Highlight500}" RowDefinitions="94, Auto, *">
+        <Border Grid.Row="0">
+            <Image Margin="30,20,30,0" Source="avares://Jido/UI/Assets/Images/logo.png" />
+        </Border>
+        <Border Grid.Row="1" Padding="20" Classes="menuitems">
+            <StackPanel>
+                <sidebar:SidebarMenuItem Name="Default" Classes="active" Click="SetActiveState"
+                                         Command="{Binding NavigateTo}"
+                                         CommandParameter="{Binding $self.Path}"
+                                         MenuIcon="fa fa-house" MenuName="Home" Path="Home" />
+                <sidebar:SidebarMenuItem Click="SetActiveState"
+                                         Command="{Binding NavigateTo}"
+                                         CommandParameter="{Binding $self.Path}"
+                                         MenuIcon="fa fa-eye" MenuName="Autoloot" Path="Autoloot"
+                                         Status="{Binding AutolootStatus}" />
+                <sidebar:SidebarMenuItem Click="SetActiveState"
+                                         Command="{Binding NavigateTo}"
+                                         CommandParameter="{Binding $self.Path}"
+                                         MenuIcon="fa fa-layer-group" MenuName="Autopress" Path="Autopress"
+                                         Status="{Binding AutopressStatus}" />
+            </StackPanel>
+        </Border>
+    </Grid>
+</UserControl>

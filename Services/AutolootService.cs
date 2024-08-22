@@ -15,7 +15,7 @@ namespace Jido.Services
 {
     public class AutolootService : IAutolootService
     {
-        private IKeyHooksManager _keyHooksManager;
+        private IHooksManager _keyHooksManager;
         private CancellationTokenSource _cancellationTokenSource;
         private JidoConfig _config;
         private KeyCode _toggleKey;
@@ -35,7 +35,7 @@ namespace Jido.Services
 
         public event EventHandler<ServiceStatus> StatusChanged;
 
-        public AutolootService(IKeyHooksManager keyHooksManager, JidoConfig config)
+        public AutolootService(IHooksManager keyHooksManager, JidoConfig config)
         {
             _keyHooksManager = keyHooksManager;
             _config = config;
@@ -75,7 +75,11 @@ namespace Jido.Services
             {
                 Status = ServiceStatus.IDLE;
                 _cancellationTokenSource = new CancellationTokenSource();
-                Task.Run(() => AutolootRoutine(_cancellationTokenSource.Token));
+                Task.Run(() => AutolootRoutine(_cancellationTokenSource.Token))
+                    .ContinueWith((t) =>
+                {
+                    if (t.IsFaulted) throw t.Exception;
+                });
             }
             else
             {
@@ -160,13 +164,9 @@ namespace Jido.Services
         }
     }
 
-    public interface IAutolootService : IServiceWithStatus
+    public interface IAutolootService : IServiceWithStatus, IToggleableService
     {
-        public Task<KeyCode> ChangeToggleKey();
-
         public void UpdateColors(List<Color> colors);
-
-        public KeyCode ToggleKey { get; }
 
         public List<Color> Colors { get; }
     }

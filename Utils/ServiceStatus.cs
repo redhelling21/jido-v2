@@ -12,6 +12,7 @@ namespace Jido.Utils
         STOPPED,
         WORKING,
         IDLE,
+        PAUSED,
         ERROR,
     }
 }

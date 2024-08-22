@@ -9,23 +9,22 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <AvaloniaResource Include="Assets\**" />
+    <AvaloniaResource Include="UI\Assets\**" />
     <AvaloniaXaml Remove="OpenCVSandbox\**" />
     <Compile Remove="OpenCVSandbox\**" />
     <EmbeddedResource Remove="OpenCVSandbox\**" />
     <None Remove="OpenCVSandbox\**" />
-    <Folder Include="Assets\Fonts\" />
-    <Folder Include="Assets\Images\" />
   </ItemGroup>
 
 
   <ItemGroup>
-    <PackageReference Include="Avalonia" Version="11.1.999-cibuild0045693-beta" />
-    <PackageReference Include="Avalonia.Desktop" Version="11.1.999-cibuild0045693-beta" />
-    <PackageReference Include="Avalonia.Themes.Fluent" Version="11.1.999-cibuild0045693-beta" />
-    <PackageReference Include="Avalonia.Fonts.Inter" Version="11.1.999-cibuild0045693-beta" />
+    <PackageReference Include="AutoMapper" Version="13.0.1" />
+    <PackageReference Include="Avalonia" Version="11.1.0-beta1" />
+    <PackageReference Include="Avalonia.Desktop" Version="11.1.0-beta1" />
+    <PackageReference Include="Avalonia.Themes.Fluent" Version="11.1.0-beta1" />
+    <PackageReference Include="Avalonia.Fonts.Inter" Version="11.1.0-beta1" />
     <!--Condition below is needed to remove Avalonia.Diagnostics package from build output in Release configuration.-->
-    <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" Version="11.0.10" />
+    <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" Version="11.1.0-beta1" />
     <PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.2" />
     <PackageReference Include="Microsoft.Extensions.Configuration" Version="8.0.0" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="8.0.0" />
@@ -33,19 +32,19 @@
     <PackageReference Include="OpenCvSharp4" Version="4.9.0.20240103" />
     <PackageReference Include="OpenCvSharp4.Extensions" Version="4.9.0.20240103" />
     <PackageReference Include="OpenCvSharp4.runtime.win" Version="4.9.0.20240103" />
-    <PackageReference Include="Projektanker.Icons.Avalonia" Version="9.1.1" />
-    <PackageReference Include="Projektanker.Icons.Avalonia.FontAwesome" Version="9.1.1" />
-    <PackageReference Include="Projektanker.Icons.Avalonia.MaterialDesign" Version="9.1.1" />
-    <PackageReference Include="SharpHook" Version="5.3.1" />
+    <PackageReference Include="Projektanker.Icons.Avalonia" Version="9.4.0" />
+    <PackageReference Include="Projektanker.Icons.Avalonia.FontAwesome" Version="9.4.0" />
+    <PackageReference Include="Projektanker.Icons.Avalonia.MaterialDesign" Version="9.4.0" />
+    <PackageReference Include="SharpHook" Version="5.3.7" />
   </ItemGroup>
 
 
   <ItemGroup>
-    <Compile Update="Components\Common\Sidebar\SidebarMenuItemView.axaml.cs">
-      <DependentUpon>SidebarMenuItemView.axaml</DependentUpon>
-    </Compile>
-    <Compile Update="Components\Common\Sidebar\SidebarView.axaml.cs">
+    <Compile Update="UI\Components\Common\Sidebar\SidebarView.axaml.cs">
       <DependentUpon>SidebarView.axaml</DependentUpon>
+    </Compile>
+    <Compile Update="UI\Components\Pages\Autopress\AutopressPageView.axaml.cs">
+      <DependentUpon>AutopressPageView.axaml</DependentUpon>
     </Compile>
   </ItemGroup>
 

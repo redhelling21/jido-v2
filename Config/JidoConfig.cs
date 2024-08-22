@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using Jido.Models;
 using OpenCvSharp;
 using SharpHook.Native;
+using static Jido.Models.CompositeHighLevelCommand;
 
 namespace Jido.Config;
 
@@ -97,6 +98,7 @@ public class ScreenConfig
 public class FeaturesConfig
 {
     public AutolootConfig Autoloot { get; set; } = new();
+    public AutopressConfig Autopress { get; set; } = new();
 }
 
 public class AutolootConfig
@@ -108,4 +110,13 @@ public class AutolootConfig
         {
             new Color() { Name = "Default", RGB = [253, 0, 253] }
         };
+}
+
+public class AutopressConfig
+{
+    public KeyCode ToggleKey { get; set; } = KeyCode.VcQ;
+    public int ClickDelay { get; set; } = 1200;
+    public double IntervalRandomizationRatio { get; set; } = 0.1;
+    public List<HighLevelCommand> ScheduledCommands { get; set; } = new();
+    public List<ConstantCommand> ConstantCommands { get; set; } = new();
 }

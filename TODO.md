@@ -5,31 +5,45 @@ Because I'm too lazy to create issues, here's a list of things I want to do with
   - [ ] Add a license to the project
   - [ ] Define a general theme
   - [ ] Handle dark theme
-  - [ ] Randomize delays, click positions, etc
-  - [ ] Display features activation status
+  - [x] Display features activation status
   - [ ] Auto toggle features if in city or in map
   - [ ] OpenCV debugger
-  - [ ] Configuration handling
+  - [x] Configuration handling
+  - [ ] Allow the macro to only run if the game is in focus
+  - [ ] HUD displaying current status
+  - [ ] Restrict some features to being in a town / in a map only
+  - [ ] "Buttons wheel" on key press to trigger some less-used features
+  - [ ] Implement bottom bar tooltips
 - [ ] Autoloot
-  - [ ] Implement autoloot
-  - [ ] Allow colors selection
+  - [x] Implement autoloot
+  - [x] Allow colors selection
   - [ ] Allow shape selection
   - [ ] Auto disable if low life/es/mana
+  - [ ] Special key to trigger autoloot ignoring movements
+  - [ ] Randomize click positions
 - [ ] Autopress
-  - [ ] Implement autopress
+  - [x] Implement autopress
   - [ ] Allow groups of keys to trigger together with a specific delay
   - [ ] Give a special status to the movement key
   - [ ] Allow toggling spam of a key
-  - [ ] Allow a key to be pressed regularly no matter wwhat
-  - [ ] Save configs in json
-  - [ ] Configure delay for a new keypress & pressing duration
+  - [ ] Allow a key to be pressed regularly no matter what
+  - [x] Save config in json
+  - [ ] Allow the load of multiple loadouts
+  - [x] Configure delay for a new keypress & pressing duration
+  - [ ] Randomize delays
 - [ ] Bulk item click
 - [ ] Empty inventory
   - [ ] Implement
   - [ ] Make it work when selling to a vendor or a player
 - [ ] Cards
-- [ ] Expeditions
+    - [ ] Div cards redeemer
+    - [ ] Stacked decks opener
+- [ ] Sockets recipe spammer
+- [ ] Expedition
+    - [ ] Tujen haggler
+    - [ ] Gwennen roller
 - [ ] Currency spammer
 - [ ] Map crafter
 - [ ] Autoclicker
 - [ ] Chaos recipe
+- [ ] Logout macro
