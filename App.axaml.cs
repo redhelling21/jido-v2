@@ -54,6 +54,7 @@ namespace Jido
             services.AddSingleton<IHooksManager, HooksManager>();
             services.AddSingleton<IAutolootService, AutolootService>();
             services.AddSingleton<IAutopressService, AutopressService>();
+            services.AddSingleton<IInventoryManagementService, InventoryManagementService>();
 
             // Component ViewModels
             services.AddSingleton<MainWindowViewModel>();

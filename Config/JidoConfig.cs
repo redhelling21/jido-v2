@@ -99,6 +99,7 @@ public class FeaturesConfig
 {
     public AutolootConfig Autoloot { get; set; } = new();
     public AutopressConfig Autopress { get; set; } = new();
+    public InventoryManagementConfig InventoryManagement { get; set; } = new();
 }
 
 public class AutolootConfig
@@ -119,4 +120,13 @@ public class AutopressConfig
     public double IntervalRandomizationRatio { get; set; } = 0.1;
     public List<HighLevelCommand> ScheduledCommands { get; set; } = new();
     public List<ConstantCommand> ConstantCommands { get; set; } = new();
+}
+
+public class InventoryManagementConfig
+{
+    public int InventoryWidth { get; set; } = 600;
+    public int InventoryHeight { get; set; } = 250;
+    public int[] InventoryPosition { get; set; } = { 1000, 1000 };
+    public bool[][] InventorySlots { get; set; } = new bool[12][];
+    public KeyCode EmptyInventoryKey { get; set; } = KeyCode.VcF4;
 }

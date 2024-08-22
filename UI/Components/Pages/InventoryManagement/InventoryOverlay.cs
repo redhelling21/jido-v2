@@ -19,7 +19,7 @@ namespace Jido.UI.Components.Pages.InventoryManagement
 
         private bool[][] _cells;
 
-        public InventoryOverlay(int width, int height)
+        public InventoryOverlay(InventoryOverlayData data)
         {
             Title = "Inventory";
             Background = new SolidColorBrush(Colors.Transparent);
@@ -27,9 +27,10 @@ namespace Jido.UI.Components.Pages.InventoryManagement
             ExtendClientAreaToDecorationsHint = true;
             ExtendClientAreaChromeHints = Avalonia.Platform.ExtendClientAreaChromeHints.NoChrome;
 
-            Width = width;
-            Height = height;
-            _cells = new bool[GridWidth][];
+            Width = data.InventoryWidth;
+            Height = data.InventoryHeight;
+            Position = new PixelPoint(data.InventoryPosition[0], data.InventoryPosition[1]);
+            _cells = data.InventorySlots;
             var grid = new Grid
             {
                 ColumnDefinitions = new ColumnDefinitions(string.Join(",", Enumerable.Repeat("*", GridWidth))),
@@ -37,7 +38,6 @@ namespace Jido.UI.Components.Pages.InventoryManagement
             };
             for (int col = 0; col < GridWidth; col++)
             {
-                _cells[col] = new bool[GridHeight];
                 for (int row = 0; row < GridHeight; row++)
                 {
                     var cell = new Border
@@ -48,6 +48,10 @@ namespace Jido.UI.Components.Pages.InventoryManagement
                     };
 
                     cell.PointerPressed += Cell_PointerPressed;
+                    if (_cells[col][row])
+                    {
+                        cell.Background = new SolidColorBrush(Colors.Red, 0.6);
+                    }
 
                     Grid.SetRow(cell, row);
                     Grid.SetColumn(cell, col);
@@ -57,8 +61,15 @@ namespace Jido.UI.Components.Pages.InventoryManagement
             Content = grid;
         }
 
-        public void GetInventoryConfig()
+        public InventoryOverlayData GetInventoryConfig()
         {
+            return new InventoryOverlayData
+            {
+                InventoryWidth = (int)Width,
+                InventoryHeight = (int)Height,
+                InventorySlots = _cells,
+                InventoryPosition = new int[] { (int)Position.X, (int)Position.Y }
+            };
         }
 
         private void Cell_PointerPressed(object sender, PointerPressedEventArgs e)
@@ -70,7 +81,7 @@ namespace Jido.UI.Components.Pages.InventoryManagement
                 _cells[x][y] = !_cells[x][y];
                 if (_cells[x][y])
                 {
-                    cell.Background = new SolidColorBrush(Colors.Red, 0.7);
+                    cell.Background = new SolidColorBrush(Colors.Red, 0.6);
                 }
                 else
                 {
@@ -78,5 +89,13 @@ namespace Jido.UI.Components.Pages.InventoryManagement
                 }
             }
         }
+    }
+
+    public class InventoryOverlayData
+    {
+        public int InventoryWidth { get; set; } = 600;
+        public int InventoryHeight { get; set; } = 250;
+        public int[] InventoryPosition { get; set; } = { 1000, 1000 };
+        public bool[][] InventorySlots { get; set; } = new bool[12][];
     }
 }
