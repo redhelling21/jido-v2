@@ -14,6 +14,7 @@ using Jido.UI.Routing;
 using Jido.Utils;
 using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
+using Jido.UI.Components.Pages.InventoryManagement;
 
 namespace Jido
 {
@@ -60,6 +61,7 @@ namespace Jido
             services.AddTransient<HomePageViewModel>();
             services.AddTransient<AutolootPageViewModel>();
             services.AddTransient<AutopressPageViewModel>();
+            services.AddTransient<InventoryManagementPageViewModel>();
 
             // Utilities
             services.AddAutoMapper(Assembly.GetExecutingAssembly());

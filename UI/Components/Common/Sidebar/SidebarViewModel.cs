@@ -23,6 +23,9 @@ namespace Jido.UI.Components.Common.Sidebar
         [ObservableProperty]
         private ServiceStatus _autopressStatus = ServiceStatus.STOPPED;
 
+        [ObservableProperty]
+        private ServiceStatus _inventoryManagementStatus = ServiceStatus.STOPPED;
+
         [RelayCommand]
         public void NavigateTo(string path)
         {
